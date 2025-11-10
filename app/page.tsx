@@ -1,3 +1,4 @@
+// Testing GitHub auto-deploy - 2025-11-10
 import Link from 'next/link'
 import { MessageCircle } from 'lucide-react'
 import './home.css'
