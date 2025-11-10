@@ -69,6 +69,7 @@ export default function ChildFormSection({
   const [fileError, setFileError] = useState<string | null>(null)
 
   // 4MB file size limit (Netlify binary payload limit is ~4.5MB after Base64 encoding)
+  // Testing GitHub auto-deploy integration
   const MAX_FILE_SIZE = 4 * 1024 * 1024 // 4MB in bytes
 
   const updateField = (field: string, value: any) => {
