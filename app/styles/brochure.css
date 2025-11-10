@@ -1,0 +1,1596 @@
+/* Brochure Styles - Exact Recreation */
+
+/* Reset and Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Color Variables */
+:root {
+  --green-primary: #7A9A3B;
+  --green-secondary: #8BA85E;
+  --green-light: #B4C68A;
+  --green-dark: #5A7A2B;
+  --cream: #F5F2E8;
+  --orange: #F39C12;
+  --white: #FFFFFF;
+}
+
+/* Typography */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Container */
+.brochure-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Base Slide */
+.slide {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Slide 1 - Hero with clean background */
+.slide-1 {
+  position: relative;
+}
+
+.hero-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.4));
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: white;
+  padding: 2rem;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.logo-circle {
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.logo-icon {
+  width: 80px;
+  height: 80px;
+  color: var(--green-primary);
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.hero-title {
+  font-size: clamp(5rem, 12vw, 10rem);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-title-line {
+  display: block;
+}
+
+/* Slide 2 - Waldorf-Inspired Summer Camp */
+.slide-2 {
+  padding: 0;
+  height: 100vh;
+  background: #7A9A3B; /* Green background color */
+}
+
+.slide-2-grid {
+  display: grid;
+  grid-template-columns: 58% 42%;
+  height: 100%;
+}
+
+/* Left side - Background with text */
+.slide-2-left {
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-2-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.slide-2-title {
+  position: absolute;
+  bottom: 80px;
+  left: 50px;
+  z-index: 10;
+}
+
+.slide-2-title h2 {
+  color: white;
+  font-size: 72px;
+  font-weight: 800;
+  line-height: 0.9;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  letter-spacing: -0.02em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Right side - Activity photos */
+.slide-2-right {
+  padding: 60px 60px 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  background: #7A9A3B;
+  position: relative;
+}
+
+/* White decorative circle */
+.decorative-circle {
+  position: absolute;
+  bottom: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: white;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+/* Photo containers */
+.slide-2-photo {
+  background: white;
+  padding: 8px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.slide-2-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Top photo - rounded top corners */
+.photo-top {
+  width: 280px;
+  height: 200px;
+  border-radius: 150px 150px 8px 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.photo-top img {
+  border-radius: 142px 142px 0 0;
+}
+
+/* Middle photo - rounded sides */
+.photo-middle {
+  width: 280px;
+  height: 200px;
+  margin-bottom: 20px;
+  margin-right: 40px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* Bottom photo - rounded all corners */
+.photo-bottom {
+  width: 340px;
+  height: 220px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: absolute;
+  bottom: 140px;
+  left: -60px;
+}
+
+.photo-bottom img {
+  border-radius: 12px;
+}
+
+/* Responsive adjustments for Slide 2 */
+@media (max-width: 1400px) {
+  .slide-2-title h2 {
+    font-size: 60px;
+  }
+  
+  .photo-top, .photo-middle {
+    width: 240px;
+    height: 170px;
+  }
+  
+  .photo-bottom {
+    width: 300px;
+    height: 190px;
+  }
+  
+  .decorative-circle {
+    width: 350px;
+    height: 350px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .slide-2-title {
+    left: 30px;
+    bottom: 50px;
+  }
+  
+  .slide-2-title h2 {
+    font-size: 48px;
+  }
+  
+  .slide-2-right {
+    padding: 40px;
+  }
+  
+  .photo-top, .photo-middle {
+    width: 200px;
+    height: 140px;
+  }
+  
+  .photo-bottom {
+    width: 260px;
+    height: 160px;
+    left: -40px;
+  }
+  
+  .decorative-circle {
+    width: 280px;
+    height: 280px;
+    bottom: -80px;
+    right: -80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .slide-2-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 50% 50%;
+  }
+  
+  .slide-2-title {
+    left: 20px;
+    bottom: 30px;
+  }
+  
+  .slide-2-title h2 {
+    font-size: 36px;
+  }
+  
+  .slide-2-right {
+    padding: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .photo-top, .photo-middle, .photo-bottom {
+    position: relative;
+    width: 45%;
+    height: 120px;
+    margin: 10px;
+    left: auto;
+    bottom: auto;
+  }
+  
+  .decorative-circle {
+    display: none;
+  }
+}
+
+/* Slide 3 - Youngest Explorers */
+.slide-3 {
+  position: relative;
+  background: var(--green-primary);
+}
+
+.slide-bg-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.slide-bg-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.2;
+}
+
+.slide-content-overlay {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  max-width: 1400px;
+  width: 100%;
+  padding: 3rem;
+  align-items: center;
+}
+
+.text-section {
+  color: white;
+}
+
+.section-title-white {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  margin-bottom: 2rem;
+}
+
+.age-subtitle {
+  font-size: 0.6em;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.highlight-pill {
+  display: inline-block;
+  background: var(--cream);
+  color: var(--green-dark);
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.body-text-white {
+  font-size: 1.5rem;
+  line-height: 1.6;
+  font-weight: 300;
+  opacity: 0.95;
+}
+
+.rounded-photo-frame {
+  width: 100%;
+  max-width: 500px;
+  height: 400px;
+  border-radius: 200px 30px 200px 30px;
+  overflow: hidden;
+  border: 20px solid var(--green-secondary);
+  background: white;
+}
+
+.rounded-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.green-curve-bottom {
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+  width: 400px;
+  height: 400px;
+  background: var(--green-secondary);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+/* Slide 4 - Features Grid */
+.slide-4 {
+  background: white;
+  padding: 3rem 2rem;
+}
+
+.features-container {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.features-title {
+  text-align: center;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  color: var(--green-primary);
+  font-weight: 900;
+  margin-bottom: 3rem;
+}
+
+.features-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.feature-box {
+  background: #f5f5f5;
+  padding: 2rem;
+  border-radius: 25px;
+}
+
+.feature-box h3 {
+  color: var(--green-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.feature-box p {
+  color: #555;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.feature-box-wide {
+  background: var(--green-light);
+  padding: 2.5rem;
+  border-radius: 25px;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.feature-box-wide h3 {
+  color: white;
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.feature-box-wide p {
+  color: white;
+  font-size: 1.2rem;
+}
+
+/* Activity Slides (5-12) */
+.slide-5, .slide-6, .slide-7, .slide-8, .slide-9, .slide-11, .slide-12 {
+  position: relative;
+}
+
+.slide-bg-split {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.split-left, .split-right {
+  position: relative;
+  overflow: hidden;
+}
+
+.split-left img, .split-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.green-text-box {
+  background: var(--green-primary);
+  color: white;
+  padding: 3rem;
+  border-radius: 30px;
+  max-width: 450px;
+}
+
+.green-text-box h2 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.green-text-box p {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.activity-photo {
+  width: 500px;
+  height: 350px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.activity-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.activity-photo-rounded {
+  width: 500px;
+  height: 400px;
+  border-radius: 150px 30px 150px 30px;
+  overflow: hidden;
+  border: 15px solid var(--green-secondary);
+}
+
+.activity-photo-rounded img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Slide 10 - Nature's Classroom */
+.slide-10 {
+  background: white;
+}
+
+.nature-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: 100vh;
+}
+
+.nature-left {
+  position: relative;
+  overflow: hidden;
+}
+
+.nature-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nature-right {
+  background: var(--green-primary);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.nature-text-box {
+  color: white;
+}
+
+.nature-text-box h2 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  line-height: 1;
+}
+
+.nature-text-box p {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.nature-photo {
+  width: 100%;
+  height: 300px;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.nature-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Slide 13 - Why Choose */
+.slide-13 {
+  position: relative;
+}
+
+.why-choose-content {
+  text-align: center;
+  padding: 3rem;
+}
+
+/* Slide 14 - Fosters Creativity */
+.slide-14 {
+  background: white;
+}
+
+.fosters-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: 100vh;
+}
+
+.fosters-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.fosters-photo {
+  width: 100%;
+  max-width: 500px;
+  height: 400px;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 15px solid var(--green-light);
+}
+
+.fosters-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fosters-right {
+  position: relative;
+  overflow: hidden;
+}
+
+.fosters-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+.fosters-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 4rem;
+  z-index: 10;
+}
+
+.fosters-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--green-primary);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.fosters-subtitle {
+  font-size: 1.5rem;
+  color: #555;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* Slide 15 - Supports Holistic Development */
+.slide-15 {
+  background: white;
+  position: relative;
+}
+
+.slide-15-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+}
+
+.slide-15-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.holistic-photo {
+  width: 100%;
+  max-width: 500px;
+  height: 400px;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 15px solid var(--green-light);
+}
+
+.holistic-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-15-right {
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-15-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+.slide-15-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 4rem;
+  z-index: 10;
+}
+
+.slide-15-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--green-primary);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.slide-15-subtitle {
+  font-size: 1.5rem;
+  color: #555;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* Slide 16 - Connects children with Nature */
+.slide-16 {
+  background: white;
+  position: relative;
+}
+
+.slide-16-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+}
+
+.slide-16-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.nature-connect-photo {
+  width: 100%;
+  max-width: 500px;
+  height: 400px;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 15px solid var(--green-secondary);
+}
+
+.nature-connect-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-16-right {
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-16-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+.slide-16-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 4rem;
+  z-index: 10;
+}
+
+.slide-16-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--green-primary);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.slide-16-subtitle {
+  font-size: 1.5rem;
+  color: #555;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* Slide 17 - Builds Social-Emotional Skills */
+.slide-17 {
+  background: white;
+  position: relative;
+}
+
+.slide-17-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+}
+
+.slide-17-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.social-skills-photo {
+  width: 100%;
+  max-width: 500px;
+  height: 400px;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 15px solid var(--green-light);
+}
+
+.social-skills-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-17-right {
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-17-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+.slide-17-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 4rem;
+  z-index: 10;
+}
+
+.slide-17-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--green-primary);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.slide-17-subtitle {
+  font-size: 1.5rem;
+  color: #555;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* Slide 18 - Experienced & Caring Educators */
+.slide-18 {
+  background: white;
+  position: relative;
+}
+
+.slide-18-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+}
+
+.slide-18-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.educators-photo {
+  width: 100%;
+  max-width: 500px;
+  height: 400px;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 15px solid var(--green-secondary);
+}
+
+.educators-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-18-right {
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-18-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+.slide-18-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 4rem;
+  z-index: 10;
+}
+
+.slide-18-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--green-primary);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.slide-18-subtitle {
+  font-size: 1.5rem;
+  color: #555;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* Slide 19 - Summer Camp Schedule */
+.slide-19 {
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.schedule-container {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+}
+
+.schedule-title {
+  font-size: 3rem;
+  color: var(--green-primary);
+  font-weight: 900;
+  margin-bottom: 1rem;
+}
+
+.schedule-subtitle {
+  font-size: 1.5rem;
+  color: var(--green-dark);
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.schedule-grid {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.schedule-grid img {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Slide 20 - Growing Adventurers */
+.slide-20 {
+  background: var(--green-primary);
+  position: relative;
+}
+
+.adventurers-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.adventurers-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem;
+  color: white;
+  z-index: 10;
+}
+
+.adventurers-title {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: 0.9;
+  margin-bottom: 2rem;
+}
+
+.adventurers-subtitle {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.adventurers-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.adventurers-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.white-circle-large {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: white;
+  border-radius: 50%;
+  bottom: -250px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+/* Slide 21 - Unplug, Explore, Create */
+.slide-21 {
+  position: relative;
+}
+
+.explorers-intro {
+  text-align: center;
+  max-width: 1000px;
+  padding: 3rem;
+}
+
+.white-title-centered {
+  color: white;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.white-text-centered {
+  color: white;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  font-weight: 300;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Slide 22 - Beach Day Adventures */
+.slide-22 {
+  position: relative;
+}
+
+.beach-day-content {
+  width: 100%;
+  max-width: 1200px;
+  padding: 3rem;
+}
+
+.beach-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.beach-photo {
+  width: 100%;
+  height: 400px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.beach-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.beach-subtitle {
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Slide 23 - Field Trips */
+.slide-23 {
+  position: relative;
+}
+
+.field-trips-content {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  max-width: 1200px;
+  padding: 3rem;
+}
+
+.field-photo {
+  width: 400px;
+  height: 300px;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 15px solid var(--green-secondary);
+}
+
+.field-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.green-title-large {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  color: var(--green-primary);
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(255,255,255,0.3);
+}
+
+/* Slide 24 - Thai Cooking */
+.slide-24 {
+  position: relative;
+}
+
+.cooking-content {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  max-width: 1200px;
+  padding: 3rem;
+}
+
+.cooking-photo {
+  width: 400px;
+  height: 300px;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 15px solid var(--green-light);
+}
+
+.cooking-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Slide 25 - Muay Thai */
+.slide-25 {
+  position: relative;
+}
+
+.muay-thai-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  max-width: 1200px;
+  padding: 3rem;
+}
+
+.photo-frame-left {
+  width: 400px;
+  height: 500px;
+  border-radius: 200px 30px 200px 30px;
+  overflow: hidden;
+  border: 20px solid var(--green-secondary);
+}
+
+.photo-frame-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.text-section-right {
+  flex: 1;
+}
+
+.white-title {
+  color: white;
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.white-text-lg {
+  color: white;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  font-weight: 300;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Slide 34 - Cultivate Creativity */
+.slide-34 {
+  position: relative;
+}
+
+.cultivate-content {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  max-width: 1200px;
+  padding: 3rem;
+}
+
+.cultivate-photo {
+  width: 500px;
+  height: 350px;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 15px solid var(--green-secondary);
+}
+
+.cultivate-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Slide 36 - Social Bonds */
+.slide-36 {
+  position: relative;
+}
+
+.social-bonds-content {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  max-width: 1200px;
+  padding: 3rem;
+}
+
+.social-photo {
+  width: 500px;
+  height: 350px;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 15px solid var(--green-light);
+}
+
+.social-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Slide 40 - Quote */
+.slide-40 {
+  position: relative;
+}
+
+.quote-overlay-dark {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.quote-text {
+  color: white;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Contact Slide */
+.slide-contact {
+  background: white;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1400px;
+  width: 100%;
+  gap: 3rem;
+  padding: 2rem;
+  align-items: center;
+}
+
+.contact-image {
+  width: 100%;
+  height: 600px;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.contact-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.contact-info-section {
+  padding: 2rem;
+}
+
+.contact-title {
+  font-size: 3.5rem;
+  color: var(--green-primary);
+  font-weight: 900;
+  margin-bottom: 2rem;
+}
+
+.contact-details {
+  margin-bottom: 2rem;
+}
+
+.contact-item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.contact-icon {
+  font-size: 2.5rem;
+}
+
+.contact-icon.orange {
+  color: var(--orange);
+}
+
+.contact-item h4 {
+  color: var(--green-primary);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+.contact-item p {
+  color: #555;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.qr-code {
+  width: 150px;
+  height: 150px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .slide-content,
+  .slide-content-overlay,
+  .features-layout,
+  .nature-split,
+  .adventurers-layout,
+  .contact-layout,
+  .slide-2-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .slide {
+    min-height: auto;
+    padding: 3rem 1rem;
+  }
+  
+  .hero-title {
+    font-size: 4rem;
+  }
+  
+  .section-title-white,
+  .adventurers-title {
+    font-size: 2.5rem;
+  }
+  
+  .green-text-box {
+    max-width: 100%;
+  }
+  
+  .activity-photo,
+  .activity-photo-rounded {
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+  }
+  
+  .rounded-photo-frame {
+    max-width: 100%;
+    height: 300px;
+  }
+  
+  .collage-item {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .rounded-1, .rounded-2, .rounded-3 {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    width: 100%;
+    height: 200px;
+  }
+  
+  .green-circle,
+  .white-circle-large,
+  .green-curve-bottom {
+    display: none;
+  }
+  
+  .photo-frame-left {
+    width: 100%;
+    max-width: 350px;
+    height: 400px;
+    margin: 0 auto;
+  }
+  
+  .muay-thai-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .fosters-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .beach-split {
+    grid-template-columns: 1fr;
+  }
+  
+  .beach-photo {
+    height: 300px;
+  }
+  
+  .field-trips-content,
+  .cooking-content,
+  .cultivate-content,
+  .social-bonds-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .field-photo,
+  .cooking-photo,
+  .cultivate-photo,
+  .social-photo {
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+  
+  .features-title,
+  .contact-title {
+    font-size: 2rem;
+  }
+  
+  .green-text-box h2,
+  .nature-text-box h2 {
+    font-size: 1.75rem;
+  }
+  
+  .quote-text {
+    font-size: 2rem;
+  }
+  
+  .highlight-pill {
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .body-text-white {
+    font-size: 1.1rem;
+  }
+  
+  /* Slide 2 mobile */
+  .slide-2-grid {
+    grid-template-rows: 1fr 1fr;
+  }
+  
+  .slide-2-title {
+    bottom: 40px;
+    left: 40px;
+  }
+  
+  .slide-2-title h2 {
+    font-size: 48px;
+  }
+  
+  .slide-2-right {
+    padding: 20px;
+  }
+  
+  .slide-2-photo {
+    max-width: 100%;
+  }
+}

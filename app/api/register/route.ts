@@ -1,0 +1,162 @@
+import { createClient } from '@/utils/supabase/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { notifyAdminsOfNewRegistration } from '@/utils/telegram'
+
+export async function POST(request: NextRequest) {
+  try {
+    const formData = await request.formData()
+
+    // Extract form fields
+    const campId = formData.get('campId') as string
+    const email = formData.get('email') as string
+    const childName = formData.get('childName') as string
+    const nickName = formData.get('nickName') as string | null
+    const gender = formData.get('gender') as string
+    const dateOfBirth = formData.get('dateOfBirth') as string
+    const ageGroup = formData.get('ageGroup') as string
+    const currentSchool = formData.get('currentSchool') as string | null
+    const nationalityLanguage = formData.get('nationalityLanguage') as string | null
+    const englishLevel = formData.get('englishLevel') as string | null
+
+    // Parents
+    const parentName1 = formData.get('parentName1') as string
+    const parentName2 = formData.get('parentName2') as string | null
+    const mobilePhone1 = formData.get('mobilePhone1') as string
+    const mobilePhone2 = formData.get('mobilePhone2') as string | null
+    const wechatWhatsapp1 = formData.get('wechatWhatsapp1') as string | null
+    const wechatWhatsapp2 = formData.get('wechatWhatsapp2') as string | null
+    const emergencyContactName = formData.get('emergencyContactName') as string
+    const emergencyContactPhone = formData.get('emergencyContactPhone') as string
+
+    // Health
+    const allergies = formData.get('allergies') as string
+    const healthBehavioralConditions = formData.get('healthBehavioralConditions') as string
+    const hasInsurance = formData.get('hasInsurance') === 'true'
+    const behavioralDeclaration = formData.get('behavioralDeclaration') === 'true'
+
+    // Weeks and permissions
+    const weeksSelected = JSON.parse(formData.get('weeksSelected') as string)
+    const photoPermission = formData.get('photoPermission') === 'true'
+    const howDidYouFind = formData.get('howDidYouFind') as string
+    const termsAcknowledged = formData.get('termsAcknowledged') === 'true'
+    const allStatementsTrue = formData.get('allStatementsTrue') === 'true'
+
+    // Files
+    const childPassport = formData.get('childPassport') as File | null
+    const parentPassport1 = formData.get('parentPassport1') as File | null
+    const parentPassport2 = formData.get('parentPassport2') as File | null
+
+    const supabase = await createClient()
+
+    // Upload files to Supabase Storage
+    const uploadFile = async (file: File | null, path: string) => {
+      if (!file) return null
+
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+      const filePath = `${path}/${fileName}`
+
+      const { data, error } = await supabase.storage
+        .from('registration-documents')
+        .upload(filePath, file, {
+          contentType: file.type,
+          upsert: false
+        })
+
+      if (error) {
+        console.error('File upload error:', error)
+        throw new Error(`Failed to upload file: ${error.message}`)
+      }
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('registration-documents')
+        .getPublicUrl(filePath)
+
+      return publicUrl
+    }
+
+    // Create folder path with email (sanitized)
+    const emailFolder = email.replace(/[^a-zA-Z0-9]/g, '_')
+    const uploadPath = `${campId}/${emailFolder}`
+
+    // Upload all files
+    const childPassportUrl = await uploadFile(childPassport, uploadPath)
+    const parentPassport1Url = await uploadFile(parentPassport1, uploadPath)
+    const parentPassport2Url = await uploadFile(parentPassport2, uploadPath)
+
+    // Insert registration into database
+    const { data: registration, error: dbError } = await supabase
+      .from('registrations')
+      .insert({
+        camp_id: campId,
+        email,
+        child_name: childName,
+        nick_name: nickName,
+        gender,
+        date_of_birth: dateOfBirth,
+        age_group: ageGroup,
+        current_school: currentSchool,
+        nationality_language: nationalityLanguage,
+        english_level: englishLevel,
+        parent_name_1: parentName1,
+        parent_name_2: parentName2,
+        mobile_phone_1: mobilePhone1,
+        mobile_phone_2: mobilePhone2,
+        wechat_whatsapp_1: wechatWhatsapp1,
+        wechat_whatsapp_2: wechatWhatsapp2,
+        emergency_contact_name: emergencyContactName,
+        emergency_contact_phone: emergencyContactPhone,
+        allergies,
+        health_behavioral_conditions: healthBehavioralConditions,
+        has_insurance: hasInsurance,
+        behavioral_declaration: behavioralDeclaration,
+        child_passport_url: childPassportUrl,
+        parent_passport_1_url: parentPassport1Url,
+        parent_passport_2_url: parentPassport2Url,
+        weeks_selected: weeksSelected,
+        photo_permission: photoPermission,
+        how_did_you_find: howDidYouFind,
+        terms_acknowledged: termsAcknowledged,
+        all_statements_true: allStatementsTrue,
+        payment_status: 'pending'
+      })
+      .select()
+      .single()
+
+    if (dbError) {
+      console.error('Database error:', dbError)
+      return NextResponse.json(
+        { error: 'Failed to save registration', details: dbError.message },
+        { status: 500 }
+      )
+    }
+
+    // Send Telegram notification to admins (don't wait for it)
+    notifyAdminsOfNewRegistration({
+      child_name: childName,
+      email: email,
+      age_group: ageGroup,
+      weeks_selected: weeksSelected,
+      parent_name_1: parentName1,
+      created_at: new Date().toISOString()
+    }).catch(error => {
+      console.warn('Failed to send admin notification:', error)
+    })
+
+    return NextResponse.json({
+      success: true,
+      registration: registration
+    })
+
+  } catch (error) {
+    console.error('Registration API error:', error)
+    return NextResponse.json(
+      {
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { status: 500 }
+    )
+  }
+}
