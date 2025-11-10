@@ -4102,7 +4102,8 @@
         }
 
         function handleLetterHit(letter, index) {
-            const currentLetter = progressGame.alphabet[progressGame.currentLetterIndex];
+            const currentBatchLetters = getCurrentBatchLetters();
+            const currentLetter = currentBatchLetters[progressGame.currentLetterIndex];
             const isCorrect = (progressGame.currentLevel === 2) ? letter.isTarget : (letter.letter === currentLetter);
 
             if (isCorrect) {
