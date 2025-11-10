@@ -483,61 +483,43 @@
             50% { transform: scale(1.05); }
         }
 
-        /* Game Selection Screen */
-        .game-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        .game-card {
-            background: linear-gradient(135deg, rgba(124, 179, 66, 0.2) 0%, rgba(253, 216, 53, 0.1) 100%);
-            border: 3px solid rgba(124, 179, 66, 0.3);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .game-card:hover {
-            transform: translateY(-5px);
-            border-color: #7CB342;
-            box-shadow: 0 10px 30px rgba(124, 179, 66, 0.4);
-        }
-        .game-card-icon {
-            font-size: 64px;
-            margin-bottom: 15px;
-        }
-        .game-card-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #FDD835;
-            margin-bottom: 10px;
-        }
-        .game-card-description {
+        /* Progressive Learning Game */
+        .progress-letter-badge {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             font-size: 14px;
-            color: #ddd;
-            line-height: 1.6;
-        }
-        .game-screen {
-            display: none;
-        }
-        .game-screen.active {
-            display: block;
-        }
-        .back-btn {
+            font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 10px 20px;
-            border-radius: 10px;
-            color: white;
-            cursor: pointer;
-            margin-bottom: 20px;
-            display: inline-block;
-            transition: all 0.3s;
+            color: #999;
         }
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .progress-letter-badge.level1 {
+            background: rgba(124, 179, 66, 0.3);
+            border-color: #7CB342;
+            color: #7CB342;
+        }
+        .progress-letter-badge.level2 {
+            background: rgba(253, 216, 53, 0.3);
+            border-color: #FDD835;
+            color: #FDD835;
+        }
+        .progress-letter-badge.level3 {
+            background: rgba(244, 67, 54, 0.3);
+            border-color: #F44336;
+            color: #F44336;
+        }
+        @keyframes letterPop {
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        @keyframes explosionBurst {
+            0% { transform: scale(0.5) rotate(0deg); opacity: 1; }
+            100% { transform: scale(3) rotate(720deg); opacity: 0; }
         }
 
         /* Letter Smash Game */
@@ -1159,121 +1141,56 @@
 
         <!-- Game Tab -->
         <div id="game" class="tab-content">
-            <!-- Game Selection Screen -->
-            <div id="gameSelector" class="game-screen active">
-                <div class="info-box">
-                    <strong>🎮 Choose Your Game!</strong><br>
-                    Pick a fun game to practice your letter sounds. Each game gets more exciting as you play!
+            <div class="info-box">
+                <strong id="progressGameTitle">🎮 Progressive Learning Game</strong><br>
+                <span id="progressGameInstructions">Starting with Level 1: Listen and tap the letters!</span>
+            </div>
+
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="display: inline-block; margin: 0 20px;">
+                    <div style="color: #aaa; font-size: 14px;">Current Level</div>
+                    <div style="color: #FDD835; font-size: 42px; font-weight: bold;" id="currentLevel">1</div>
                 </div>
-
-                <div class="game-selector">
-                    <div class="game-card" onclick="selectGame('smash')">
-                        <div class="game-card-icon">💥</div>
-                        <div class="game-card-title">Letter Smash</div>
-                        <div class="game-card-description">
-                            Say the sound to SMASH letters!<br>
-                            Build combos • Explosions • Fast action!
-                        </div>
-                    </div>
-
-                    <div class="game-card" onclick="selectGame('treasure')">
-                        <div class="game-card-icon">🏴‍☠️</div>
-                        <div class="game-card-title">Treasure Hunt</div>
-                        <div class="game-card-description">
-                            Unlock 26 treasure chests!<br>
-                            Collect coins • Discover rewards!
-                        </div>
-                    </div>
-
-                    <div class="game-card" onclick="selectGame('clock')">
-                        <div class="game-card-icon">⏱️</div>
-                        <div class="game-card-title">Beat the Clock</div>
-                        <div class="game-card-description">
-                            Race through the alphabet!<br>
-                            Beat your best time • Speed challenge!
-                        </div>
-                    </div>
+                <div style="display: inline-block; margin: 0 20px;">
+                    <div style="color: #aaa; font-size: 14px;">Current Letter</div>
+                    <div style="color: #7CB342; font-size: 42px; font-weight: bold;" id="currentLetterDisplay">A</div>
+                </div>
+                <div style="display: inline-block; margin: 0 20px;">
+                    <div style="color: #aaa; font-size: 14px;">Letters Mastered</div>
+                    <div style="color: #FDD835; font-size: 42px; font-weight: bold;"><span id="lettersMastered">0</span>/26</div>
+                </div>
+                <div style="display: inline-block; margin: 0 20px;">
+                    <div style="color: #aaa; font-size: 14px;">Score</div>
+                    <div style="color: #F44336; font-size: 42px; font-weight: bold;" id="progressScore">0</div>
                 </div>
             </div>
 
-            <!-- Letter Smash Game -->
-            <div id="smashGame" class="game-screen">
-                <div class="back-btn" onclick="backToGameSelector()">← Back to Games</div>
+            <canvas id="progressGameCanvas" style="width: 500px; height: 600px; background: rgba(0,0,0,0.3); border-radius: 20px; display: block; margin: 20px auto; cursor: pointer;"></canvas>
 
-                <div style="text-align: center; margin: 20px 0;">
-                    <div style="display: inline-block; margin: 0 30px;">
-                        <div style="color: #aaa; font-size: 14px;">Score</div>
-                        <div style="color: #FDD835; font-size: 42px; font-weight: bold;" id="smashScore">0</div>
-                    </div>
-                    <div style="display: inline-block; margin: 0 30px;">
-                        <div style="color: #aaa; font-size: 14px;">Combo</div>
-                        <div style="color: #F44336; font-size: 42px; font-weight: bold;" id="smashCombo">0</div>
-                    </div>
-                    <div style="display: inline-block; margin: 0 30px;">
-                        <div style="color: #aaa; font-size: 14px;">High Score</div>
-                        <div style="color: #7CB342; font-size: 42px; font-weight: bold;" id="smashHighScore">0</div>
-                    </div>
-                </div>
+            <div style="text-align: center; margin-top: 20px; color: #ddd; font-size: 18px; min-height: 40px;" id="progressStatus">Click Start to begin your learning journey!</div>
 
-                <div id="smashContainer" class="smash-container"></div>
-
-                <div style="text-align: center; margin-top: 20px; color: #ddd; min-height: 40px;" id="smashStatus">Click Start to begin smashing!</div>
-
-                <div class="actions">
-                    <button class="btn" id="smashBtn" onclick="toggleSmashGame()">▶ Start Game</button>
-                    <button class="btn" onclick="restartSmashGame()" style="background: #F44336;">🔄 Restart</button>
-                </div>
+            <div class="actions">
+                <button class="btn" id="progressGameBtn" onclick="toggleProgressGame()">▶ Start Game</button>
+                <button class="btn" onclick="resetProgressGame()" style="background: #F44336;">🔄 Reset Progress</button>
             </div>
 
-            <!-- Treasure Hunt Game -->
-            <div id="treasureGame" class="game-screen">
-                <div class="back-btn" onclick="backToGameSelector()">← Back to Games</div>
-
-                <div style="text-align: center; margin: 20px 0;">
-                    <div style="display: inline-block; margin: 0 30px;">
-                        <div style="color: #aaa; font-size: 14px;">Chests Unlocked</div>
-                        <div style="color: #FDD835; font-size: 42px; font-weight: bold;"><span id="treasureUnlocked">0</span>/26</div>
+            <div style="margin-top: 30px; padding: 20px; background: rgba(0, 0, 0, 0.3); border-radius: 15px;">
+                <div style="color: #FDD835; font-size: 18px; font-weight: bold; margin-bottom: 15px;">📊 Your Progress</div>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                    <div style="text-align: center;">
+                        <div style="color: #aaa; font-size: 14px;">Level 1 Complete</div>
+                        <div style="color: #7CB342; font-size: 24px; font-weight: bold;" id="level1Progress">0/26</div>
                     </div>
-                    <div style="display: inline-block; margin: 0 30px;">
-                        <div style="color: #aaa; font-size: 14px;">Coins</div>
-                        <div style="color: #FDD835; font-size: 42px; font-weight: bold;" id="treasureCoins">0</div>
+                    <div style="text-align: center;">
+                        <div style="color: #aaa; font-size: 14px;">Level 2 Complete</div>
+                        <div style="color: #7CB342; font-size: 24px; font-weight: bold;" id="level2Progress">0/26</div>
                     </div>
-                </div>
-
-                <div id="treasureMap" class="treasure-map"></div>
-
-                <div style="text-align: center; margin-top: 20px; color: #ddd; min-height: 40px;" id="treasureStatus">Click Start to begin your treasure hunt!</div>
-
-                <div class="actions">
-                    <button class="btn" id="treasureBtn" onclick="toggleTreasureGame()">▶ Start Game</button>
-                    <button class="btn" onclick="restartTreasureGame()" style="background: #F44336;">🔄 Restart</button>
-                </div>
-            </div>
-
-            <!-- Beat the Clock Game -->
-            <div id="clockGame" class="game-screen">
-                <div class="back-btn" onclick="backToGameSelector()">← Back to Games</div>
-
-                <div class="clock-container">
-                    <div style="color: #aaa; font-size: 18px; margin-bottom: 10px;">Time Remaining</div>
-                    <div id="clockTimer" class="clock-timer">60.0s</div>
-
-                    <div id="clockLetter" class="clock-letter">A</div>
-
-                    <div class="clock-progress" id="clockProgress"></div>
-
-                    <div style="margin-top: 30px;">
-                        <div style="color: #aaa; font-size: 14px;">Best Time</div>
-                        <div style="color: #7CB342; font-size: 36px; font-weight: bold;" id="clockBestTime">--</div>
-                    </div>
-
-                    <div style="text-align: center; margin-top: 20px; color: #ddd; min-height: 40px;" id="clockStatus">Click Start to race against time!</div>
-
-                    <div class="actions">
-                        <button class="btn" id="clockBtn" onclick="toggleClockGame()">▶ Start Game</button>
-                        <button class="btn" onclick="restartClockGame()" style="background: #F44336;">🔄 Restart</button>
+                    <div style="text-align: center;">
+                        <div style="color: #aaa; font-size: 14px;">Level 3 Complete</div>
+                        <div style="color: #7CB342; font-size: 24px; font-weight: bold;" id="level3Progress">0/26</div>
                     </div>
                 </div>
+                <div id="progressLetterGrid" style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; margin-top: 20px;"></div>
             </div>
         </div>
     </div>
@@ -3898,585 +3815,489 @@
         }
 
         // ===================================
-        // NEW GAME SYSTEM
+        // PROGRESSIVE LEARNING GAME
         // ===================================
 
-        function selectGame(gameName) {
-            document.getElementById('gameSelector').classList.remove('active');
+        // Game state
+        let progressGame = {
+            running: false,
+            currentLevel: 1,  // 1 = Listen+Hit, 2 = Listen+Choose, 3 = Say+Hit
+            currentLetterIndex: 0,
+            alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+            letterProgress: {},  // {A: {level1: 5, level2: 3, level3: 0}, ...}
+            hitsNeeded: 8,  // Number of successful hits to master a letter at current level
+            score: 0,
+            fallingLetters: [],
+            canvas: null,
+            ctx: null,
+            animationFrame: null,
+            lastSpawnTime: 0,
+            spawnDelay: 2000,  // ms between spawns
+            audioAnalysisFrame: null,
+            patternBuffer: []
+        };
 
-            if (gameName === 'smash') {
-                document.getElementById('smashGame').classList.add('active');
-                initSmashGame();
-            } else if (gameName === 'treasure') {
-                document.getElementById('treasureGame').classList.add('active');
-                initTreasureGame();
-            } else if (gameName === 'clock') {
-                document.getElementById('clockGame').classList.add('active');
-                initClockGame();
-            }
-        }
-
-        function backToGameSelector() {
-            document.querySelectorAll('.game-screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            document.getElementById('gameSelector').classList.add('active');
-
-            stopSmashGame();
-            stopTreasureGame();
-            stopClockGame();
-        }
-
-        // ===================================
-        // LETTER SMASH GAME
-        // ===================================
-
-        let smashRunning = false;
-        let smashScore = 0;
-        let smashCombo = 0;
-        let smashHighScore = parseInt(localStorage.getItem('smashHighScore') || '0');
-        let smashCurrentLetter = null;
-        let smashSpawnTimeout = null;
-        let smashAudioAnalysisFrame = null;
-        let smashPatternBuffer = [];
-
-        function initSmashGame() {
-            document.getElementById('smashHighScore').textContent = smashHighScore;
-            createTreasureMap();
-            createClockProgress();
-        }
-
-        async function toggleSmashGame() {
-            if (smashRunning) {
-                stopSmashGame();
+        // Initialize progress from localStorage
+        function loadProgressGameData() {
+            const saved = localStorage.getItem('progressGameData');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    progressGame.currentLevel = data.currentLevel || 1;
+                    progressGame.currentLetterIndex = data.currentLetterIndex || 0;
+                    progressGame.letterProgress = data.letterProgress || {};
+                    progressGame.score = data.score || 0;
+                } catch (e) {
+                    console.error('Error loading progress:', e);
+                    initializeLetterProgress();
+                }
             } else {
-                if (Object.keys(calibrationData).length === 0) {
-                    alert('Please calibrate at least one phoneme first!');
-                    return;
-                }
-                if (!audioContext) {
-                    await setupAudio();
-                }
-                startSmashGame();
+                initializeLetterProgress();
             }
+            updateProgressUI();
         }
 
-        function startSmashGame() {
-            smashRunning = true;
-            smashScore = 0;
-            smashCombo = 0;
-            updateSmashUI();
-
-            document.getElementById('smashBtn').textContent = '⏸ Pause';
-            document.getElementById('smashStatus').textContent = 'Say the letter sound to smash it!';
-
-            spawnSmashLetter();
-            analyzeSmashAudio();
-        }
-
-        function stopSmashGame() {
-            smashRunning = false;
-            document.getElementById('smashBtn').textContent = '▶ Start Game';
-
-            if (smashSpawnTimeout) {
-                clearTimeout(smashSpawnTimeout);
-            }
-            if (smashAudioAnalysisFrame) {
-                cancelAnimationFrame(smashAudioAnalysisFrame);
-            }
-            if (smashCurrentLetter) {
-                const elem = document.querySelector('.smash-letter');
-                if (elem) elem.remove();
-                smashCurrentLetter = null;
-            }
-        }
-
-        function restartSmashGame() {
-            stopSmashGame();
-            setTimeout(() => {
-                if (audioContext) {
-                    startSmashGame();
-                }
-            }, 100);
-        }
-
-        function spawnSmashLetter() {
-            if (!smashRunning) return;
-
-            const calibratedLetters = Object.keys(calibrationData);
-            if (calibratedLetters.length === 0) return;
-
-            const container = document.getElementById('smashContainer');
-            const letter = calibratedLetters[Math.floor(Math.random() * calibratedLetters.length)];
-
-            const letterElem = document.createElement('div');
-            letterElem.className = 'smash-letter';
-            letterElem.textContent = letter;
-            letterElem.style.left = Math.random() * (container.offsetWidth - 120) + 'px';
-            letterElem.style.top = Math.random() * (container.offsetHeight - 120) + 'px';
-
-            container.appendChild(letterElem);
-            smashCurrentLetter = letter;
-        }
-
-        function smashLetter() {
-            if (!smashCurrentLetter) return;
-
-            const letterElem = document.querySelector('.smash-letter');
-            if (!letterElem) return;
-
-            const rect = letterElem.getBoundingClientRect();
-            const x = rect.left + rect.width / 2;
-            const y = rect.top + rect.height / 2;
-
-            letterElem.remove();
-
-            createExplosion(x, y);
-
-            smashScore += (10 + smashCombo * 5);
-            smashCombo++;
-
-            if (smashScore > smashHighScore) {
-                smashHighScore = smashScore;
-                localStorage.setItem('smashHighScore', smashHighScore.toString());
-            }
-
-            updateSmashUI();
-
-            smashCurrentLetter = null;
-            smashSpawnTimeout = setTimeout(spawnSmashLetter, 800);
-        }
-
-        function createExplosion(x, y) {
-            const explosions = ['💥', '⭐', '✨', '🌟', '💫'];
-            const container = document.getElementById('smashContainer');
-            const containerRect = container.getBoundingClientRect();
-
-            for (let i = 0; i < 5; i++) {
-                const explosion = document.createElement('div');
-                explosion.className = 'smash-explosion';
-                explosion.textContent = explosions[Math.floor(Math.random() * explosions.length)];
-                explosion.style.left = (x - containerRect.left + (Math.random() - 0.5) * 100) + 'px';
-                explosion.style.top = (y - containerRect.top + (Math.random() - 0.5) * 100) + 'px';
-
-                container.appendChild(explosion);
-
-                setTimeout(() => explosion.remove(), 600);
-            }
-        }
-
-        function updateSmashUI() {
-            document.getElementById('smashScore').textContent = smashScore;
-            document.getElementById('smashCombo').textContent = smashCombo + 'x';
-            document.getElementById('smashHighScore').textContent = smashHighScore;
-        }
-
-        function analyzeSmashAudio() {
-            if (!smashRunning) return;
-
-            analyser.getByteFrequencyData(dataArray);
-
-            const volume = Math.max(...dataArray);
-            const volumePercent = Math.round((volume / 255) * 100);
-
-            if (smashCurrentLetter && volume > 40) {
-                const pattern = extractPattern(dataArray);
-                smashPatternBuffer.push(pattern);
-
-                if (smashPatternBuffer.length > 5) {
-                    smashPatternBuffer.shift();
-                }
-
-                if (smashPatternBuffer.length >= 3 && volume > 50) {
-                    const results = testAllPlosiveStrategies(smashPatternBuffer, smashCurrentLetter);
-                    const result = results[0];
-                    const score = Math.max(0, Math.min(100, result.score || 0));
-                    const prediction = result.predictedLetter || '?';
-
-                    if (prediction === smashCurrentLetter && score > 80) {
-                        smashLetter();
-                        smashPatternBuffer = [];
-                    }
-                }
-            }
-
-            if (volume < 30) {
-                smashPatternBuffer = [];
-            }
-
-            smashAudioAnalysisFrame = requestAnimationFrame(analyzeSmashAudio);
-        }
-
-        // ===================================
-        // TREASURE HUNT GAME
-        // ===================================
-
-        let treasureRunning = false;
-        let treasureUnlocked = 0;
-        let treasureCoins = 0;
-        let treasureCurrentLetter = null;
-        let treasureChests = [];
-        let treasureAudioAnalysisFrame = null;
-        let treasurePatternBuffer = [];
-
-        function initTreasureGame() {
-            createTreasureMap();
-        }
-
-        function createTreasureMap() {
-            const map = document.getElementById('treasureMap');
-            map.innerHTML = '';
-            treasureChests = [];
-
-            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-
-            alphabet.forEach((letter, index) => {
-                const chest = document.createElement('div');
-                chest.className = 'treasure-chest locked';
-                chest.id = `chest-${letter}`;
-                chest.innerHTML = `
-                    <div class="chest-letter">${letter}</div>
-                    <div class="chest-icon">🔒</div>
-                `;
-
-                map.appendChild(chest);
-                treasureChests.push({ letter, unlocked: false, element: chest });
+        function initializeLetterProgress() {
+            progressGame.letterProgress = {};
+            progressGame.alphabet.forEach(letter => {
+                progressGame.letterProgress[letter] = { level1: 0, level2: 0, level3: 0 };
             });
         }
 
-        async function toggleTreasureGame() {
-            if (treasureRunning) {
-                stopTreasureGame();
+        function saveProgressGameData() {
+            const data = {
+                currentLevel: progressGame.currentLevel,
+                currentLetterIndex: progressGame.currentLetterIndex,
+                letterProgress: progressGame.letterProgress,
+                score: progressGame.score
+            };
+            localStorage.setItem('progressGameData', JSON.stringify(data));
+        }
+
+        function toggleProgressGame() {
+            if (progressGame.running) {
+                stopProgressGame();
             } else {
-                if (Object.keys(calibrationData).length === 0) {
-                    alert('Please calibrate at least one phoneme first!');
-                    return;
-                }
-                if (!audioContext) {
-                    await setupAudio();
-                }
-                startTreasureGame();
+                startProgressGame();
             }
         }
 
-        function startTreasureGame() {
-            treasureRunning = true;
-            treasureUnlocked = 0;
-            treasureCoins = 0;
-            updateTreasureUI();
+        async function startProgressGame() {
+            if (!audioContext) {
+                await setupAudio();
+            }
 
-            createTreasureMap();
+            progressGame.running = true;
+            progressGame.canvas = document.getElementById('progressGameCanvas');
+            progressGame.ctx = progressGame.canvas.getContext('2d');
+            progressGame.canvas.width = 500;
+            progressGame.canvas.height = 600;
 
-            document.getElementById('treasureBtn').textContent = '⏸ Pause';
-            document.getElementById('treasureStatus').textContent = 'Say the highlighted letter sound!';
+            document.getElementById('progressGameBtn').textContent = '⏸ Pause';
+            updateProgressInstructions();
+            updateProgressUI();
 
-            selectNextTreasure();
-            analyzeTreasureAudio();
-        }
+            // Add click listener for canvas
+            progressGame.canvas.addEventListener('click', handleCanvasClick);
 
-        function stopTreasureGame() {
-            treasureRunning = false;
-            document.getElementById('treasureBtn').textContent = '▶ Start Game';
+            // Start game loop
+            gameLoop();
 
-            if (treasureAudioAnalysisFrame) {
-                cancelAnimationFrame(treasureAudioAnalysisFrame);
+            // Start audio analysis for Level 3
+            if (progressGame.currentLevel === 3) {
+                analyzeProgressAudio();
             }
         }
 
-        function restartTreasureGame() {
-            stopTreasureGame();
-            setTimeout(() => {
-                if (audioContext) {
-                    startTreasureGame();
+        function stopProgressGame() {
+            progressGame.running = false;
+            document.getElementById('progressGameBtn').textContent = '▶ Start Game';
+
+            if (progressGame.animationFrame) {
+                cancelAnimationFrame(progressGame.animationFrame);
+            }
+            if (progressGame.audioAnalysisFrame) {
+                cancelAnimationFrame(progressGame.audioAnalysisFrame);
+            }
+
+            progressGame.canvas.removeEventListener('click', handleCanvasClick);
+            progressGame.fallingLetters = [];
+        }
+
+        function resetProgressGame() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                localStorage.removeItem('progressGameData');
+                progressGame.currentLevel = 1;
+                progressGame.currentLetterIndex = 0;
+                progressGame.score = 0;
+                initializeLetterProgress();
+                updateProgressUI();
+                document.getElementById('progressStatus').textContent = 'Progress reset! Click Start to begin.';
+            }
+        }
+
+        function gameLoop() {
+            if (!progressGame.running) return;
+
+            const now = Date.now();
+            const { ctx, canvas } = progressGame;
+
+            // Clear canvas
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Spawn new letter if needed
+            if (now - progressGame.lastSpawnTime > progressGame.spawnDelay) {
+                spawnFallingLetter();
+                progressGame.lastSpawnTime = now;
+            }
+
+            // Update and draw falling letters
+            progressGame.fallingLetters = progressGame.fallingLetters.filter(letter => {
+                letter.y += letter.speed;
+
+                // Remove if off screen
+                if (letter.y > canvas.height + 50) {
+                    return false;
                 }
-            }, 100);
+
+                // Draw letter
+                ctx.save();
+                ctx.font = 'bold 80px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // Highlight correct letter in Level 2
+                if (progressGame.currentLevel === 2 && letter.isTarget) {
+                    ctx.shadowBlur = 30;
+                    ctx.shadowColor = '#F44336';
+                    ctx.fillStyle = '#FDD835';
+                } else {
+                    ctx.fillStyle = '#FDD835';
+                }
+
+                ctx.fillText(letter.letter, letter.x, letter.y);
+                ctx.restore();
+
+                return true;
+            });
+
+            progressGame.animationFrame = requestAnimationFrame(gameLoop);
         }
 
-        function selectNextTreasure() {
-            const calibratedLetters = Object.keys(calibrationData);
-            const availableChests = treasureChests.filter(c =>
-                !c.unlocked && calibratedLetters.includes(c.letter)
-            );
+        function spawnFallingLetter() {
+            const currentLetter = progressGame.alphabet[progressGame.currentLetterIndex];
 
-            if (availableChests.length === 0) {
-                treasureRunning = false;
-                document.getElementById('treasureStatus').textContent =
-                    `🎉 You found all treasures! Coins: ${treasureCoins}`;
-                document.getElementById('treasureBtn').textContent = '▶ Start Game';
-                return;
+            if (progressGame.currentLevel === 1) {
+                // Level 1: Spawn only current letter
+                const x = Math.random() * (progressGame.canvas.width - 100) + 50;
+                const letter = {
+                    letter: currentLetter,
+                    x: x,
+                    y: -50,
+                    speed: 2,
+                    isTarget: true
+                };
+                progressGame.fallingLetters.push(letter);
+
+                // Play audio for the letter
+                playLetterAudio(currentLetter);
+
+            } else if (progressGame.currentLevel === 2) {
+                // Level 2: Spawn 2-3 letters, only one is correct
+                const numLetters = Math.random() > 0.5 ? 3 : 2;
+                const targetIndex = Math.floor(Math.random() * numLetters);
+                
+                // Get previously mastered letters for distractors
+                const masteredLetters = progressGame.alphabet.slice(0, progressGame.currentLetterIndex + 1);
+                const availableLetters = masteredLetters.filter(l => l !== currentLetter);
+
+                for (let i = 0; i < numLetters; i++) {
+                    const isTarget = i === targetIndex;
+                    const letterToSpawn = isTarget ? currentLetter : 
+                        availableLetters[Math.floor(Math.random() * availableLetters.length)] || currentLetter;
+                    
+                    const x = (i + 1) * (progressGame.canvas.width / (numLetters + 1));
+                    const letter = {
+                        letter: letterToSpawn,
+                        x: x,
+                        y: -50 - (i * 100),  // Stagger vertically
+                        speed: 2,
+                        isTarget: isTarget
+                    };
+                    progressGame.fallingLetters.push(letter);
+                }
+
+                // Play audio for the TARGET letter only
+                playLetterAudio(currentLetter);
+
+            } else if (progressGame.currentLevel === 3) {
+                // Level 3: Spawn single letter, no audio (must say it)
+                const x = Math.random() * (progressGame.canvas.width - 100) + 50;
+                const letter = {
+                    letter: currentLetter,
+                    x: x,
+                    y: -50,
+                    speed: 2,
+                    isTarget: true
+                };
+                progressGame.fallingLetters.push(letter);
             }
-
-            treasureChests.forEach(c => c.element.classList.remove('current'));
-
-            const nextChest = availableChests[0];
-            nextChest.element.classList.add('current');
-            treasureCurrentLetter = nextChest.letter;
         }
 
-        function unlockTreasure() {
-            const chest = treasureChests.find(c => c.letter === treasureCurrentLetter);
-            if (!chest || chest.unlocked) return;
-
-            chest.unlocked = true;
-            chest.element.classList.remove('locked', 'current');
-            chest.element.classList.add('unlocked');
-            chest.element.querySelector('.chest-icon').textContent = '✅';
-
-            const coins = Math.floor(Math.random() * 10) + 5;
-            treasureCoins += coins;
-            treasureUnlocked++;
-
-            createCoinShower(chest.element);
-
-            updateTreasureUI();
-
-            setTimeout(selectNextTreasure, 500);
+        function playLetterAudio(letter) {
+            const phoneme = PHONEMES.find(p => p.letter === letter);
+            if (phoneme && phoneme.audioUrl) {
+                const audio = new Audio(phoneme.audioUrl);
+                audio.volume = 0.7;
+                audio.play().catch(e => console.log('Audio play failed:', e));
+            }
         }
 
-        function createCoinShower(chestElement) {
-            const rect = chestElement.getBoundingClientRect();
-            const mapRect = document.getElementById('treasureMap').getBoundingClientRect();
+        function handleCanvasClick(event) {
+            if (!progressGame.running) return;
+
+            const rect = progressGame.canvas.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const clickY = event.clientY - rect.top;
+
+            // Scale to canvas coordinates
+            const scaleX = progressGame.canvas.width / rect.width;
+            const scaleY = progressGame.canvas.height / rect.height;
+            const x = clickX * scaleX;
+            const y = clickY * scaleY;
+
+            // Check if clicked on any letter
+            for (let i = progressGame.fallingLetters.length - 1; i >= 0; i--) {
+                const letter = progressGame.fallingLetters[i];
+                const dx = x - letter.x;
+                const dy = y - letter.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 50) {  // Hit radius
+                    handleLetterHit(letter, i);
+                    break;
+                }
+            }
+        }
+
+        function handleLetterHit(letter, index) {
+            const currentLetter = progressGame.alphabet[progressGame.currentLetterIndex];
+            const isCorrect = (progressGame.currentLevel === 2) ? letter.isTarget : (letter.letter === currentLetter);
+
+            if (isCorrect) {
+                // Remove the letter
+                progressGame.fallingLetters.splice(index, 1);
+
+                // Create explosion effect
+                createProgressExplosion(letter.x, letter.y);
+
+                // Update progress
+                const levelKey = `level${progressGame.currentLevel}`;
+                progressGame.letterProgress[currentLetter][levelKey]++;
+                progressGame.score += 10;
+
+                // Check if letter is mastered at this level
+                if (progressGame.letterProgress[currentLetter][levelKey] >= progressGame.hitsNeeded) {
+                    letterMasteredAtLevel(currentLetter);
+                }
+
+                updateProgressUI();
+                saveProgressGameData();
+            } else {
+                // Wrong letter clicked
+                document.getElementById('progressStatus').textContent = `❌ That's ${letter.letter}, not ${currentLetter}!`;
+                setTimeout(() => updateProgressInstructions(), 1500);
+            }
+        }
+
+        function createProgressExplosion(x, y) {
+            const particles = ['💥', '⭐', '✨', '🌟', '💫', '🎉'];
+            const canvas = progressGame.canvas;
+            const rect = canvas.getBoundingClientRect();
 
             for (let i = 0; i < 8; i++) {
-                const coin = document.createElement('div');
-                coin.className = 'coin-shower';
-                coin.textContent = '🪙';
-                coin.style.left = (rect.left - mapRect.left + rect.width / 2) + 'px';
-                coin.style.top = (rect.top - mapRect.top + rect.height / 2) + 'px';
-                coin.style.animationDelay = (i * 0.05) + 's';
+                const particle = document.createElement('div');
+                particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+                particle.style.position = 'fixed';
+                particle.style.left = (rect.left + (x / canvas.width) * rect.width) + 'px';
+                particle.style.top = (rect.top + (y / canvas.height) * rect.height) + 'px';
+                particle.style.fontSize = '30px';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '10000';
+                particle.style.animation = 'explosionBurst 0.8s ease-out forwards';
 
-                document.getElementById('treasureMap').appendChild(coin);
-
-                setTimeout(() => coin.remove(), 1000);
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 800);
             }
         }
 
-        function updateTreasureUI() {
-            document.getElementById('treasureUnlocked').textContent = treasureUnlocked;
-            document.getElementById('treasureCoins').textContent = treasureCoins;
-        }
+        function letterMasteredAtLevel(letter) {
+            const levelKey = `level${progressGame.currentLevel}`;
+            
+            document.getElementById('progressStatus').textContent = 
+                `🎉 ${letter} mastered at Level ${progressGame.currentLevel}!`;
 
-        function analyzeTreasureAudio() {
-            if (!treasureRunning) return;
+            // Move to next letter
+            progressGame.currentLetterIndex++;
 
-            analyser.getByteFrequencyData(dataArray);
-
-            const volume = Math.max(...dataArray);
-
-            if (treasureCurrentLetter && volume > 40) {
-                const pattern = extractPattern(dataArray);
-                treasurePatternBuffer.push(pattern);
-
-                if (treasurePatternBuffer.length > 5) {
-                    treasurePatternBuffer.shift();
-                }
-
-                if (treasurePatternBuffer.length >= 3 && volume > 50) {
-                    const results = testAllPlosiveStrategies(treasurePatternBuffer, treasureCurrentLetter);
-                    const result = results[0];
-                    const score = Math.max(0, Math.min(100, result.score || 0));
-                    const prediction = result.predictedLetter || '?';
-
-                    if (prediction === treasureCurrentLetter && score > 80) {
-                        unlockTreasure();
-                        treasurePatternBuffer = [];
+            if (progressGame.currentLetterIndex >= progressGame.alphabet.length) {
+                // All letters done at this level
+                if (progressGame.currentLevel < 3) {
+                    progressGame.currentLevel++;
+                    progressGame.currentLetterIndex = 0;
+                    document.getElementById('progressStatus').textContent = 
+                        `🏆 Level ${progressGame.currentLevel - 1} Complete! Moving to Level ${progressGame.currentLevel}!`;
+                    
+                    // Start voice analysis for Level 3
+                    if (progressGame.currentLevel === 3 && !progressGame.audioAnalysisFrame) {
+                        analyzeProgressAudio();
                     }
-                }
-            }
-
-            if (volume < 30) {
-                treasurePatternBuffer = [];
-            }
-
-            treasureAudioAnalysisFrame = requestAnimationFrame(analyzeTreasureAudio);
-        }
-
-        // ===================================
-        // BEAT THE CLOCK GAME
-        // ===================================
-
-        let clockRunning = false;
-        let clockTimeRemaining = 60;
-        let clockCurrentIndex = 0;
-        let clockStartTime = 0;
-        let clockBestTime = parseFloat(localStorage.getItem('clockBestTime') || '0');
-        let clockTimerInterval = null;
-        let clockAudioAnalysisFrame = null;
-        let clockPatternBuffer = [];
-        let clockAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-
-        function initClockGame() {
-            createClockProgress();
-            if (clockBestTime > 0) {
-                document.getElementById('clockBestTime').textContent = clockBestTime.toFixed(1) + 's';
-            }
-        }
-
-        function createClockProgress() {
-            const progress = document.getElementById('clockProgress');
-            progress.innerHTML = '';
-
-            clockAlphabet.forEach((letter, index) => {
-                const dot = document.createElement('div');
-                dot.className = 'clock-progress-dot';
-                dot.textContent = letter;
-                dot.id = `clock-dot-${letter}`;
-                progress.appendChild(dot);
-            });
-        }
-
-        async function toggleClockGame() {
-            if (clockRunning) {
-                stopClockGame();
-            } else {
-                if (Object.keys(calibrationData).length === 0) {
-                    alert('Please calibrate at least one phoneme first!');
+                } else {
+                    // ALL LEVELS COMPLETE!
+                    stopProgressGame();
+                    document.getElementById('progressStatus').textContent = 
+                        `🎊 CONGRATULATIONS! You've mastered ALL 26 letters at ALL 3 levels! 🎊`;
                     return;
                 }
-                if (!audioContext) {
-                    await setupAudio();
+            }
+
+            updateProgressInstructions();
+            updateProgressUI();
+            saveProgressGameData();
+        }
+
+        function updateProgressInstructions() {
+            const currentLetter = progressGame.alphabet[progressGame.currentLetterIndex];
+            
+            if (progressGame.currentLevel === 1) {
+                document.getElementById('progressGameTitle').textContent = '🎮 Level 1: Listen & Hit';
+                document.getElementById('progressGameInstructions').textContent = 
+                    `Listen to the sound and TAP the letter ${currentLetter} when it falls!`;
+                document.getElementById('progressStatus').textContent = 
+                    `🎧 Listen for "${currentLetter}" and tap it!`;
+            } else if (progressGame.currentLevel === 2) {
+                document.getElementById('progressGameTitle').textContent = '🎯 Level 2: Listen & Choose';
+                document.getElementById('progressGameInstructions').textContent = 
+                    `Multiple letters fall - TAP the one that matches the sound you hear!`;
+                document.getElementById('progressStatus').textContent = 
+                    `🎧 Which letter makes the sound? Tap ${currentLetter}!`;
+            } else if (progressGame.currentLevel === 3) {
+                document.getElementById('progressGameTitle').textContent = '🎤 Level 3: Say & Hit';
+                document.getElementById('progressGameInstructions').textContent = 
+                    `SAY the letter sound out loud, then TAP it!`;
+                document.getElementById('progressStatus').textContent = 
+                    `🎤 Say "${currentLetter}" and tap it!`;
+            }
+        }
+
+        function updateProgressUI() {
+            document.getElementById('currentLevel').textContent = progressGame.currentLevel;
+            document.getElementById('currentLetterDisplay').textContent = 
+                progressGame.alphabet[progressGame.currentLetterIndex] || '✓';
+            document.getElementById('progressScore').textContent = progressGame.score;
+
+            // Count mastered letters
+            let level1Count = 0, level2Count = 0, level3Count = 0;
+            progressGame.alphabet.forEach(letter => {
+                const progress = progressGame.letterProgress[letter];
+                if (progress) {
+                    if (progress.level1 >= progressGame.hitsNeeded) level1Count++;
+                    if (progress.level2 >= progressGame.hitsNeeded) level2Count++;
+                    if (progress.level3 >= progressGame.hitsNeeded) level3Count++;
                 }
-                startClockGame();
-            }
-        }
-
-        function startClockGame() {
-            clockRunning = true;
-            clockTimeRemaining = 60;
-            clockCurrentIndex = 0;
-            clockStartTime = Date.now();
-
-            document.getElementById('clockBtn').textContent = '⏸ Pause';
-            document.getElementById('clockStatus').textContent = 'Say each letter sound!';
-
-            createClockProgress();
-            updateClockLetter();
-
-            clockTimerInterval = setInterval(updateClockTimer, 100);
-            analyzeClockAudio();
-        }
-
-        function stopClockGame() {
-            clockRunning = false;
-            document.getElementById('clockBtn').textContent = '▶ Start Game';
-
-            if (clockTimerInterval) {
-                clearInterval(clockTimerInterval);
-            }
-            if (clockAudioAnalysisFrame) {
-                cancelAnimationFrame(clockAudioAnalysisFrame);
-            }
-        }
-
-        function restartClockGame() {
-            stopClockGame();
-            setTimeout(() => {
-                if (audioContext) {
-                    startClockGame();
-                }
-            }, 100);
-        }
-
-        function updateClockTimer() {
-            if (!clockRunning) return;
-
-            clockTimeRemaining = Math.max(0, 60 - (Date.now() - clockStartTime) / 1000);
-
-            const timerElem = document.getElementById('clockTimer');
-            timerElem.textContent = clockTimeRemaining.toFixed(1) + 's';
-
-            if (clockTimeRemaining < 10) {
-                timerElem.classList.add('warning');
-            } else {
-                timerElem.classList.remove('warning');
-            }
-
-            if (clockTimeRemaining <= 0) {
-                clockRunning = false;
-                clearInterval(clockTimerInterval);
-                document.getElementById('clockStatus').textContent =
-                    `⏰ Time's up! You got ${clockCurrentIndex} letters!`;
-                document.getElementById('clockBtn').textContent = '▶ Start Game';
-            }
-        }
-
-        function updateClockLetter() {
-            if (clockCurrentIndex >= clockAlphabet.length) {
-                const timeTaken = (Date.now() - clockStartTime) / 1000;
-                clockRunning = false;
-
-                if (clockBestTime === 0 || timeTaken < clockBestTime) {
-                    clockBestTime = timeTaken;
-                    localStorage.setItem('clockBestTime', clockBestTime.toString());
-                    document.getElementById('clockBestTime').textContent = clockBestTime.toFixed(1) + 's';
-                }
-
-                document.getElementById('clockStatus').textContent =
-                    `🎉 Complete! Time: ${timeTaken.toFixed(1)}s`;
-                document.getElementById('clockBtn').textContent = '▶ Start Game';
-                clearInterval(clockTimerInterval);
-                return;
-            }
-
-            const letter = clockAlphabet[clockCurrentIndex];
-            document.getElementById('clockLetter').textContent = letter;
-
-            document.querySelectorAll('.clock-progress-dot').forEach(dot => {
-                dot.classList.remove('current', 'completed');
             });
 
-            for (let i = 0; i < clockCurrentIndex; i++) {
-                document.getElementById(`clock-dot-${clockAlphabet[i]}`).classList.add('completed');
-            }
-            document.getElementById(`clock-dot-${letter}`).classList.add('current');
-        }
+            document.getElementById('lettersMastered').textContent = level1Count + level2Count + level3Count;
+            document.getElementById('level1Progress').textContent = `${level1Count}/26`;
+            document.getElementById('level2Progress').textContent = `${level2Count}/26`;
+            document.getElementById('level3Progress').textContent = `${level3Count}/26`;
 
-        function clockLetterCorrect() {
-            const letterElem = document.getElementById('clockLetter');
-            letterElem.classList.add('success');
+            // Update letter grid
+            const grid = document.getElementById('progressLetterGrid');
+            grid.innerHTML = '';
+            progressGame.alphabet.forEach(letter => {
+                const badge = document.createElement('div');
+                badge.className = 'progress-letter-badge';
+                badge.textContent = letter;
 
-            setTimeout(() => {
-                letterElem.classList.remove('success');
-                clockCurrentIndex++;
-                updateClockLetter();
-            }, 300);
-        }
-
-        function analyzeClockAudio() {
-            if (!clockRunning) return;
-
-            analyser.getByteFrequencyData(dataArray);
-
-            const volume = Math.max(...dataArray);
-            const currentLetter = clockAlphabet[clockCurrentIndex];
-
-            if (currentLetter && volume > 40) {
-                const pattern = extractPattern(dataArray);
-                clockPatternBuffer.push(pattern);
-
-                if (clockPatternBuffer.length > 5) {
-                    clockPatternBuffer.shift();
+                const progress = progressGame.letterProgress[letter];
+                if (progress) {
+                    if (progress.level3 >= progressGame.hitsNeeded) {
+                        badge.classList.add('level3');
+                    } else if (progress.level2 >= progressGame.hitsNeeded) {
+                        badge.classList.add('level2');
+                    } else if (progress.level1 >= progressGame.hitsNeeded) {
+                        badge.classList.add('level1');
+                    }
                 }
 
-                if (clockPatternBuffer.length >= 3 && volume > 50) {
-                    const results = testAllPlosiveStrategies(clockPatternBuffer, currentLetter);
+                grid.appendChild(badge);
+            });
+        }
+
+        function analyzeProgressAudio() {
+            if (!progressGame.running || progressGame.currentLevel !== 3) return;
+
+            analyser.getByteFrequencyData(dataArray);
+            const volume = Math.max(...dataArray);
+
+            const currentLetter = progressGame.alphabet[progressGame.currentLetterIndex];
+
+            if (volume > 40 && currentLetter) {
+                const pattern = extractPattern(dataArray);
+                progressGame.patternBuffer.push(pattern);
+
+                if (progressGame.patternBuffer.length > 5) {
+                    progressGame.patternBuffer.shift();
+                }
+
+                if (progressGame.patternBuffer.length >= 3 && volume > 50) {
+                    const results = testAllPlosiveStrategies(progressGame.patternBuffer, currentLetter);
                     const result = results[0];
                     const score = Math.max(0, Math.min(100, result.score || 0));
                     const prediction = result.predictedLetter || '?';
 
+                    // If correct sound detected, mark the nearest letter as "voice activated"
                     if (prediction === currentLetter && score > 80) {
-                        clockLetterCorrect();
-                        clockPatternBuffer = [];
+                        // Find closest letter to center
+                        let closestLetter = null;
+                        let minDist = Infinity;
+                        progressGame.fallingLetters.forEach(letter => {
+                            if (letter.letter === currentLetter) {
+                                const centerDist = Math.abs(letter.y - progressGame.canvas.height / 2);
+                                if (centerDist < minDist) {
+                                    minDist = centerDist;
+                                    closestLetter = letter;
+                                }
+                            }
+                        });
+
+                        if (closestLetter) {
+                            // Highlight it briefly
+                            progressGame.ctx.save();
+                            progressGame.ctx.strokeStyle = '#7CB342';
+                            progressGame.ctx.lineWidth = 5;
+                            progressGame.ctx.beginPath();
+                            progressGame.ctx.arc(closestLetter.x, closestLetter.y, 60, 0, Math.PI * 2);
+                            progressGame.ctx.stroke();
+                            progressGame.ctx.restore();
+                        }
+
+                        progressGame.patternBuffer = [];
                     }
                 }
             }
 
             if (volume < 30) {
-                clockPatternBuffer = [];
+                progressGame.patternBuffer = [];
             }
 
-            clockAudioAnalysisFrame = requestAnimationFrame(analyzeClockAudio);
+            progressGame.audioAnalysisFrame = requestAnimationFrame(analyzeProgressAudio);
         }
+
+        // Initialize on load
+        loadProgressGameData();
     </script>
 </body>
 </html>
