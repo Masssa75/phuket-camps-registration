@@ -3822,8 +3822,15 @@
         let progressGame = {
             running: false,
             currentLevel: 1,  // 1 = Listen+Hit, 2 = Listen+Choose, 3 = Say+Hit
+            currentBatch: 0,  // Which batch of letters (0 = vowels, 1-4 = consonant groups)
             currentLetterIndex: 0,
-            alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+            batches: [
+                ['A', 'E', 'I', 'O', 'U'],  // Batch 0: Vowels
+                ['B', 'C', 'D', 'F', 'G'],  // Batch 1: Consonants 1
+                ['H', 'J', 'K', 'L', 'M'],  // Batch 2: Consonants 2
+                ['N', 'P', 'Q', 'R', 'S'],  // Batch 3: Consonants 3
+                ['T', 'V', 'W', 'X', 'Y', 'Z']  // Batch 4: Consonants 4
+            ],
             letterProgress: {},  // {A: {level1: 5, level2: 3, level3: 0}, ...}
             hitsNeeded: 8,  // Number of successful hits to master a letter at current level
             score: 0,
@@ -3837,6 +3844,16 @@
             patternBuffer: []
         };
 
+        // Helper to get current batch letters
+        function getCurrentBatchLetters() {
+            return progressGame.batches[progressGame.currentBatch];
+        }
+
+        // Helper to get all alphabet letters
+        function getAllLetters() {
+            return progressGame.batches.flat();
+        }
+
         // Initialize progress from localStorage
         function loadProgressGameData() {
             const saved = localStorage.getItem('progressGameData');
@@ -3844,6 +3861,7 @@
                 try {
                     const data = JSON.parse(saved);
                     progressGame.currentLevel = data.currentLevel || 1;
+                    progressGame.currentBatch = data.currentBatch || 0;
                     progressGame.currentLetterIndex = data.currentLetterIndex || 0;
                     progressGame.letterProgress = data.letterProgress || {};
                     progressGame.score = data.score || 0;
@@ -3859,7 +3877,7 @@
 
         function initializeLetterProgress() {
             progressGame.letterProgress = {};
-            progressGame.alphabet.forEach(letter => {
+            getAllLetters().forEach(letter => {
                 progressGame.letterProgress[letter] = { level1: 0, level2: 0, level3: 0 };
             });
         }
@@ -3867,6 +3885,7 @@
         function saveProgressGameData() {
             const data = {
                 currentLevel: progressGame.currentLevel,
+                currentBatch: progressGame.currentBatch,
                 currentLetterIndex: progressGame.currentLetterIndex,
                 letterProgress: progressGame.letterProgress,
                 score: progressGame.score
@@ -3986,7 +4005,8 @@
         }
 
         function spawnFallingLetter() {
-            const currentLetter = progressGame.alphabet[progressGame.currentLetterIndex];
+            const currentBatchLetters = getCurrentBatchLetters();
+            const currentLetter = currentBatchLetters[progressGame.currentLetterIndex];
 
             if (progressGame.currentLevel === 1) {
                 // Level 1: Spawn only current letter
@@ -4007,9 +4027,9 @@
                 // Level 2: Spawn 2-3 letters, only one is correct
                 const numLetters = Math.random() > 0.5 ? 3 : 2;
                 const targetIndex = Math.floor(Math.random() * numLetters);
-                
-                // Get previously mastered letters for distractors
-                const masteredLetters = progressGame.alphabet.slice(0, progressGame.currentLetterIndex + 1);
+
+                // Get previously mastered letters from current batch for distractors
+                const masteredLetters = currentBatchLetters.slice(0, progressGame.currentLetterIndex + 1);
                 const availableLetters = masteredLetters.filter(l => l !== currentLetter);
 
                 for (let i = 0; i < numLetters; i++) {
@@ -4134,31 +4154,45 @@
 
         function letterMasteredAtLevel(letter) {
             const levelKey = `level${progressGame.currentLevel}`;
-            
-            document.getElementById('progressStatus').textContent = 
+            const currentBatchLetters = getCurrentBatchLetters();
+            const batchNames = ['Vowels (A,E,I,O,U)', 'Consonants 1 (B,C,D,F,G)', 'Consonants 2 (H,J,K,L,M)',
+                               'Consonants 3 (N,P,Q,R,S)', 'Consonants 4 (T,V,W,X,Y,Z)'];
+
+            document.getElementById('progressStatus').textContent =
                 `🎉 ${letter} mastered at Level ${progressGame.currentLevel}!`;
 
-            // Move to next letter
+            // Move to next letter in current batch
             progressGame.currentLetterIndex++;
 
-            if (progressGame.currentLetterIndex >= progressGame.alphabet.length) {
-                // All letters done at this level
+            if (progressGame.currentLetterIndex >= currentBatchLetters.length) {
+                // All letters in batch done at this level
                 if (progressGame.currentLevel < 3) {
+                    // Move to next level with same batch
                     progressGame.currentLevel++;
                     progressGame.currentLetterIndex = 0;
-                    document.getElementById('progressStatus').textContent = 
-                        `🏆 Level ${progressGame.currentLevel - 1} Complete! Moving to Level ${progressGame.currentLevel}!`;
-                    
+                    document.getElementById('progressStatus').textContent =
+                        `🏆 ${batchNames[progressGame.currentBatch]} - Level ${progressGame.currentLevel - 1} Complete! Moving to Level ${progressGame.currentLevel}!`;
+
                     // Start voice analysis for Level 3
                     if (progressGame.currentLevel === 3 && !progressGame.audioAnalysisFrame) {
                         analyzeProgressAudio();
                     }
                 } else {
-                    // ALL LEVELS COMPLETE!
-                    stopProgressGame();
-                    document.getElementById('progressStatus').textContent = 
-                        `🎊 CONGRATULATIONS! You've mastered ALL 26 letters at ALL 3 levels! 🎊`;
-                    return;
+                    // Level 3 complete for this batch!
+                    if (progressGame.currentBatch < progressGame.batches.length - 1) {
+                        // Move to next batch
+                        progressGame.currentBatch++;
+                        progressGame.currentLevel = 1;
+                        progressGame.currentLetterIndex = 0;
+                        document.getElementById('progressStatus').textContent =
+                            `🎊 ${batchNames[progressGame.currentBatch - 1]} COMPLETE! Unlocking ${batchNames[progressGame.currentBatch]}!`;
+                    } else {
+                        // ALL BATCHES COMPLETE!
+                        stopProgressGame();
+                        document.getElementById('progressStatus').textContent =
+                            `🎊 CONGRATULATIONS! You've mastered ALL 26 letters at ALL 3 levels! 🎊`;
+                        return;
+                    }
                 }
             }
 
@@ -4168,38 +4202,43 @@
         }
 
         function updateProgressInstructions() {
-            const currentLetter = progressGame.alphabet[progressGame.currentLetterIndex];
-            
+            const currentBatchLetters = getCurrentBatchLetters();
+            const currentLetter = currentBatchLetters[progressGame.currentLetterIndex];
+            const batchNames = ['Vowels', 'Consonants 1', 'Consonants 2', 'Consonants 3', 'Consonants 4'];
+
             if (progressGame.currentLevel === 1) {
-                document.getElementById('progressGameTitle').textContent = '🎮 Level 1: Listen & Hit';
-                document.getElementById('progressGameInstructions').textContent = 
+                document.getElementById('progressGameTitle').textContent = `🎮 Level 1: Listen & Hit - ${batchNames[progressGame.currentBatch]}`;
+                document.getElementById('progressGameInstructions').textContent =
                     `Listen to the sound and TAP the letter ${currentLetter} when it falls!`;
-                document.getElementById('progressStatus').textContent = 
+                document.getElementById('progressStatus').textContent =
                     `🎧 Listen for "${currentLetter}" and tap it!`;
             } else if (progressGame.currentLevel === 2) {
-                document.getElementById('progressGameTitle').textContent = '🎯 Level 2: Listen & Choose';
-                document.getElementById('progressGameInstructions').textContent = 
+                document.getElementById('progressGameTitle').textContent = `🎯 Level 2: Listen & Choose - ${batchNames[progressGame.currentBatch]}`;
+                document.getElementById('progressGameInstructions').textContent =
                     `Multiple letters fall - TAP the one that matches the sound you hear!`;
-                document.getElementById('progressStatus').textContent = 
+                document.getElementById('progressStatus').textContent =
                     `🎧 Which letter makes the sound? Tap ${currentLetter}!`;
             } else if (progressGame.currentLevel === 3) {
-                document.getElementById('progressGameTitle').textContent = '🎤 Level 3: Say & Hit';
-                document.getElementById('progressGameInstructions').textContent = 
+                document.getElementById('progressGameTitle').textContent = `🎤 Level 3: Say & Hit - ${batchNames[progressGame.currentBatch]}`;
+                document.getElementById('progressGameInstructions').textContent =
                     `SAY the letter sound out loud, then TAP it!`;
-                document.getElementById('progressStatus').textContent = 
+                document.getElementById('progressStatus').textContent =
                     `🎤 Say "${currentLetter}" and tap it!`;
             }
         }
 
         function updateProgressUI() {
+            const currentBatchLetters = getCurrentBatchLetters();
+            const allLetters = getAllLetters();
+
             document.getElementById('currentLevel').textContent = progressGame.currentLevel;
-            document.getElementById('currentLetterDisplay').textContent = 
-                progressGame.alphabet[progressGame.currentLetterIndex] || '✓';
+            document.getElementById('currentLetterDisplay').textContent =
+                currentBatchLetters[progressGame.currentLetterIndex] || '✓';
             document.getElementById('progressScore').textContent = progressGame.score;
 
-            // Count mastered letters
+            // Count mastered letters across all batches
             let level1Count = 0, level2Count = 0, level3Count = 0;
-            progressGame.alphabet.forEach(letter => {
+            allLetters.forEach(letter => {
                 const progress = progressGame.letterProgress[letter];
                 if (progress) {
                     if (progress.level1 >= progressGame.hitsNeeded) level1Count++;
@@ -4213,10 +4252,10 @@
             document.getElementById('level2Progress').textContent = `${level2Count}/26`;
             document.getElementById('level3Progress').textContent = `${level3Count}/26`;
 
-            // Update letter grid
+            // Update letter grid - show all letters
             const grid = document.getElementById('progressLetterGrid');
             grid.innerHTML = '';
-            progressGame.alphabet.forEach(letter => {
+            allLetters.forEach(letter => {
                 const badge = document.createElement('div');
                 badge.className = 'progress-letter-badge';
                 badge.textContent = letter;
@@ -4242,7 +4281,8 @@
             analyser.getByteFrequencyData(dataArray);
             const volume = Math.max(...dataArray);
 
-            const currentLetter = progressGame.alphabet[progressGame.currentLetterIndex];
+            const currentBatchLetters = getCurrentBatchLetters();
+            const currentLetter = currentBatchLetters[progressGame.currentLetterIndex];
 
             if (volume > 40 && currentLetter) {
                 const pattern = extractPattern(dataArray);
