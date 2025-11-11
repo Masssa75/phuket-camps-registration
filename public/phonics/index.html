@@ -136,6 +136,20 @@
             font-size: 12px;
             margin-top: 10px;
         }
+        .calibration-group-header {
+            grid-column: 1 / -1;
+            padding: 15px 0 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: #FDD835;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(253, 216, 53, 0.3);
+            margin-bottom: 5px;
+        }
+        .calibration-group-header:first-child {
+            padding-top: 0;
+        }
 
         /* Snapshot thumbnails */
         .snapshots-container {
@@ -198,7 +212,7 @@
             width: 0%;
             transition: width 0.1s;
         }
-        #spectrumCanvas {
+        #spectrumCanvas, #spectrumCanvasGame, #spectrumCanvasGame2 {
             width: 100%;
             height: 120px;
             background: rgba(0, 0, 0, 0.3);
@@ -497,6 +511,20 @@
             background: rgba(255, 255, 255, 0.1);
             color: #999;
         }
+        .auto-cal-dot.ready {
+            border-color: #FDD835;
+            box-shadow: 0 0 15px rgba(253, 216, 53, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+        .auto-cal-dot.recording {
+            border-color: #F44336;
+            background: rgba(244, 67, 54, 0.2);
+            animation: pulse 0.8s infinite;
+        }
+        .auto-cal-dot.captured {
+            border-color: #7CB342;
+            background: rgba(124, 179, 66, 0.3);
+        }
         .progress-letter-badge.level1 {
             background: rgba(124, 179, 66, 0.3);
             border-color: #7CB342;
@@ -711,6 +739,159 @@
         @keyframes dotPulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.2); }
+        }
+
+        /* Instruction Modal Styles */
+        .instruction-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 20000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .instruction-modal.active {
+            display: flex;
+        }
+        .instruction-modal-content {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border-radius: 40px;
+            padding: 60px;
+            max-width: 700px;
+            width: 90%;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
+            border: 4px solid #FDD835;
+            position: relative;
+            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .instruction-modal-content.celebration {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.95) 0%, rgba(124, 179, 66, 0.95) 100%);
+            border: 5px solid #FDD835;
+        }
+        .instruction-start-btn {
+            background: linear-gradient(135deg, #FDD835 0%, #F9A825 100%);
+            color: #333;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(253, 216, 53, 0.4);
+        }
+        .instruction-start-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(253, 216, 53, 0.6);
+        }
+        .instruction-start-btn:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+        .instruction-start-btn.celebration {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF5722 100%);
+            color: white;
+            font-size: 32px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .confetti-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes popIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 15px 40px rgba(255, 87, 34, 0.6);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 20px 50px rgba(255, 87, 34, 0.8);
+            }
+        }
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Demo Container Styles */
+        .demo-container {
+            background: #000;
+            width: 300px;
+            height: 250px;
+            margin: 0 auto 30px auto;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .demo-letter {
+            position: absolute;
+            font-size: 80px;
+            font-weight: bold;
+            color: #4CAF50;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            animation: demoFall 3s ease-in-out infinite;
+        }
+        @keyframes demoFall {
+            0% {
+                top: -80px;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            50% {
+                top: 85px;
+            }
+            55% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+            60% {
+                opacity: 0;
+                transform: translateX(-50%) scale(2);
+            }
+            100% {
+                top: 85px;
+                opacity: 0;
+                transform: translateX(-50%) scale(2);
+            }
         }
     </style>
 
@@ -1034,6 +1215,8 @@
             <button class="tab" onclick="switchTab('level1')">🎓 Level 1</button>
             <button class="tab" onclick="switchTab('tuner')">🎯 Tuner</button>
             <button class="tab" onclick="switchTab('game')">🎮 Game</button>
+            <button class="tab" onclick="switchTab('game3')">🎮 Game 3</button>
+            <button class="tab" onclick="switchTab('game4')">🎮 Game 4</button>
         </div>
 
         <!-- Calibration Tab -->
@@ -1139,59 +1322,225 @@
             </div>
         </div>
 
-        <!-- Game Tab -->
+        <!-- Game Tab (EXACT COPY OF TUNER) -->
         <div id="game" class="tab-content">
-            <div class="info-box">
-                <strong id="progressGameTitle">🎮 Progressive Learning Game</strong><br>
-                <span id="progressGameInstructions">Starting with Level 1: Listen and tap the letters!</span>
+            <div class="actions" style="margin-bottom: 20px;">
+                <button class="btn" id="tunerBtnGame" onclick="toggleTunerGame()">▶ Start Game</button>
+                <button class="btn" onclick="skipLetterGame()" style="background: #999;">Skip</button>
             </div>
 
-            <div style="text-align: center; margin: 20px 0;">
-                <div style="display: inline-block; margin: 0 20px;">
-                    <div style="color: #aaa; font-size: 14px;">Current Level</div>
-                    <div style="color: #FDD835; font-size: 42px; font-weight: bold;" id="currentLevel">1</div>
+            <div style="text-align: center; margin-bottom: 20px; color: #ddd; font-size: 18px;">
+                Say this sound:
+                <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 24px; margin-left: 10px; display: inline-block; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Play my recording">🔊</span>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 15px;">
+                <label style="color: #ddd; cursor: pointer;">
+                    <input type="checkbox" id="alphabetModeGame" onchange="toggleAlphabetMode()" style="margin-right: 5px;">
+                    Alphabet Test Mode (A→Z loop)
+                </label>
+                <span id="alphabetProgressGame" style="margin-left: 15px; color: #FDD835; display: none;"></span>
+            </div>
+
+            <!-- Game Canvas/Screen -->
+            <div style="position: relative; width: 600px; height: 400px; margin: 20px auto; background: rgba(0, 0, 0, 0.5); border-radius: 20px; border: 3px solid rgba(253, 216, 53, 0.3); overflow: hidden;">
+                <!-- Level indicator -->
+                <div id="gameLevelIndicator" style="position: absolute; top: 20px; left: 20px; font-size: 24px; font-weight: bold; color: #FDD835; text-shadow: 0 2px 10px rgba(253, 216, 53, 0.5); z-index: 10;">Level 1</div>
+
+                <canvas id="gameCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                <div id="targetLetterGame" style="position: absolute; top: -50%; left: 50%; transform: translateX(-50%); font-size: 180px; font-weight: bold; color: #FDD835; text-shadow: 0 10px 30px rgba(253, 216, 53, 0.5);">?</div>
+            </div>
+
+            <div class="confidence-bar">
+                <div class="confidence-fill" id="confidenceFillGame"></div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div>Match Score</div>
+                    <div class="stat-value" id="matchScoreGame">0%</div>
                 </div>
-                <div style="display: inline-block; margin: 0 20px;">
-                    <div style="color: #aaa; font-size: 14px;">Current Letter</div>
-                    <div style="color: #7CB342; font-size: 42px; font-weight: bold;" id="currentLetterDisplay">A</div>
-                </div>
-                <div style="display: inline-block; margin: 0 20px;">
-                    <div style="color: #aaa; font-size: 14px;">Letters Mastered</div>
-                    <div style="color: #FDD835; font-size: 42px; font-weight: bold;"><span id="lettersMastered">0</span>/26</div>
-                </div>
-                <div style="display: inline-block; margin: 0 20px;">
-                    <div style="color: #aaa; font-size: 14px;">Score</div>
-                    <div style="color: #F44336; font-size: 42px; font-weight: bold;" id="progressScore">0</div>
+                <div class="stat-item">
+                    <div>Volume</div>
+                    <div class="stat-value" id="volumeGame">0%</div>
                 </div>
             </div>
 
-            <canvas id="progressGameCanvas" style="width: 500px; height: 600px; background: rgba(0,0,0,0.3); border-radius: 20px; display: block; margin: 20px auto; cursor: pointer;"></canvas>
+            <canvas id="spectrumCanvasGame"></canvas>
 
-            <div style="text-align: center; margin-top: 20px; color: #ddd; font-size: 18px; min-height: 40px;" id="progressStatus">Click Start to begin your learning journey!</div>
+            <div id="statusGame" style="font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.4;">Click Start to begin</div>
+        </div>
 
-            <div class="actions">
-                <button class="btn" id="progressGameBtn" onclick="toggleProgressGame()">▶ Start Game</button>
-                <button class="btn" onclick="resetProgressGame()" style="background: #F44336;">🔄 Reset Progress</button>
+        <!-- Game 3 Tab (COPY OF GAME 2 FOR NEW FEATURES) -->
+        <div id="game3" class="tab-content">
+            <div class="actions" style="margin-bottom: 20px;">
+                <button class="btn" id="tunerBtnGame3" onclick="toggleTunerGame3()">▶ Start Game</button>
+                <button class="btn" onclick="openGame3Settings()" style="background: #666;">⚙️ Settings</button>
             </div>
 
-            <div style="margin-top: 30px; padding: 20px; background: rgba(0, 0, 0, 0.3); border-radius: 15px;">
-                <div style="color: #FDD835; font-size: 18px; font-weight: bold; margin-bottom: 15px;">📊 Your Progress</div>
-                <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
-                    <div style="text-align: center;">
-                        <div style="color: #aaa; font-size: 14px;">Level 1 Complete</div>
-                        <div style="color: #7CB342; font-size: 24px; font-weight: bold;" id="level1Progress">0/26</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="color: #aaa; font-size: 14px;">Level 2 Complete</div>
-                        <div style="color: #7CB342; font-size: 24px; font-weight: bold;" id="level2Progress">0/26</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="color: #aaa; font-size: 14px;">Level 3 Complete</div>
-                        <div style="color: #7CB342; font-size: 24px; font-weight: bold;" id="level3Progress">0/26</div>
-                    </div>
+            <div style="text-align: center; margin-bottom: 20px; color: #ddd; font-size: 18px;">
+                Say this sound:
+                <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 24px; margin-left: 10px; display: inline-block; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Play my recording">🔊</span>
+            </div>
+
+            <!-- Game Canvas/Screen -->
+            <div style="position: relative; width: 600px; height: 600px; margin: 20px auto; background: rgba(0, 0, 0, 0.5); border-radius: 20px; border: 3px solid rgba(253, 216, 53, 0.3); overflow: hidden;">
+                <!-- Level indicator -->
+                <div id="gameLevelIndicator3" style="position: absolute; top: 20px; left: 20px; font-size: 24px; font-weight: bold; color: #FDD835; text-shadow: 0 2px 10px rgba(253, 216, 53, 0.5); z-index: 10;">Level 1</div>
+
+                <!-- Success counter -->
+                <div id="successCounter3" style="position: absolute; top: 60px; left: 20px; font-size: 48px; font-weight: bold; color: #4CAF50; text-shadow: 0 2px 10px rgba(76, 175, 80, 0.8); z-index: 10; display: none;">⭐ 0/10</div>
+
+                <!-- Mic indicator -->
+                <div id="micIndicator3" style="position: absolute; top: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #F44336; box-shadow: 0 0 20px rgba(244, 67, 54, 0.8); z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 30px; transition: all 0.3s;">🎤</div>
+
+                <canvas id="gameCanvas3" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                <div id="targetLetterGame3" style="position: absolute; top: -50%; left: 50%; transform: translateX(-50%); font-size: 180px; font-weight: bold; color: #FDD835; text-shadow: 0 10px 30px rgba(253, 216, 53, 0.5);">?</div>
+            </div>
+
+            <div class="confidence-bar">
+                <div class="confidence-fill" id="confidenceFillGame3"></div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div>Match Score</div>
+                    <div class="stat-value" id="matchScoreGame3">0%</div>
                 </div>
-                <div id="progressLetterGrid" style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; margin-top: 20px;"></div>
+                <div class="stat-item">
+                    <div>Volume</div>
+                    <div class="stat-value" id="volumeGame3">0%</div>
+                </div>
             </div>
+
+            <canvas id="spectrumCanvasGame3"></canvas>
+
+            <div id="statusGame3" style="font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.4;">Click Start to begin</div>
+        </div>
+
+        <!-- Game 4 Tab (COPY OF GAME 3 FOR NEW FEATURES) -->
+        <div id="game4" class="tab-content">
+            <div class="actions" style="margin-bottom: 20px;">
+                <button class="btn" id="tunerBtnGame4" onclick="toggleTunerGame4()">▶ Start Game</button>
+                <button class="btn" onclick="openGame4Settings()" style="background: #666;">⚙️ Settings</button>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 20px; color: #ddd; font-size: 18px;">
+                Say this sound:
+                <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 24px; margin-left: 10px; display: inline-block; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Play my recording">🔊</span>
+            </div>
+
+            <!-- Game Canvas/Screen -->
+            <div style="position: relative; width: 600px; height: 600px; margin: 20px auto; background: rgba(0, 0, 0, 0.5); border-radius: 20px; border: 3px solid rgba(253, 216, 53, 0.3); overflow: hidden;">
+                <!-- Level indicator -->
+                <div id="gameLevelIndicator4" style="position: absolute; top: 20px; left: 20px; font-size: 24px; font-weight: bold; color: #FDD835; text-shadow: 0 2px 10px rgba(253, 216, 53, 0.5); z-index: 10;">Level 1</div>
+
+                <!-- Success counter -->
+                <div id="successCounter4" style="position: absolute; top: 60px; left: 20px; font-size: 48px; font-weight: bold; color: #4CAF50; text-shadow: 0 2px 10px rgba(76, 175, 80, 0.8); z-index: 10; display: none;">⭐ 0/10</div>
+
+                <!-- Mic indicator -->
+                <div id="micIndicator4" style="position: absolute; top: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #F44336; box-shadow: 0 0 20px rgba(244, 67, 54, 0.8); z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 30px; transition: all 0.3s;">🎤</div>
+
+                <canvas id="gameCanvas4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                <div id="targetLetterGame4" style="position: absolute; top: -50%; left: 50%; transform: translateX(-50%); font-size: 180px; font-weight: bold; color: #FDD835; text-shadow: 0 10px 30px rgba(253, 216, 53, 0.5);">?</div>
+            </div>
+
+            <div class="confidence-bar">
+                <div class="confidence-fill" id="confidenceFillGame4"></div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div>Match Score</div>
+                    <div class="stat-value" id="matchScoreGame4">0%</div>
+                </div>
+                <div class="stat-item">
+                    <div>Volume</div>
+                    <div class="stat-value" id="volumeGame4">0%</div>
+                </div>
+            </div>
+
+            <canvas id="spectrumCanvasGame4"></canvas>
+
+            <div id="statusGame4" style="font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.4;">Click Start to begin</div>
+        </div>
+    </div>
+
+    <!-- Game 3 Instruction Popup -->
+    <div id="game3InstructionModal" class="instruction-modal">
+        <div class="instruction-modal-content">
+            <h2 style="color: #FDD835; font-size: 48px; margin-bottom: 20px; text-align: center;">🎮 Level 1</h2>
+            <p style="color: #ddd; font-size: 24px; text-align: center; line-height: 1.6; margin-bottom: 20px;">
+                Listen to the letter sound, then speak the sound to pop the letter. Click the yellow button to start!
+            </p>
+
+            <!-- Demo Animation Container -->
+            <div class="demo-container">
+                <div id="demoLetter" class="demo-letter">A</div>
+            </div>
+
+            <button class="instruction-start-btn" onclick="startGame3FromInstructions()">
+                🚀 Start Game
+            </button>
+        </div>
+    </div>
+
+    <!-- Game 3 Level Complete Popup -->
+    <div id="game3LevelCompleteModal" class="instruction-modal celebration">
+        <div class="instruction-modal-content celebration">
+            <div class="confetti-container" id="celebrationConfetti"></div>
+            <h2 style="color: #FDD835; font-size: 64px; margin-bottom: 20px; text-align: center;">🌟 AMAZING!! 🌟</h2>
+            <p style="color: #ddd; font-size: 32px; text-align: center; line-height: 1.6; margin-bottom: 20px; font-weight: bold;">
+                You've learned your first letter!
+            </p>
+            <p style="color: #4CAF50; font-size: 36px; text-align: center; margin-bottom: 20px;">
+                Now let's learn the next letter.
+            </p>
+
+            <!-- Demo Animation Container showing next letter -->
+            <div class="demo-container">
+                <div class="demo-letter">B</div>
+            </div>
+
+            <button class="instruction-start-btn celebration" onclick="closeLevel1Complete()">
+                ✨ Continue
+            </button>
+        </div>
+    </div>
+
+    <!-- Game 4 Instruction Popup -->
+    <div id="game4InstructionModal" class="instruction-modal">
+        <div class="instruction-modal-content">
+            <h2 style="color: #FDD835; font-size: 48px; margin-bottom: 20px; text-align: center;">🎮 Level 1</h2>
+            <p style="color: #ddd; font-size: 24px; text-align: center; line-height: 1.6; margin-bottom: 20px;">
+                Listen to the letter sound, then speak the sound to pop the letter. Click the yellow button to start!
+            </p>
+
+            <!-- Demo Animation Container -->
+            <div class="demo-container">
+                <div id="demoLetter4" class="demo-letter">A</div>
+            </div>
+
+            <button class="instruction-start-btn" onclick="startGame4FromInstructions()">
+                🚀 Start Game
+            </button>
+        </div>
+    </div>
+
+    <!-- Game 4 Level Complete Popup -->
+    <div id="game4LevelCompleteModal" class="instruction-modal celebration">
+        <div class="instruction-modal-content celebration">
+            <div class="confetti-container" id="celebrationConfetti4"></div>
+            <h2 style="color: #FDD835; font-size: 64px; margin-bottom: 20px; text-align: center;">🌟 AMAZING!! 🌟</h2>
+            <p style="color: #ddd; font-size: 32px; text-align: center; line-height: 1.6; margin-bottom: 20px; font-weight: bold;">
+                You've learned your first letter!
+            </p>
+            <p style="color: #4CAF50; font-size: 36px; text-align: center; margin-bottom: 30px;">
+                Now let's learn the next letter.
+            </p>
+            <button class="instruction-start-btn celebration" onclick="closeGame4LevelComplete()">
+                ✨ Continue
+            </button>
         </div>
     </div>
 
@@ -1208,40 +1557,47 @@
         let recordedPatterns = [];
         let calibrationData = {};
         let audioRecordings = {};
+        let letterSensitivity = {}; // Sensitivity multiplier for each letter (0.5 - 1.5)
 
         const canvas = document.getElementById('spectrumCanvas');
         const canvasCtx = canvas.getContext('2d');
         canvas.width = 800;
         canvas.height = 240;
 
-        // Full phoneme list - All 26 letters in alphabetical order
         const PHONEMES = [
-            { letter: 'A', hint: 'Say: aaa (like "apple")', type: 'vowel', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-a.mp3' },
-            { letter: 'B', hint: 'Repeat: buh, buh', type: 'plosive', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-b.mp3' },
-            { letter: 'C', hint: 'Repeat: cuh, cuh (like "cat")', type: 'plosive', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-c.mp3' },
-            { letter: 'D', hint: 'Repeat: duh, duh (like "dog")', type: 'plosive', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-d.mp3' },
-            { letter: 'E', hint: 'Say: eee (like "egg")', type: 'vowel', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-e.mp3' },
-            { letter: 'F', hint: 'Say: fff (like "fan")', type: 'fricative', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-f.mp3' },
-            { letter: 'G', hint: 'Repeat: guh, guh (like "go")', type: 'plosive', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-g.mp3' },
-            { letter: 'H', hint: 'Say: hhh (like "hat")', type: 'fricative', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-h.mp3' },
-            { letter: 'I', hint: 'Say: iii (like "igloo")', type: 'vowel', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-i.mp3' },
-            { letter: 'J', hint: 'Say: juh (like "jump")', type: 'affricate', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-j.mp3' },
-            { letter: 'K', hint: 'Repeat: kuh, kuh', type: 'plosive', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-k.mp3' },
-            { letter: 'L', hint: 'Say: lll (like "lion")', type: 'liquid', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-l.mp3' },
-            { letter: 'M', hint: 'Say: mmm (hum)', type: 'nasal', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-m.mp3' },
-            { letter: 'N', hint: 'Say: nnn (like "no")', type: 'nasal', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-n.mp3' },
-            { letter: 'O', hint: 'Say: ooo (like "octopus")', type: 'vowel', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-o-sh.mp3' },
-            { letter: 'P', hint: 'Repeat: puh, puh', type: 'plosive', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-p-2.mp3' },
-            { letter: 'Q', hint: 'Say: kwuh (like "queen")', type: 'affricate', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-q.mp3' },
-            { letter: 'R', hint: 'Say: rrr (like "run")', type: 'liquid', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-r.mp3' },
-            { letter: 'S', hint: 'Say: sss (like "snake")', type: 'fricative', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-z.mp3' },
-            { letter: 'T', hint: 'Repeat: tuh, tuh', type: 'plosive', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-t.mp3' },
-            { letter: 'U', hint: 'Say: uuu (like "umbrella")', type: 'vowel', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-u-sh.mp3' },
-            { letter: 'V', hint: 'Say: vvv (like "van")', type: 'fricative', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-v.mp3' },
-            { letter: 'W', hint: 'Say: www (like "water")', type: 'semivowel', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-w.mp3' },
-            { letter: 'X', hint: 'Say: ks (like "fox")', type: 'affricate', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-x.mp3' },
-            { letter: 'Y', hint: 'Say: yuh (like "yes")', type: 'semivowel', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/btalpha-i-long.mp3' },
-            { letter: 'Z', hint: 'Say: zzz (like "zoo")', type: 'fricative', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-z.mp3' }
+            // ===== VOWELS =====
+            { letter: 'A', hint: 'Say: aaa (like "apple")', type: 'vowel', group: 'vowels', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-a.mp3' },
+            { letter: 'E', hint: 'Say: eee (like "egg")', type: 'vowel', group: 'vowels', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-e.mp3' },
+            { letter: 'I', hint: 'Say: iii (like "igloo")', type: 'vowel', group: 'vowels', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-i.mp3' },
+            { letter: 'O', hint: 'Say: ooo (like "octopus")', type: 'vowel', group: 'vowels', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-o-sh.mp3' },
+            { letter: 'U', hint: 'Say: uuu (like "umbrella")', type: 'vowel', group: 'vowels', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-u-sh.mp3' },
+
+            // ===== EASY CONSONANTS =====
+            { letter: 'M', hint: 'Say: mmm (hum)', type: 'nasal', group: 'easy', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-m.mp3' },
+            { letter: 'S', hint: 'Say: sss (like "snake")', type: 'fricative', group: 'easy', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-z.mp3' },
+            { letter: 'T', hint: 'Repeat: tuh, tuh', type: 'plosive', group: 'easy', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-t.mp3' },
+            { letter: 'B', hint: 'Repeat: buh, buh', type: 'plosive', group: 'easy', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-b.mp3' },
+            { letter: 'F', hint: 'Say: fff (like "fan")', type: 'fricative', group: 'easy', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-f.mp3' },
+            { letter: 'N', hint: 'Say: nnn (like "no")', type: 'nasal', group: 'easy', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-n.mp3' },
+
+            // ===== COMMON CONSONANTS =====
+            { letter: 'P', hint: 'Repeat: puh, puh', type: 'plosive', group: 'common', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-p-2.mp3' },
+            { letter: 'D', hint: 'Repeat: duh, duh (like "dog")', type: 'plosive', group: 'common', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-d.mp3' },
+            { letter: 'L', hint: 'Say: lll (like "lion")', type: 'liquid', group: 'common', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-l.mp3' },
+            { letter: 'R', hint: 'Say: rrr (like "run")', type: 'liquid', group: 'common', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-r.mp3' },
+            { letter: 'C', hint: 'Repeat: cuh, cuh (like "cat")', type: 'plosive', group: 'common', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-c.mp3' },
+            { letter: 'G', hint: 'Repeat: guh, guh (like "go")', type: 'plosive', group: 'common', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-g.mp3' },
+            { letter: 'H', hint: 'Say: hhh (like "hat")', type: 'fricative', group: 'common', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-h.mp3' },
+
+            // ===== ADVANCED =====
+            { letter: 'W', hint: 'Say: www (like "water")', type: 'semivowel', group: 'advanced', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-w.mp3' },
+            { letter: 'Y', hint: 'Say: yuh (like "yes")', type: 'semivowel', group: 'advanced', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/btalpha-i-long.mp3' },
+            { letter: 'J', hint: 'Say: juh (like "jump")', type: 'affricate', group: 'advanced', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-j.mp3' },
+            { letter: 'K', hint: 'Repeat: kuh, kuh', type: 'plosive', group: 'advanced', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-k.mp3' },
+            { letter: 'V', hint: 'Say: vvv (like "van")', type: 'fricative', group: 'advanced', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-v.mp3' },
+            { letter: 'Z', hint: 'Say: zzz (like "zoo")', type: 'fricative', group: 'advanced', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-z.mp3' },
+            { letter: 'X', hint: 'Say: ks (like "fox")', type: 'affricate', group: 'advanced', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-x.mp3' },
+            { letter: 'Q', hint: 'Say: kwuh (like "queen")', type: 'affricate', group: 'advanced', audioUrl: 'https://www.soundcityreading.net/uploads/3/7/6/1/37611941/alphasounds-q.mp3' }
         ];
 
         // ======================
@@ -1495,13 +1851,42 @@
                 calibrationData = {};
                 console.warn('⚠️ No profile ID - waiting for Supabase profile initialization');
             }
+
+            // Load letter sensitivity settings from localStorage
+            const savedSensitivity = localStorage.getItem(`letterSensitivity_${currentProfile}`);
+            if (savedSensitivity) {
+                letterSensitivity = JSON.parse(savedSensitivity);
+            } else {
+                // Initialize default sensitivity (1.0 = 100%) for all letters
+                letterSensitivity = {};
+                PHONEMES.forEach(p => {
+                    letterSensitivity[p.letter] = 1.0;
+                });
+            }
         }
 
         function createCalibrationGrid() {
             const grid = document.getElementById('calibrationGrid');
             grid.innerHTML = '';
 
+            const groupLabels = {
+                'vowels': 'Vowels',
+                'easy': 'Easy Consonants',
+                'common': 'Common Consonants',
+                'advanced': 'Advanced'
+            };
+
+            let currentGroup = null;
+
             PHONEMES.forEach(phoneme => {
+                if (phoneme.group !== currentGroup) {
+                    currentGroup = phoneme.group;
+                    const header = document.createElement('div');
+                    header.className = 'calibration-group-header';
+                    header.textContent = groupLabels[currentGroup];
+                    grid.appendChild(header);
+                }
+
                 const card = document.createElement('div');
                 card.className = 'phoneme-card';
                 card.id = `card-${phoneme.letter}`;
@@ -1511,17 +1896,64 @@
                     card.classList.add('calibrated');
                 }
 
+                const sensitivity = letterSensitivity[phoneme.letter] || 1.0;
+                // Invert for display: high sensitivity (1.5) = low slider (50) = "Easy"
+                const sliderValue = Math.round(200 - (sensitivity * 100));
+                const label = sliderValue <= 70 ? 'Easy' : sliderValue >= 130 ? 'Strict' : 'Normal';
+                const sensitivityPercent = Math.round(sensitivity * 100);
+
                 card.innerHTML = `
                     <div class="phoneme-letter">${phoneme.letter}</div>
                     <div class="phoneme-hint">${phoneme.hint}</div>
                     ${phoneme.audioUrl ? `<div style="font-size: 30px; cursor: pointer; margin: 5px 0;" onclick="event.stopPropagation(); playPhonemeSound('${phoneme.letter}')" title="Listen to sound">🔊</div>` : ''}
                     <div class="snapshots-container" id="snapshots-${phoneme.letter}"></div>
                     <div class="phoneme-status">${isCalibrated ? '✓ Calibrated' : 'Click to record'}</div>
+                    <div class="sensitivity-control" id="sensitivity-${phoneme.letter}" style="margin-top: 10px; display: none;">
+                        <div style="color: #aaa; font-size: 11px; margin-bottom: 8px; display: flex; justify-content: space-between;">
+                            <span style="color: #7CB342;">Easy</span>
+                            <span id="sens-value-${phoneme.letter}" style="color: #FDD835; font-weight: bold;">${label} (${sensitivityPercent}%)</span>
+                            <span style="color: #F44336;">Strict</span>
+                        </div>
+                        <input type="range" min="50" max="150" value="${sliderValue}"
+                               style="width: 100%;"
+                               oninput="updateSensitivity('${phoneme.letter}', this.value)"
+                               onclick="event.stopPropagation()">
+                    </div>
+                    <button class="settings-btn" onclick="event.stopPropagation(); toggleSensitivitySlider('${phoneme.letter}')"
+                            style="margin-top: 8px; background: #666; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer; font-size: 12px;">
+                        ⚙️ Settings
+                    </button>
                 `;
 
                 card.onclick = () => openCalibrationModal(phoneme.letter);
                 grid.appendChild(card);
             });
+        }
+
+        function toggleSensitivitySlider(letter) {
+            const slider = document.getElementById(`sensitivity-${letter}`);
+            if (slider) {
+                slider.style.display = slider.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        function updateSensitivity(letter, sliderValue) {
+            // Invert: slider 50 = sensitivity 1.5 (Easy), slider 150 = sensitivity 0.5 (Strict)
+            const sensitivity = (200 - parseInt(sliderValue)) / 100;
+            letterSensitivity[letter] = sensitivity;
+
+            // Update display label with percentage
+            const valueDisplay = document.getElementById(`sens-value-${letter}`);
+            if (valueDisplay) {
+                const label = sliderValue <= 70 ? 'Easy' : sliderValue >= 130 ? 'Strict' : 'Normal';
+                const sensitivityPercent = Math.round(sensitivity * 100);
+                valueDisplay.textContent = `${label} (${sensitivityPercent}%)`;
+            }
+
+            // Save to localStorage
+            localStorage.setItem(`letterSensitivity_${currentProfile}`, JSON.stringify(letterSensitivity));
+
+            console.log(`✅ Updated ${letter}: slider=${sliderValue}, sensitivity=${sensitivity.toFixed(2)}x (${Math.round(sensitivity * 100)}%), label=${sliderValue <= 70 ? 'Easy' : sliderValue >= 130 ? 'Strict' : 'Normal'}`);
         }
 
         let capturedSnapshots = [];
@@ -2593,6 +3025,1496 @@
             }
         }
 
+        // ========== GAME TAB FUNCTIONS (COPY OF TUNER) ==========
+
+        let isRunningGame = false;
+        let currentTargetGame = null;
+        let patternBufferGame = [];
+        let gameAnimationFrame = null; // Track animation frame to prevent stacking
+        let gameFrameCounter = 0; // Debug counter
+        let activeOscillators = 0; // Track active audio oscillators
+        let activeConfetti = 0; // Track active confetti animations
+        const MAX_CONFETTI = 3; // Limit concurrent confetti
+        let lastCelebratedLetter = null; // Track last celebrated letter to prevent multiple celebrations
+        let gameLevel = 1; // Current game level
+        let letterY = 0; // Letter vertical position (for falling animation)
+        let letterSpeed = 1; // Letter falling speed
+
+        function skipLetterGame() {
+            if (isRunningGame) {
+                setNextTargetGame();
+            }
+        }
+
+        // tryAgainGame() removed - button no longer exists
+
+        function setNextTargetGame() {
+            currentTargetGame = alphabetModeEnabled ? pickNextAlphabetLetter() : pickRandomLetter();
+            if (currentTargetGame) {
+                const letterEl = document.getElementById('targetLetterGame');
+
+                // Reset position instantly (no transition)
+                letterY = -50; // Start above the visible area (negative %)
+                letterEl.style.transition = 'none'; // Disable transitions
+                letterEl.style.top = `${letterY}%`; // Set position immediately
+
+                // Force reflow to apply the position change
+                letterEl.offsetHeight;
+
+                // Now update the letter content
+                letterEl.textContent = currentTargetGame;
+                document.getElementById('statusGame').textContent = `Say: ${currentTargetGame}`;
+                patternBufferGame = [];
+                lastCelebratedLetter = null; // Reset celebration flag for new letter
+
+                updateAlphabetProgress();
+            }
+        }
+
+        async function toggleTunerGame() {
+            const btn = document.getElementById('tunerBtnGame');
+
+            if (btn.textContent === '▶ Next Letter') {
+                btn.textContent = '⏸ Stop Game';
+                isRunningGame = true;
+                setNextTargetGame();
+                analyzeTunerGame();
+                return;
+            }
+
+            if (isRunningGame) {
+                isRunningGame = false;
+                btn.textContent = '▶ Start Game';
+                document.getElementById('statusGame').textContent = 'Stopped';
+                document.getElementById('targetLetterGame').textContent = '?';
+
+                // Clean up animation frame
+                if (gameAnimationFrame) {
+                    cancelAnimationFrame(gameAnimationFrame);
+                    gameAnimationFrame = null;
+                }
+            } else {
+                if (Object.keys(calibrationData).length === 0) {
+                    alert('Please calibrate at least one phoneme first!');
+                    return;
+                }
+                if (!audioContext) {
+                    await setupAudio();
+                }
+                isRunningGame = true;
+                btn.textContent = '⏸ Stop Game';
+                setNextTargetGame();
+                analyzeTunerGame();
+            }
+        }
+
+        function analyzeTunerGame() {
+            if (!isRunningGame) {
+                // Cancel animation frame if stopped
+                if (gameAnimationFrame) {
+                    cancelAnimationFrame(gameAnimationFrame);
+                    gameAnimationFrame = null;
+                }
+                console.log(`🛑 Game stopped. Frames: ${gameFrameCounter}, Active oscillators: ${activeOscillators}`);
+                gameFrameCounter = 0;
+                return;
+            }
+
+            // Cancel previous frame before requesting new one (prevent stacking)
+            if (gameAnimationFrame) {
+                cancelAnimationFrame(gameAnimationFrame);
+            }
+            gameAnimationFrame = requestAnimationFrame(analyzeTunerGame);
+
+            gameFrameCounter++;
+            if (gameFrameCounter % 300 === 0) { // Log every 5 seconds (60fps * 5)
+                console.log(`📊 Game stats: Frames: ${gameFrameCounter}, Active oscillators: ${activeOscillators}, Audio context state: ${audioContext?.state}`);
+            }
+
+            // Animate letter falling (Level 1+)
+            if (gameLevel >= 1 && currentTargetGame) {
+                letterY += letterSpeed; // Move down
+                const letterEl = document.getElementById('targetLetterGame');
+                // Update position: start from top (-50%), move to bottom (150%)
+                letterEl.style.top = `${letterY}%`;
+
+                // If letter goes off screen, spawn new letter
+                if (letterY > 150) {
+                    setNextTargetGame(); // New letter instead of looping
+                }
+            }
+
+            analyser.getByteFrequencyData(dataArray);
+
+            // Draw spectrum (only every 3 frames to reduce overhead)
+            if (gameFrameCounter % 3 === 0) {
+                const canvas = document.getElementById('spectrumCanvasGame');
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 800;
+                    canvas.height = 240;
+
+                    const width = canvas.width;
+                    const height = canvas.height;
+
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                    ctx.fillRect(0, 0, width, height);
+
+                    const barWidth = width / dataArray.length;
+                    for (let i = 0; i < dataArray.length; i++) {
+                        const barHeight = (dataArray[i] / 255) * height;
+                        const x = i * barWidth;
+                        const hue = (i / dataArray.length) * 360;
+                        ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
+                        ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+                    }
+                }
+            }
+
+            // Calculate volume
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                sum += dataArray[i];
+            }
+            const volume = (sum / dataArray.length / 128) * 100;
+            document.getElementById('volumeGame').textContent = Math.round(volume) + '%';
+
+            // ALWAYS add current frame to buffer
+            const pattern = downsampleFrequencies(dataArray, PATTERN_BINS);
+            patternBufferGame.push(pattern);
+
+            if (patternBufferGame.length > PATTERN_LENGTH) {
+                patternBufferGame.shift();
+            }
+
+            if (currentTargetGame && patternBufferGame.length < PATTERN_LENGTH) {
+                document.getElementById('statusGame').textContent = `Buffer: ${patternBufferGame.length}/${PATTERN_LENGTH} frames (keep talking...)`;
+            }
+
+            const peakEnergy = Math.max(...pattern);
+            const avgEnergy = pattern.reduce((a, b) => a + b, 0) / pattern.length;
+            const energyConcentration = avgEnergy > 0 ? peakEnergy / avgEnergy : 0;
+
+            if (isPlayingRecording) {
+                return;
+            }
+
+            const FRICATIVES = ['F', 'S', 'V', 'Z', 'H'];
+            const LIQUIDS = ['L', 'R'];
+            const isCurrentNasal = currentTargetGame && isNasal(currentTargetGame);
+            const isFricative = currentTargetGame && FRICATIVES.includes(currentTargetGame);
+            const isLiquid = currentTargetGame && LIQUIDS.includes(currentTargetGame);
+
+            let volumeThreshold = 15;
+            let concentrationThreshold = 2.0;
+
+            if (isCurrentNasal || isLiquid) {
+                volumeThreshold = 8;
+                concentrationThreshold = 1.5;
+            } else if (isFricative) {
+                volumeThreshold = 10;
+                concentrationThreshold = 1.8;
+            }
+
+            if (patternBufferGame.length === PATTERN_LENGTH && volume > volumeThreshold && energyConcentration > concentrationThreshold && currentTargetGame) {
+                const results = testAllPlosiveStrategies(patternBufferGame, currentTargetGame);
+
+                const result = results[0];
+                const score = Math.max(0, Math.min(100, result.score || 0));
+                const targetScore = Math.max(0, Math.min(100, result.targetScore || 0));
+                const prediction = result.predictedLetter || '?';
+                const isCorrect = prediction === currentTargetGame;
+
+                const barCount = Math.max(0, Math.floor(score / 10));
+                const bar = '█'.repeat(barCount);
+                const statusText = `🎯 S11-Snapshot: ${isCorrect ? '✓' : '✗'} Predicted: ${prediction} | Score: ${Math.round(score)}% ${bar}\nTarget ${currentTargetGame}: ${Math.round(targetScore)}%`;
+
+                document.getElementById('statusGame').textContent = statusText;
+                document.getElementById('matchScoreGame').textContent = Math.round(score) + '%';
+                document.getElementById('confidenceFillGame').style.width = score + '%';
+
+                if (isCorrect && score > 80) {
+                    // Only celebrate if we haven't already celebrated this letter (prevent multiple celebrations per letter)
+                    if (lastCelebratedLetter !== currentTargetGame) {
+                        lastCelebratedLetter = currentTargetGame;
+                        celebrateMatchGame();
+
+                        document.getElementById('statusGame').textContent = `✓ MATCH! ${Math.round(score)}%\n\n` + statusText;
+
+                        // Auto-advance to next letter after short delay
+                        setTimeout(() => {
+                            setNextTargetGame();
+                        }, 1000); // 1 second delay to see celebration
+                    }
+
+                    // DON'T stop the game - keep running
+                    // isRunningGame stays true
+                    // Button stays as "Pause"
+                }
+            }
+        }
+
+        function celebrateMatchGame() {
+            const targetEl = document.getElementById('targetLetterGame');
+
+            // LIMIT concurrent sounds to prevent crackling (max 2)
+            if (audioContext && activeOscillators < 2) {
+                activeOscillators++;
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+
+                const startTime = audioContext.currentTime;
+                oscillator.start(startTime);
+                oscillator.stop(startTime + 0.4);
+
+                // Clean up nodes after sound finishes
+                oscillator.onended = () => {
+                    try {
+                        oscillator.disconnect();
+                        gainNode.disconnect();
+                        activeOscillators--;
+                        console.log(`🔊 Oscillator cleaned up. Active: ${activeOscillators}`);
+                    } catch (e) {
+                        console.warn('Oscillator cleanup error:', e);
+                    }
+                };
+            }
+
+            targetEl.style.transition = 'all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            targetEl.style.transform = 'scale(1.5) rotate(5deg)';
+            targetEl.style.color = '#FDD835';
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.3) rotate(-5deg)';
+                targetEl.style.color = '#7CB342';
+            }, 150);
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.6) rotate(0deg)';
+                targetEl.style.color = '#00BCD4';
+            }, 300);
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.2)';
+                targetEl.style.color = '#FF5722';
+            }, 450);
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.4)';
+                targetEl.style.color = '#9C27B0';
+            }, 600);
+
+            setTimeout(() => {
+                targetEl.style.transition = 'all 0.3s ease-out';
+                targetEl.style.transform = 'scale(1)';
+                targetEl.style.color = '#FDD835';
+            }, 800);
+
+            // Only create confetti if under limit
+            if (activeConfetti < MAX_CONFETTI) {
+                activeConfetti++;
+                createConfetti(targetEl);
+                // Decrease counter after confetti animation finishes (~1 second)
+                setTimeout(() => {
+                    activeConfetti--;
+                }, 1000);
+            }
+        }
+
+        // ========== GAME 3 TAB FUNCTIONS ==========
+
+        let isRunningGame3 = false;
+        let currentTargetGame3 = null;
+        let patternBufferGame3 = [];
+        let gameAnimationFrame3 = null;
+        let gameFrameCounter3 = 0;
+        let activeOscillators3 = 0;
+        let activeConfetti3 = 0;
+        const MAX_CONFETTI3 = 3;
+        let lastCelebratedLetter3 = null;
+        let gameLevel3 = 1;
+        let letterY3 = 0;
+        let letterSpeed3 = 0.5;
+        let hasPlayedAudio3 = false;
+        let currentLetterIndex3 = 0;
+        let isListeningForStudent3 = false;
+        let bottomPauseTimer3 = 0; // Track when letter reached bottom for pause
+        let consecutiveSuccesses3 = 0; // Track consecutive successful matches for Level 1
+        let letterWasMatched3 = false; // Track if current letter was successfully matched
+        let instructionAudio = null; // Track instruction audio playback
+
+        function skipLetterGame3() {
+            if (isRunningGame3) {
+                setNextTargetGame3();
+            }
+        }
+
+        function openGame3Settings() {
+            // TODO: Open settings modal with:
+            // - Play calibration sound (speaker icon)
+            // - Sensitivity slider
+            // - Skip letter button
+            // - Future settings...
+            alert('Settings coming soon!\n\nWill include:\n- 🔊 Play sound\n- 📊 Sensitivity\n- ⏭️ Skip letter');
+        }
+
+        function setNextTargetGame3() {
+            // Level 1: Check if previous letter timed out without being matched
+            if (gameLevel3 === 1 && !letterWasMatched3 && consecutiveSuccesses3 > 0) {
+                console.log(`❌ Letter timed out! Resetting consecutive count from ${consecutiveSuccesses3} to 0`);
+                consecutiveSuccesses3 = 0;
+
+                // Update counter display
+                const counterEl = document.getElementById('successCounter3');
+                if (counterEl) {
+                    counterEl.textContent = `⭐ 0/10`;
+                }
+            }
+
+            // Level 1: Only letter A (for children who don't know letters yet)
+            if (gameLevel3 === 1) {
+                currentTargetGame3 = 'A';
+            } else {
+                // Other levels: random or alphabet mode
+                currentTargetGame3 = alphabetModeEnabled ? pickNextAlphabetLetter() : pickRandomLetter();
+            }
+
+            if (currentTargetGame3) {
+                const letterEl = document.getElementById('targetLetterGame3');
+
+                letterY3 = -50;
+                letterSpeed3 = 0.5; // Reset to normal speed
+                hasPlayedAudio3 = false; // Reset audio flag for new letter
+                isListeningForStudent3 = false; // Reset listening flag
+                bottomPauseTimer3 = 0; // Reset pause timer
+                letterWasMatched3 = false; // Reset match flag for new letter
+                letterEl.style.transition = 'none';
+                letterEl.style.top = `${letterY3}%`;
+
+                letterEl.offsetHeight;
+
+                letterEl.textContent = currentTargetGame3;
+                if (gameLevel3 === 1) {
+                    document.getElementById('statusGame3').textContent = `🎓 Level 1: Listen and learn - ${currentTargetGame3}`;
+                } else {
+                    document.getElementById('statusGame3').textContent = `Say: ${currentTargetGame3}`;
+                }
+                patternBufferGame3 = [];
+                lastCelebratedLetter3 = null;
+
+                updateAlphabetProgress();
+            }
+        }
+
+        async function toggleTunerGame3() {
+            const btn = document.getElementById('tunerBtnGame3');
+
+            if (btn.textContent === '▶ Next Letter') {
+                btn.textContent = '⏸ Stop Game';
+                isRunningGame3 = true;
+                setNextTargetGame3();
+                analyzeTunerGame3();
+                return;
+            }
+
+            if (isRunningGame3) {
+                isRunningGame3 = false;
+                btn.textContent = '▶ Start Game';
+                document.getElementById('statusGame3').textContent = 'Stopped';
+                document.getElementById('targetLetterGame3').textContent = '?';
+
+                // Hide success counter when stopping
+                const counterEl = document.getElementById('successCounter3');
+                if (counterEl) {
+                    counterEl.style.display = 'none';
+                }
+
+                if (gameAnimationFrame3) {
+                    cancelAnimationFrame(gameAnimationFrame3);
+                    gameAnimationFrame3 = null;
+                }
+            } else {
+                if (Object.keys(calibrationData).length === 0) {
+                    alert('Please calibrate at least one phoneme first!');
+                    return;
+                }
+
+                // Show instruction popup instead of starting immediately
+                showGame3Instructions();
+            }
+        }
+
+        function showGame3Instructions() {
+            const modal = document.getElementById('game3InstructionModal');
+            modal.classList.add('active');
+
+            // Auto-play instruction audio (properly encoded)
+            console.log('🔊 Loading instruction audio...');
+            const audioPath = 'voice-instructions/' + encodeURIComponent('game play 1_v2.mp3');
+            console.log('📂 Audio path:', audioPath);
+            instructionAudio = new Audio(audioPath);
+
+            instructionAudio.onloadeddata = () => {
+                console.log('✅ Audio loaded successfully');
+            };
+
+            instructionAudio.oncanplaythrough = () => {
+                console.log('✅ Audio can play through');
+            };
+
+            instructionAudio.onerror = (e) => {
+                console.error('❌ Audio loading error:', e);
+                console.error('Attempted path:', audioPath);
+                console.error('Error details:', instructionAudio.error);
+            };
+
+            const playPromise = instructionAudio.play();
+
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        console.log('✅ Audio playing successfully');
+                    })
+                    .catch(err => {
+                        console.error('❌ Audio autoplay blocked or failed:', err);
+                    });
+            }
+        }
+
+        async function startGame3FromInstructions() {
+            // Stop instruction audio if playing
+            if (instructionAudio) {
+                instructionAudio.pause();
+                instructionAudio.currentTime = 0;
+                instructionAudio = null;
+            }
+
+            // Close modal
+            const modal = document.getElementById('game3InstructionModal');
+            modal.classList.remove('active');
+
+            // Setup audio if needed
+            if (!audioContext) {
+                await setupAudio();
+            }
+
+            // Start the game
+            const btn = document.getElementById('tunerBtnGame3');
+            isRunningGame3 = true;
+            btn.textContent = '⏸ Stop Game';
+
+            // Reset to start from 'A' in Level 1
+            if (gameLevel3 === 1) {
+                currentLetterIndex3 = 0;
+                // Show success counter for Level 1
+                const counterEl = document.getElementById('successCounter3');
+                if (counterEl) {
+                    counterEl.style.display = 'block';
+                    counterEl.textContent = `⭐ ${consecutiveSuccesses3}/10`;
+                }
+            }
+
+            setNextTargetGame3();
+            analyzeTunerGame3();
+        }
+
+        function showLevel1CompleteModal() {
+            const modal = document.getElementById('game3LevelCompleteModal');
+            modal.classList.add('active');
+
+            // Auto-play celebration audio
+            console.log('🎉 Loading celebration audio...');
+            const audioPath = 'voice-instructions/' + encodeURIComponent('A success B start.mp3');
+            const celebrationAudio = new Audio(audioPath);
+
+            celebrationAudio.onloadeddata = () => {
+                console.log('✅ Celebration audio loaded');
+            };
+
+            celebrationAudio.play().catch(err => {
+                console.error('❌ Celebration audio autoplay blocked:', err);
+            });
+
+            // Add confetti animation
+            createCelebrationConfetti();
+        }
+
+        function closeLevel1Complete() {
+            const modal = document.getElementById('game3LevelCompleteModal');
+            modal.classList.remove('active');
+
+            // Clear confetti
+            const confettiContainer = document.getElementById('celebrationConfetti');
+            if (confettiContainer) {
+                confettiContainer.innerHTML = '';
+            }
+        }
+
+        function createCelebrationConfetti() {
+            const container = document.getElementById('celebrationConfetti');
+            if (!container) return;
+
+            // Clear existing confetti
+            container.innerHTML = '';
+
+            // Create 50 confetti pieces
+            const colors = ['#FDD835', '#FF6B6B', '#4CAF50', '#2196F3', '#FF5722', '#9C27B0'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = -20 + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.animation = `confettiFall ${2 + Math.random() * 3}s linear infinite`;
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.opacity = '0.8';
+                container.appendChild(confetti);
+            }
+        }
+
+        function analyzeTunerGame3() {
+            if (!isRunningGame3) {
+                if (gameAnimationFrame3) {
+                    cancelAnimationFrame(gameAnimationFrame3);
+                    gameAnimationFrame3 = null;
+                }
+                console.log(`🛑 Game 3 stopped. Frames: ${gameFrameCounter3}, Active oscillators: ${activeOscillators3}`);
+                gameFrameCounter3 = 0;
+                return;
+            }
+
+            if (gameAnimationFrame3) {
+                cancelAnimationFrame(gameAnimationFrame3);
+            }
+            gameAnimationFrame3 = requestAnimationFrame(analyzeTunerGame3);
+
+            gameFrameCounter3++;
+            if (gameFrameCounter3 % 300 === 0) {
+                console.log(`📊 Game 3 stats: Frames: ${gameFrameCounter3}, Active oscillators: ${activeOscillators3}, Audio context state: ${audioContext?.state}`);
+            }
+
+            if (gameLevel3 >= 1 && currentTargetGame3) {
+                letterY3 += letterSpeed3;
+                const letterEl = document.getElementById('targetLetterGame3');
+                letterEl.style.top = `${letterY3}%`;
+
+                // Level 1: Auto-play calibration audio immediately when letter enters screen
+                if (gameLevel3 === 1 && !hasPlayedAudio3 && letterY3 >= -20) {
+                    hasPlayedAudio3 = true;
+                    isListeningForStudent3 = false;
+
+                    // Update mic indicator to red (not listening)
+                    const micIndicator = document.getElementById('micIndicator3');
+                    if (micIndicator) {
+                        micIndicator.style.background = '#F44336';
+                        micIndicator.style.boxShadow = '0 0 20px rgba(244, 67, 54, 0.8)';
+                    }
+
+                    // Play calibration audio
+                    const calibration = calibrationData[currentTargetGame3];
+                    if (calibration && calibration.audioUrl) {
+                        const audio = new Audio(calibration.audioUrl);
+
+                        // When audio finishes, start listening
+                        audio.onended = () => {
+                            isListeningForStudent3 = true;
+                            console.log(`✅ Audio finished, now listening for student to say: ${currentTargetGame3}`);
+
+                            // Update mic indicator to green (listening)
+                            if (micIndicator) {
+                                micIndicator.style.background = '#4CAF50';
+                                micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
+                            }
+                        };
+
+                        audio.play().catch(err => {
+                            console.log('Audio play error:', err);
+                            // If audio fails, still start listening
+                            isListeningForStudent3 = true;
+                            if (micIndicator) {
+                                micIndicator.style.background = '#4CAF50';
+                                micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
+                            }
+                        });
+                        console.log(`🔊 Playing ${currentTargetGame3} sound from calibration`);
+                    } else {
+                        console.log(`⚠️ No calibration audio for ${currentTargetGame3}`);
+                        // If no audio, start listening immediately
+                        isListeningForStudent3 = true;
+                        if (micIndicator) {
+                            micIndicator.style.background = '#4CAF50';
+                            micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
+                        }
+                    }
+                }
+
+                // Level 1: Letter slows down, stops at bottom, pauses 3 seconds, then respawns
+                if (gameLevel3 === 1) {
+                    // Start slowing down at 55% (earlier for smoother deceleration)
+                    if (letterY3 > 55 && letterY3 < 70 && letterSpeed3 > 0.15) {
+                        letterSpeed3 = 0.15;
+                    }
+
+                    // Stop completely at bottom (70% - keeps letter comfortably visible)
+                    if (letterY3 >= 70) {
+                        letterY3 = 70;
+
+                        // Start counting pause frames
+                        bottomPauseTimer3++;
+
+                        // After 3 seconds (180 frames at 60fps), spawn new letter
+                        if (bottomPauseTimer3 >= 180) {
+                            console.log('🔄 Pause complete, spawning new letter...');
+                            setNextTargetGame3();
+                        }
+                    }
+                } else {
+                    // Other levels: Letter respawns when it falls off screen
+                    if (letterY3 > 150) {
+                        setNextTargetGame3();
+                    }
+                }
+            }
+
+            analyser.getByteFrequencyData(dataArray);
+
+            if (gameFrameCounter3 % 3 === 0) {
+                const canvas = document.getElementById('spectrumCanvasGame3');
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 800;
+                    canvas.height = 240;
+
+                    const width = canvas.width;
+                    const height = canvas.height;
+
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                    ctx.fillRect(0, 0, width, height);
+
+                    const barWidth = width / dataArray.length;
+                    for (let i = 0; i < dataArray.length; i++) {
+                        const barHeight = (dataArray[i] / 255) * height;
+                        const x = i * barWidth;
+                        const hue = (i / dataArray.length) * 360;
+                        ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
+                        ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+                    }
+                }
+            }
+
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                sum += dataArray[i];
+            }
+            const volume = (sum / dataArray.length / 128) * 100;
+            document.getElementById('volumeGame3').textContent = Math.round(volume) + '%';
+
+            const pattern = downsampleFrequencies(dataArray, PATTERN_BINS);
+            patternBufferGame3.push(pattern);
+
+            if (patternBufferGame3.length > PATTERN_LENGTH) {
+                patternBufferGame3.shift();
+            }
+
+            if (currentTargetGame3 && patternBufferGame3.length < PATTERN_LENGTH) {
+                document.getElementById('statusGame3').textContent = `Buffer: ${patternBufferGame3.length}/${PATTERN_LENGTH} frames (keep talking...)`;
+            }
+
+            const peakEnergy = Math.max(...pattern);
+            const avgEnergy = pattern.reduce((a, b) => a + b, 0) / pattern.length;
+            const energyConcentration = avgEnergy > 0 ? peakEnergy / avgEnergy : 0;
+
+            if (isPlayingRecording) {
+                return;
+            }
+
+            // In Level 1, only do voice recognition if we're listening for student
+            if (gameLevel3 === 1 && !isListeningForStudent3) {
+                return;
+            }
+
+            const FRICATIVES = ['F', 'S', 'V', 'Z', 'H'];
+            const LIQUIDS = ['L', 'R'];
+            const isCurrentNasal = currentTargetGame3 && isNasal(currentTargetGame3);
+            const isFricative = currentTargetGame3 && FRICATIVES.includes(currentTargetGame3);
+            const isLiquid = currentTargetGame3 && LIQUIDS.includes(currentTargetGame3);
+
+            let volumeThreshold = 15;
+            let concentrationThreshold = 2.0;
+
+            if (isCurrentNasal || isLiquid) {
+                volumeThreshold = 8;
+                concentrationThreshold = 1.5;
+            } else if (isFricative) {
+                volumeThreshold = 10;
+                concentrationThreshold = 1.8;
+            }
+
+            if (patternBufferGame3.length === PATTERN_LENGTH && volume > volumeThreshold && energyConcentration > concentrationThreshold && currentTargetGame3) {
+                const results = testAllPlosiveStrategies(patternBufferGame3, currentTargetGame3);
+
+                const result = results[0];
+                const score = Math.max(0, Math.min(100, result.score || 0));
+                const targetScore = Math.max(0, Math.min(100, result.targetScore || 0));
+                const prediction = result.predictedLetter || '?';
+                const isCorrect = prediction === currentTargetGame3;
+
+                const barCount = Math.max(0, Math.floor(score / 10));
+                const bar = '█'.repeat(barCount);
+                const statusText = `🎯 S11-Snapshot: ${isCorrect ? '✓' : '✗'} Predicted: ${prediction} | Score: ${Math.round(score)}% ${bar}\nTarget ${currentTargetGame3}: ${Math.round(targetScore)}%`;
+
+                document.getElementById('statusGame3').textContent = statusText;
+                document.getElementById('matchScoreGame3').textContent = Math.round(score) + '%';
+                document.getElementById('confidenceFillGame3').style.width = score + '%';
+
+                // Apply letter-specific sensitivity to score threshold
+                const sensitivity = letterSensitivity[currentTargetGame3] || 1.0;
+                // Lower sensitivity (0.5) = higher threshold (harder to match)
+                // Higher sensitivity (1.5) = lower threshold (easier to match)
+                const baseThreshold = 80;
+                const adjustedScoreThreshold = baseThreshold / sensitivity;
+
+                console.log(`📊 ${currentTargetGame3} sensitivity: ${sensitivity}x, threshold: ${adjustedScoreThreshold.toFixed(1)}%, score: ${score.toFixed(1)}%`);
+
+                if (isCorrect && score > adjustedScoreThreshold) {
+                    if (lastCelebratedLetter3 !== currentTargetGame3) {
+                        lastCelebratedLetter3 = currentTargetGame3;
+                        celebrateMatchGame3();
+
+                        document.getElementById('statusGame3').textContent = `✓ MATCH! ${Math.round(score)}%\n\n` + statusText;
+
+                        // Level 1: Immediate pop and respawn
+                        if (gameLevel3 === 1) {
+                            console.log(`🎉 Student matched ${currentTargetGame3}! Popping letter...`);
+                            isListeningForStudent3 = false;
+                            letterWasMatched3 = true; // Mark this letter as matched
+
+                            // Increment consecutive successes
+                            consecutiveSuccesses3++;
+                            console.log(`⭐ Consecutive successes: ${consecutiveSuccesses3}/10`);
+
+                            // Update counter display
+                            const counterEl = document.getElementById('successCounter3');
+                            if (counterEl) {
+                                counterEl.textContent = `⭐ ${consecutiveSuccesses3}/10`;
+                                counterEl.style.display = 'block';
+                            }
+
+                            // Make letter explode/pop
+                            const letterEl = document.getElementById('targetLetterGame3');
+                            letterEl.style.transition = 'all 0.2s ease-out';
+                            letterEl.style.transform = 'translateX(-50%) scale(2)';
+                            letterEl.style.opacity = '0';
+
+                            // Check if Level 1 is completed (10 consecutive successes)
+                            if (consecutiveSuccesses3 >= 10) {
+                                setTimeout(() => {
+                                    // Stop the game
+                                    isRunningGame3 = false;
+                                    const btn = document.getElementById('tunerBtnGame3');
+                                    if (btn) btn.textContent = '▶ Start Game';
+
+                                    // Show celebration modal
+                                    showLevel1CompleteModal();
+                                    consecutiveSuccesses3 = 0;
+                                    if (counterEl) counterEl.textContent = `⭐ 0/10`;
+                                }, 300);
+                                return; // Don't spawn next letter
+                            }
+
+                            // Immediately spawn next letter (only if not completed)
+                            setTimeout(() => {
+                                letterEl.style.transition = 'none';
+                                letterEl.style.transform = 'translateX(-50%) scale(1)';
+                                letterEl.style.opacity = '1';
+                                setNextTargetGame3();
+                            }, 300);
+                        } else {
+                            // Other levels: delay before next letter
+                            setTimeout(() => {
+                                setNextTargetGame3();
+                            }, 1000);
+                        }
+                    }
+                }
+            }
+        }
+
+        function celebrateMatchGame3() {
+            const targetEl = document.getElementById('targetLetterGame3');
+
+            if (audioContext && activeOscillators3 < 2) {
+                activeOscillators3++;
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+
+                const startTime = audioContext.currentTime;
+                oscillator.start(startTime);
+                oscillator.stop(startTime + 0.4);
+
+                oscillator.onended = () => {
+                    try {
+                        oscillator.disconnect();
+                        gainNode.disconnect();
+                        activeOscillators3--;
+                        console.log(`🔊 Game 3 Oscillator cleaned up. Active: ${activeOscillators3}`);
+                    } catch (e) {
+                        console.warn('Game 3 Oscillator cleanup error:', e);
+                    }
+                };
+            }
+
+            targetEl.style.transition = 'all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            targetEl.style.transform = 'scale(1.5) rotate(5deg)';
+            targetEl.style.color = '#FDD835';
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.3) rotate(-5deg)';
+                targetEl.style.color = '#7CB342';
+            }, 150);
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.6) rotate(0deg)';
+                targetEl.style.color = '#00BCD4';
+            }, 300);
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.2)';
+                targetEl.style.color = '#FF5722';
+            }, 450);
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.4)';
+                targetEl.style.color = '#9C27B0';
+            }, 600);
+
+            setTimeout(() => {
+                targetEl.style.transition = 'all 0.3s ease-out';
+                targetEl.style.transform = 'scale(1)';
+                targetEl.style.color = '#FDD835';
+            }, 800);
+
+            if (activeConfetti3 < MAX_CONFETTI3) {
+                activeConfetti3++;
+                createConfetti(targetEl);
+                setTimeout(() => {
+                    activeConfetti3--;
+                }, 1000);
+            }
+        }
+
+        // ========== GAME 4 TAB FUNCTIONS ==========
+
+        let isRunningGame4 = false;
+        let currentTargetGame4 = null;
+        let patternBufferGame4 = [];
+        let gameAnimationFrame4 = null;
+        let gameFrameCounter4 = 0;
+        let activeOscillators4 = 0;
+        let activeConfetti4 = 0;
+        const MAX_CONFETTI4 = 3;
+        let lastCelebratedLetter4 = null;
+        let gameLevel4 = 1;
+        let letterY4 = 0;
+        let letterSpeed4 = 0.5;
+        let hasPlayedAudio4 = false;
+        let currentLetterIndex4 = 0;
+        let isListeningForStudent4 = false;
+        let bottomPauseTimer4 = 0; // Track when letter reached bottom for pause
+        let consecutiveSuccesses4 = 0; // Track consecutive successful matches for Level 1
+        let letterWasMatched4 = false; // Track if current letter was successfully matched
+        let instructionAudio4 = null; // Track instruction audio playback
+
+        function skipLetterGame4() {
+            if (isRunningGame4) {
+                setNextTargetGame4();
+            }
+        }
+
+        function openGame4Settings() {
+            // TODO: Open settings modal with:
+            // - Play calibration sound (speaker icon)
+            // - Sensitivity slider
+            // - Skip letter button
+            // - Future settings...
+            alert('Settings coming soon!\n\nWill include:\n- 🔊 Play sound\n- 📊 Sensitivity\n- ⏭️ Skip letter');
+        }
+
+        function setNextTargetGame4() {
+            // Level 1: Check if previous letter timed out without being matched
+            if (gameLevel4 === 1 && !letterWasMatched4 && consecutiveSuccesses4 > 0) {
+                console.log(`❌ Letter timed out! Resetting consecutive count from ${consecutiveSuccesses4} to 0`);
+                consecutiveSuccesses4 = 0;
+
+                // Update counter display
+                const counterEl = document.getElementById('successCounter4');
+                if (counterEl) {
+                    counterEl.textContent = `⭐ 0/10`;
+                }
+            }
+
+            // Level 1: Only letter A (for children who don't know letters yet)
+            if (gameLevel4 === 1) {
+                currentTargetGame4 = 'A';
+            } else {
+                // Other levels: random or alphabet mode
+                currentTargetGame4 = alphabetModeEnabled ? pickNextAlphabetLetter() : pickRandomLetter();
+            }
+
+            if (currentTargetGame4) {
+                const letterEl = document.getElementById('targetLetterGame4');
+
+                letterY4 = -50;
+                letterSpeed4 = 0.5; // Reset to normal speed
+                hasPlayedAudio4 = false; // Reset audio flag for new letter
+                isListeningForStudent4 = false; // Reset listening flag
+                bottomPauseTimer4 = 0; // Reset pause timer
+                letterWasMatched4 = false; // Reset match flag for new letter
+                letterEl.style.transition = 'none';
+                letterEl.style.top = `${letterY4}%`;
+
+                letterEl.offsetHeight;
+
+                letterEl.textContent = currentTargetGame4;
+                if (gameLevel4 === 1) {
+                    document.getElementById('statusGame4').textContent = `🎓 Level 1: Listen and learn - ${currentTargetGame4}`;
+                } else {
+                    document.getElementById('statusGame4').textContent = `Say: ${currentTargetGame4}`;
+                }
+                patternBufferGame4 = [];
+                lastCelebratedLetter4 = null;
+
+                updateAlphabetProgress();
+            }
+        }
+
+        async function toggleTunerGame4() {
+            const btn = document.getElementById('tunerBtnGame4');
+
+            if (btn.textContent === '▶ Next Letter') {
+                btn.textContent = '⏸ Stop Game';
+                isRunningGame4 = true;
+                setNextTargetGame4();
+                analyzeTunerGame4();
+                return;
+            }
+
+            if (isRunningGame4) {
+                isRunningGame4 = false;
+                btn.textContent = '▶ Start Game';
+                document.getElementById('statusGame4').textContent = 'Stopped';
+                document.getElementById('targetLetterGame4').textContent = '?';
+
+                // Hide success counter when stopping
+                const counterEl = document.getElementById('successCounter4');
+                if (counterEl) {
+                    counterEl.style.display = 'none';
+                }
+
+                if (gameAnimationFrame4) {
+                    cancelAnimationFrame(gameAnimationFrame4);
+                    gameAnimationFrame4 = null;
+                }
+            } else {
+                if (Object.keys(calibrationData).length === 0) {
+                    alert('Please calibrate at least one phoneme first!');
+                    return;
+                }
+
+                // Show instruction popup instead of starting immediately
+                showGame4Instructions();
+            }
+        }
+
+        function showGame4Instructions() {
+            const modal = document.getElementById('game4InstructionModal');
+            modal.classList.add('active');
+
+            // Auto-play instruction audio (properly encoded)
+            console.log('🔊 Loading instruction audio...');
+            const audioPath = 'voice-instructions/' + encodeURIComponent('game play 1_v2.mp3');
+            console.log('📂 Audio path:', audioPath);
+            instructionAudio4 = new Audio(audioPath);
+
+            instructionAudio4.onloadeddata = () => {
+                console.log('✅ Audio loaded successfully');
+            };
+
+            instructionAudio4.oncanplaythrough = () => {
+                console.log('✅ Audio can play through');
+            };
+
+            instructionAudio4.onerror = (e) => {
+                console.error('❌ Audio loading error:', e);
+                console.error('Attempted path:', audioPath);
+                console.error('Error details:', instructionAudio4.error);
+            };
+
+            const playPromise = instructionAudio4.play();
+
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        console.log('✅ Audio playing successfully');
+                    })
+                    .catch(err => {
+                        console.error('❌ Audio autoplay blocked or failed:', err);
+                    });
+            }
+        }
+
+        async function startGame4FromInstructions() {
+            // Stop instruction audio if playing
+            if (instructionAudio4) {
+                instructionAudio4.pause();
+                instructionAudio4.currentTime = 0;
+                instructionAudio4 = null;
+            }
+
+            // Close modal
+            const modal = document.getElementById('game4InstructionModal');
+            modal.classList.remove('active');
+
+            // Setup audio if needed
+            if (!audioContext) {
+                await setupAudio();
+            }
+
+            // Start the game
+            const btn = document.getElementById('tunerBtnGame4');
+            isRunningGame4 = true;
+            btn.textContent = '⏸ Stop Game';
+
+            // Reset to start from 'A' in Level 1
+            if (gameLevel4 === 1) {
+                currentLetterIndex4 = 0;
+                // Show success counter for Level 1
+                const counterEl = document.getElementById('successCounter4');
+                if (counterEl) {
+                    counterEl.style.display = 'block';
+                    counterEl.textContent = `⭐ ${consecutiveSuccesses4}/10`;
+                }
+            }
+
+            setNextTargetGame4();
+            analyzeTunerGame4();
+        }
+
+        function showGame4LevelComplete() {
+            const modal = document.getElementById('game4LevelCompleteModal');
+            modal.classList.add('active');
+
+            // Auto-play celebration audio
+            console.log('🎉 Loading celebration audio...');
+            const audioPath = 'voice-instructions/' + encodeURIComponent('A success B start.mp3');
+            const celebrationAudio = new Audio(audioPath);
+
+            celebrationAudio.onloadeddata = () => {
+                console.log('✅ Celebration audio loaded');
+            };
+
+            celebrationAudio.play().catch(err => {
+                console.error('❌ Celebration audio autoplay blocked:', err);
+            });
+
+            // Add confetti animation
+            createCelebrationConfetti4();
+        }
+
+        function closeGame4LevelComplete() {
+            const modal = document.getElementById('game4LevelCompleteModal');
+            modal.classList.remove('active');
+
+            // Clear confetti
+            const confettiContainer = document.getElementById('celebrationConfetti4');
+            if (confettiContainer) {
+                confettiContainer.innerHTML = '';
+            }
+        }
+
+        function createCelebrationConfetti4() {
+            const container = document.getElementById('celebrationConfetti4');
+            if (!container) return;
+
+            // Clear existing confetti
+            container.innerHTML = '';
+
+            // Create 50 confetti pieces
+            const colors = ['#FDD835', '#FF6B6B', '#4CAF50', '#2196F3', '#FF5722', '#9C27B0'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = -20 + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.animation = `confettiFall ${2 + Math.random() * 3}s linear infinite`;
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.opacity = '0.8';
+                container.appendChild(confetti);
+            }
+        }
+
+        function analyzeTunerGame4() {
+            if (!isRunningGame4) {
+                if (gameAnimationFrame4) {
+                    cancelAnimationFrame(gameAnimationFrame4);
+                    gameAnimationFrame4 = null;
+                }
+                console.log(`🛑 Game 4 stopped. Frames: ${gameFrameCounter4}, Active oscillators: ${activeOscillators4}`);
+                gameFrameCounter4 = 0;
+                return;
+            }
+
+            if (gameAnimationFrame4) {
+                cancelAnimationFrame(gameAnimationFrame4);
+            }
+            gameAnimationFrame4 = requestAnimationFrame(analyzeTunerGame4);
+
+            gameFrameCounter4++;
+            if (gameFrameCounter4 % 300 === 0) {
+                console.log(`📊 Game 4 stats: Frames: ${gameFrameCounter4}, Active oscillators: ${activeOscillators4}, Audio context state: ${audioContext?.state}`);
+            }
+
+            if (gameLevel4 >= 1 && currentTargetGame4) {
+                letterY4 += letterSpeed4;
+                const letterEl = document.getElementById('targetLetterGame4');
+                letterEl.style.top = `${letterY4}%`;
+
+                // Level 1: Auto-play calibration audio immediately when letter enters screen
+                if (gameLevel4 === 1 && !hasPlayedAudio4 && letterY4 >= -20) {
+                    hasPlayedAudio4 = true;
+                    isListeningForStudent4 = false;
+
+                    // Update mic indicator to red (not listening)
+                    const micIndicator = document.getElementById('micIndicator4');
+                    if (micIndicator) {
+                        micIndicator.style.background = '#F44336';
+                        micIndicator.style.boxShadow = '0 0 20px rgba(244, 67, 54, 0.8)';
+                    }
+
+                    // Play calibration audio
+                    const calibration = calibrationData[currentTargetGame4];
+                    if (calibration && calibration.audioUrl) {
+                        const audio = new Audio(calibration.audioUrl);
+
+                        // When audio finishes, start listening
+                        audio.onended = () => {
+                            isListeningForStudent4 = true;
+                            console.log(`✅ Audio finished, now listening for student to say: ${currentTargetGame4}`);
+
+                            // Update mic indicator to green (listening)
+                            if (micIndicator) {
+                                micIndicator.style.background = '#4CAF50';
+                                micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
+                            }
+                        };
+
+                        audio.play().catch(err => {
+                            console.log('Audio play error:', err);
+                            // If audio fails, still start listening
+                            isListeningForStudent4 = true;
+                            if (micIndicator) {
+                                micIndicator.style.background = '#4CAF50';
+                                micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
+                            }
+                        });
+                        console.log(`🔊 Playing ${currentTargetGame4} sound from calibration`);
+                    } else {
+                        console.log(`⚠️ No calibration audio for ${currentTargetGame4}`);
+                        // If no audio, start listening immediately
+                        isListeningForStudent4 = true;
+                        if (micIndicator) {
+                            micIndicator.style.background = '#4CAF50';
+                            micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
+                        }
+                    }
+                }
+
+                // Level 1: Letter slows down, stops at bottom, pauses 3 seconds, then respawns
+                if (gameLevel4 === 1) {
+                    // Start slowing down at 55% (earlier for smoother deceleration)
+                    if (letterY4 > 55 && letterY4 < 70 && letterSpeed4 > 0.15) {
+                        letterSpeed4 = 0.15;
+                    }
+
+                    // Stop completely at bottom (70% - keeps letter comfortably visible)
+                    if (letterY4 >= 70) {
+                        letterY4 = 70;
+
+                        // Start counting pause frames
+                        bottomPauseTimer4++;
+
+                        // After 3 seconds (180 frames at 60fps), spawn new letter
+                        if (bottomPauseTimer4 >= 180) {
+                            console.log('🔄 Pause complete, spawning new letter...');
+                            setNextTargetGame4();
+                        }
+                    }
+                } else {
+                    // Other levels: Letter respawns when it falls off screen
+                    if (letterY4 > 150) {
+                        setNextTargetGame4();
+                    }
+                }
+            }
+
+            analyser.getByteFrequencyData(dataArray);
+
+            if (gameFrameCounter4 % 3 === 0) {
+                const canvas = document.getElementById('spectrumCanvasGame4');
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 800;
+                    canvas.height = 240;
+
+                    const width = canvas.width;
+                    const height = canvas.height;
+
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                    ctx.fillRect(0, 0, width, height);
+
+                    const barWidth = width / dataArray.length;
+                    for (let i = 0; i < dataArray.length; i++) {
+                        const barHeight = (dataArray[i] / 255) * height;
+                        const x = i * barWidth;
+                        const hue = (i / dataArray.length) * 360;
+                        ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
+                        ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+                    }
+                }
+            }
+
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                sum += dataArray[i];
+            }
+            const volume = (sum / dataArray.length / 128) * 100;
+            document.getElementById('volumeGame4').textContent = Math.round(volume) + '%';
+
+            const pattern = downsampleFrequencies(dataArray, PATTERN_BINS);
+            patternBufferGame4.push(pattern);
+
+            if (patternBufferGame4.length > PATTERN_LENGTH) {
+                patternBufferGame4.shift();
+            }
+
+            if (currentTargetGame4 && patternBufferGame4.length < PATTERN_LENGTH) {
+                document.getElementById('statusGame4').textContent = `Buffer: ${patternBufferGame4.length}/${PATTERN_LENGTH} frames (keep talking...)`;
+            }
+
+            const peakEnergy = Math.max(...pattern);
+            const avgEnergy = pattern.reduce((a, b) => a + b, 0) / pattern.length;
+            const energyConcentration = avgEnergy > 0 ? peakEnergy / avgEnergy : 0;
+
+            if (isPlayingRecording) {
+                return;
+            }
+
+            // In Level 1, only do voice recognition if we're listening for student
+            if (gameLevel4 === 1 && !isListeningForStudent4) {
+                return;
+            }
+
+            const FRICATIVES = ['F', 'S', 'V', 'Z', 'H'];
+            const LIQUIDS = ['L', 'R'];
+            const isCurrentNasal = currentTargetGame4 && isNasal(currentTargetGame4);
+            const isFricative = currentTargetGame4 && FRICATIVES.includes(currentTargetGame4);
+            const isLiquid = currentTargetGame4 && LIQUIDS.includes(currentTargetGame4);
+
+            let volumeThreshold = 15;
+            let concentrationThreshold = 2.0;
+
+            if (isCurrentNasal || isLiquid) {
+                volumeThreshold = 8;
+                concentrationThreshold = 1.5;
+            } else if (isFricative) {
+                volumeThreshold = 10;
+                concentrationThreshold = 1.8;
+            }
+
+            if (patternBufferGame4.length === PATTERN_LENGTH && volume > volumeThreshold && energyConcentration > concentrationThreshold && currentTargetGame4) {
+                const results = testAllPlosiveStrategies(patternBufferGame4, currentTargetGame4);
+
+                const result = results[0];
+                const score = Math.max(0, Math.min(100, result.score || 0));
+                const targetScore = Math.max(0, Math.min(100, result.targetScore || 0));
+                const prediction = result.predictedLetter || '?';
+                const isCorrect = prediction === currentTargetGame4;
+
+                const barCount = Math.max(0, Math.floor(score / 10));
+                const bar = '█'.repeat(barCount);
+                const statusText = `🎯 S11-Snapshot: ${isCorrect ? '✓' : '✗'} Predicted: ${prediction} | Score: ${Math.round(score)}% ${bar}\nTarget ${currentTargetGame4}: ${Math.round(targetScore)}%`;
+
+                document.getElementById('statusGame4').textContent = statusText;
+                document.getElementById('matchScoreGame4').textContent = Math.round(score) + '%';
+                document.getElementById('confidenceFillGame4').style.width = score + '%';
+
+                // Apply letter-specific sensitivity to score threshold
+                const sensitivity = letterSensitivity[currentTargetGame4] || 1.0;
+                // Lower sensitivity (0.5) = higher threshold (harder to match)
+                // Higher sensitivity (1.5) = lower threshold (easier to match)
+                const baseThreshold = 80;
+                const adjustedScoreThreshold = baseThreshold / sensitivity;
+
+                console.log(`📊 ${currentTargetGame4} sensitivity: ${sensitivity}x, threshold: ${adjustedScoreThreshold.toFixed(1)}%, score: ${score.toFixed(1)}%`);
+
+                if (isCorrect && score > adjustedScoreThreshold) {
+                    if (lastCelebratedLetter4 !== currentTargetGame4) {
+                        lastCelebratedLetter4 = currentTargetGame4;
+                        celebrateMatchGame4();
+
+                        document.getElementById('statusGame4').textContent = `✓ MATCH! ${Math.round(score)}%\n\n` + statusText;
+
+                        // Level 1: Immediate pop and respawn
+                        if (gameLevel4 === 1) {
+                            console.log(`🎉 Student matched ${currentTargetGame4}! Popping letter...`);
+                            isListeningForStudent4 = false;
+                            letterWasMatched4 = true; // Mark this letter as matched
+
+                            // Increment consecutive successes
+                            consecutiveSuccesses4++;
+                            console.log(`⭐ Consecutive successes: ${consecutiveSuccesses4}/10`);
+
+                            // Update counter display
+                            const counterEl = document.getElementById('successCounter4');
+                            if (counterEl) {
+                                counterEl.textContent = `⭐ ${consecutiveSuccesses4}/10`;
+                                counterEl.style.display = 'block';
+                            }
+
+                            // Make letter explode/pop
+                            const letterEl = document.getElementById('targetLetterGame4');
+                            letterEl.style.transition = 'all 0.2s ease-out';
+                            letterEl.style.transform = 'translateX(-50%) scale(2)';
+                            letterEl.style.opacity = '0';
+
+                            // Check if Level 1 is completed (10 consecutive successes)
+                            if (consecutiveSuccesses4 >= 10) {
+                                setTimeout(() => {
+                                    // Show celebration modal
+                                    showGame4LevelComplete();
+                                    consecutiveSuccesses4 = 0;
+                                    if (counterEl) counterEl.textContent = `⭐ 0/10`;
+                                }, 300);
+                            }
+
+                            // Immediately spawn next letter
+                            setTimeout(() => {
+                                letterEl.style.transition = 'none';
+                                letterEl.style.transform = 'translateX(-50%) scale(1)';
+                                letterEl.style.opacity = '1';
+                                setNextTargetGame4();
+                            }, 300);
+                        } else {
+                            // Other levels: delay before next letter
+                            setTimeout(() => {
+                                setNextTargetGame4();
+                            }, 1000);
+                        }
+                    }
+                }
+            }
+        }
+
+        function celebrateMatchGame4() {
+            const targetEl = document.getElementById('targetLetterGame4');
+
+            if (audioContext && activeOscillators4 < 2) {
+                activeOscillators4++;
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+
+                const startTime = audioContext.currentTime;
+                oscillator.start(startTime);
+                oscillator.stop(startTime + 0.4);
+
+                oscillator.onended = () => {
+                    try {
+                        oscillator.disconnect();
+                        gainNode.disconnect();
+                        activeOscillators4--;
+                        console.log(`🔊 Game 4 Oscillator cleaned up. Active: ${activeOscillators4}`);
+                    } catch (e) {
+                        console.warn('Game 4 Oscillator cleanup error:', e);
+                    }
+                };
+            }
+
+            targetEl.style.transition = 'all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            targetEl.style.transform = 'scale(1.5) rotate(5deg)';
+            targetEl.style.color = '#FDD835';
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.3) rotate(-5deg)';
+                targetEl.style.color = '#7CB342';
+            }, 150);
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.6) rotate(0deg)';
+                targetEl.style.color = '#00BCD4';
+            }, 300);
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.2)';
+                targetEl.style.color = '#FF5722';
+            }, 450);
+
+            setTimeout(() => {
+                targetEl.style.transform = 'scale(1.4)';
+                targetEl.style.color = '#9C27B0';
+            }, 600);
+
+            setTimeout(() => {
+                targetEl.style.transition = 'all 0.3s ease-out';
+                targetEl.style.transform = 'scale(1)';
+                targetEl.style.color = '#FDD835';
+            }, 800);
+
+            if (activeConfetti4 < MAX_CONFETTI4) {
+                activeConfetti4++;
+                createConfetti(targetEl);
+                setTimeout(() => {
+                    activeConfetti4--;
+                }, 1000);
+            }
+        }
+
         // ========== EXPERIMENTAL PLOSIVE DETECTION STRATEGIES ==========
 
         function testAllPlosiveStrategies(patternBuffer, targetLetter) {
@@ -2903,20 +4825,82 @@
         }
 
         function switchTab(tabName) {
+            console.log(`🔄 switchTab called with: "${tabName}"`);
+
+            // ===== STOP ALL RUNNING GAMES/ANIMATIONS BEFORE SWITCHING =====
+
+            // Stop Tuner tab if running
+            if (isRunning && gameAnimationFrame) {
+                console.log('🛑 Stopping Tuner...');
+                isRunning = false;
+                cancelAnimationFrame(gameAnimationFrame);
+                gameAnimationFrame = null;
+                const tunerBtn = document.getElementById('tunerBtn');
+                if (tunerBtn) tunerBtn.textContent = '▶ Start';
+            }
+
+            // Stop Game tab if running
+            if (isRunningGame && gameAnimationFrameGame) {
+                console.log('🛑 Stopping Game...');
+                isRunningGame = false;
+                cancelAnimationFrame(gameAnimationFrameGame);
+                gameAnimationFrameGame = null;
+                const gameBtn = document.getElementById('tunerBtnGame');
+                if (gameBtn) gameBtn.textContent = '▶ Start Game';
+            }
+
+            // Stop Progressive Game (falling letters) if running
+            if (progressGame && progressGame.running) {
+                console.log('🛑 Stopping Progressive Game...');
+                progressGame.running = false;
+                if (progressGame.animationFrame) {
+                    cancelAnimationFrame(progressGame.animationFrame);
+                    progressGame.animationFrame = null;
+                }
+                if (progressGame.audioAnalysisFrame) {
+                    cancelAnimationFrame(progressGame.audioAnalysisFrame);
+                    progressGame.audioAnalysisFrame = null;
+                }
+                const progressBtn = document.getElementById('progressGameBtn');
+                if (progressBtn) progressBtn.textContent = '▶ Start Game';
+            }
+
+            // Stop Game 3 tab if running
+            if (isRunningGame3 && gameAnimationFrame3) {
+                console.log('🛑 Stopping Game 3...');
+                isRunningGame3 = false;
+                cancelAnimationFrame(gameAnimationFrame3);
+                gameAnimationFrame3 = null;
+                const game3Btn = document.getElementById('tunerBtnGame3');
+                if (game3Btn) game3Btn.textContent = '▶ Start Game';
+            }
+
+            console.log('✓ All games stopped');
+
+            // Remove active from all tabs and content
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
-            if (event && event.target) {
-                event.target.classList.add('active');
+            // Find and activate the clicked tab button
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                if (tab.onclick && tab.onclick.toString().includes(`'${tabName}'`)) {
+                    tab.classList.add('active');
+                    console.log(`✓ Activated tab button for: ${tabName}`);
+                }
+            });
+
+            // Show the tab content
+            const tabContent = document.getElementById(tabName);
+            console.log(`📋 Found tab content element:`, tabContent);
+
+            if (tabContent) {
+                tabContent.classList.add('active');
+                console.log(`✓ Added 'active' class to #${tabName}`);
+                console.log(`📊 Element display after:`, window.getComputedStyle(tabContent).display);
             } else {
-                const tabs = document.querySelectorAll('.tab');
-                tabs.forEach(tab => {
-                    if (tab.textContent.toLowerCase().includes(tabName)) {
-                        tab.classList.add('active');
-                    }
-                });
+                console.error(`❌ Could not find element with id="${tabName}"`);
             }
-            document.getElementById(tabName).classList.add('active');
         }
 
         // ========== STATISTICS & EXPORT ==========
@@ -3002,7 +4986,7 @@
         let fallingLetters = [];
         let gamePatternBuffer = [];
         let lastSpawnTime = 0;
-        let gameAnimationFrame = null;
+        // gameAnimationFrame already declared above in Game tab functions
 
         class FallingLetter {
             constructor(letter, lane, speed) {
@@ -3815,8 +5799,171 @@
         }
 
         // ===================================
+        // PARTICLE SYSTEM FOR GAME EFFECTS
+        // ===================================
+
+        class Particle {
+            constructor(x, y, color, size = null, vx = null, vy = null) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx !== null ? vx : (Math.random() - 0.5) * 10;
+                this.vy = vy !== null ? vy : (Math.random() - 0.5) * 10;
+                this.life = 1.0;
+                this.color = color;
+                this.size = size !== null ? size : (Math.random() * 6 + 3);
+                this.gravity = 0.4;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += this.gravity;
+                this.vx *= 0.98; // Air resistance
+                this.life -= 0.02;
+                this.rotation += this.rotationSpeed;
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = this.life;
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        class ParticleSystem {
+            constructor() {
+                this.particles = [];
+            }
+
+            explode(x, y, colors, count = 30, speedMultiplier = 1) {
+                for (let i = 0; i < count; i++) {
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const angle = (Math.PI * 2 * i) / count;
+                    const speed = (3 + Math.random() * 4) * speedMultiplier;
+                    const vx = Math.cos(angle) * speed;
+                    const vy = Math.sin(angle) * speed;
+                    this.particles.push(new Particle(x, y, color, null, vx, vy));
+                }
+            }
+
+            confetti(x, y, count = 50) {
+                const colors = ['#FF6B6B', '#FDD835', '#4CAF50', '#2196F3', '#9C27B0', '#FF9800'];
+                for (let i = 0; i < count; i++) {
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const vx = (Math.random() - 0.5) * 15;
+                    const vy = -Math.random() * 12 - 5; // Shoot upward
+                    this.particles.push(new Particle(x, y, color, Math.random() * 8 + 4, vx, vy));
+                }
+            }
+
+            sparkle(x, y, color, count = 15) {
+                for (let i = 0; i < count; i++) {
+                    const vx = (Math.random() - 0.5) * 6;
+                    const vy = (Math.random() - 0.5) * 6;
+                    this.particles.push(new Particle(x, y, color, Math.random() * 4 + 2, vx, vy));
+                }
+            }
+
+            update() {
+                this.particles.forEach(p => p.update());
+                this.particles = this.particles.filter(p => p.life > 0);
+            }
+
+            draw(ctx) {
+                this.particles.forEach(p => p.draw(ctx));
+                ctx.globalAlpha = 1.0; // Reset alpha
+            }
+        }
+
+        // ===================================
+        // GAME MODE CONFIGURATIONS
+        // ===================================
+
+        const GAME_MODES = {
+            1: { // Chill Mode
+                name: "🐢 Chill Mode",
+                description: "Slow & relaxing - perfect for learning",
+                speed: 1,
+                spawnDelay: 3500,
+                particleCount: 20,
+                particleColors: ['#A5D6A7', '#C5E1A5', '#E6EE9C', '#FFF9C4'],
+                particleSpeed: 0.7,
+                screenShake: false,
+                confettiOnMastery: false
+            },
+            2: { // Classic Mode
+                name: "⭐ Classic Mode",
+                description: "Default speed & effects",
+                speed: 2,
+                spawnDelay: 2500,
+                particleCount: 30,
+                particleColors: ['#7CB342', '#FDD835', '#FFEB3B', '#CDDC39'],
+                particleSpeed: 1,
+                screenShake: false,
+                confettiOnMastery: false
+            },
+            3: { // Arcade Mode
+                name: "🚀 Arcade Mode",
+                description: "Fast & exciting!",
+                speed: 3.5,
+                spawnDelay: 1800,
+                particleCount: 50,
+                particleColors: ['#FF6B6B', '#FDD835', '#4CAF50', '#2196F3'],
+                particleSpeed: 1.4,
+                screenShake: true,
+                confettiOnMastery: true
+            },
+            4: { // Chaos Mode
+                name: "💥 Chaos Mode",
+                description: "SUPER FAST - for speed demons!",
+                speed: 5,
+                spawnDelay: 1200,
+                particleCount: 80,
+                particleColors: ['#F44336', '#E91E63', '#9C27B0', '#FF5722', '#FFEB3B'],
+                particleSpeed: 2,
+                screenShake: true,
+                confettiOnMastery: true
+            },
+            5: { // Rainbow Mode
+                name: "🌈 Rainbow Mode",
+                description: "Maximum visual satisfaction!",
+                speed: 2.5,
+                spawnDelay: 2200,
+                particleCount: 60,
+                particleColors: ['#FF6B6B', '#FF9800', '#FDD835', '#4CAF50', '#2196F3', '#9C27B0'],
+                particleSpeed: 1.2,
+                screenShake: false,
+                confettiOnMastery: true
+            }
+        };
+
+        let currentGameMode = 2; // Default to Classic
+
+        function setGameMode(modeNumber) {
+            currentGameMode = modeNumber;
+            const mode = GAME_MODES[modeNumber];
+            document.getElementById('currentModeDesc').textContent = `Current: ${mode.name} - ${mode.description}`;
+
+            // If game is running, apply new settings immediately
+            if (progressGame.running) {
+                progressGame.spawnDelay = mode.spawnDelay;
+            }
+
+            console.log(`🎮 Switched to ${mode.name}`);
+        }
+
+        // ===================================
         // PROGRESSIVE LEARNING GAME
         // ===================================
+
+        // Particle system instance
+        const particleSystem = new ParticleSystem();
 
         // Game state
         let progressGame = {
@@ -3841,7 +5988,15 @@
             lastSpawnTime: 0,
             spawnDelay: 2000,  // ms between spawns
             audioAnalysisFrame: null,
-            patternBuffer: []
+            patternBuffer: [],
+            shakeIntensity: 0,  // Screen shake effect intensity
+            // Auto-calibration state
+            calibrationMode: false,
+            calibrationRecordings: [],
+            calibrationAudioClips: [],
+            calibrationCount: 0,
+            calibrationTarget: 5,
+            currentRecorder: null
         };
 
         // Helper to get current batch letters
@@ -3903,8 +6058,20 @@
 
         async function startProgressGame() {
             if (!audioContext) {
+                console.log('🎤 Setting up audio for the first time...');
                 await setupAudio();
             }
+
+            // Verify audio is working
+            if (!analyser || !microphone) {
+                console.error('❌ Audio not set up properly!');
+                alert('Microphone not ready. Please allow microphone access and try again.');
+                return;
+            }
+
+            console.log('✅ Audio context ready:', audioContext.state);
+            console.log('✅ Analyser:', analyser);
+            console.log('✅ Microphone:', microphone);
 
             progressGame.running = true;
             progressGame.canvas = document.getElementById('progressGameCanvas');
@@ -3916,15 +6083,42 @@
             updateProgressInstructions();
             updateProgressUI();
 
-            // Add click listener for canvas
-            progressGame.canvas.addEventListener('click', handleCanvasClick);
+            // Check if current letter needs calibration
+            const currentBatchLetters = getCurrentBatchLetters();
+            const currentLetter = currentBatchLetters[progressGame.currentLetterIndex];
+            const isCalibrated = calibrationData[currentLetter] !== undefined;
 
-            // Start game loop
+            if (!isCalibrated) {
+                // Enter auto-calibration mode (voice-triggered)
+                progressGame.calibrationMode = true;
+                progressGame.calibrationRecordings = [];
+                progressGame.calibrationAudioClips = [];
+                progressGame.calibrationCount = 0;
+                progressGame.currentRecorder = null;
+
+                document.getElementById('progressStatus').textContent =
+                    `🎤 Say "${currentLetter}" when you see it! (${progressGame.calibrationCount}/${progressGame.calibrationTarget})`;
+
+                // Show skip button
+                document.getElementById('skipCalibrationBtn').style.display = 'inline-block';
+            } else {
+                progressGame.calibrationMode = false;
+                // Hide skip button
+                document.getElementById('skipCalibrationBtn').style.display = 'none';
+            }
+
+            // Always start normal game mode (no overlay)
+            progressGame.canvas.addEventListener('click', handleCanvasClick);
             gameLoop();
 
-            // Start audio analysis for Level 3
-            if (progressGame.currentLevel === 3) {
+            // Start audio analysis for Level 3 OR for auto-calibration
+            if (progressGame.currentLevel === 3 || progressGame.calibrationMode) {
                 analyzeProgressAudio();
+                // Show volume meter
+                document.getElementById('volumeMeter').style.display = 'block';
+            } else {
+                // Hide volume meter
+                document.getElementById('volumeMeter').style.display = 'none';
             }
         }
 
@@ -3939,8 +6133,45 @@
                 cancelAnimationFrame(progressGame.audioAnalysisFrame);
             }
 
+            // Stop any active recording
+            if (progressGame.currentRecorder && progressGame.currentRecorder.state === 'recording') {
+                progressGame.currentRecorder.stop();
+                progressGame.currentRecorder = null;
+            }
+
             progressGame.canvas.removeEventListener('click', handleCanvasClick);
             progressGame.fallingLetters = [];
+
+            // Hide volume meter and skip button
+            document.getElementById('volumeMeter').style.display = 'none';
+            document.getElementById('skipCalibrationBtn').style.display = 'none';
+        }
+
+        function skipCalibration() {
+            console.log('⏭ Skipping calibration - using clicks only');
+
+            // Exit calibration mode
+            progressGame.calibrationMode = false;
+            progressGame.calibrationRecordings = [];
+            progressGame.calibrationAudioClips = [];
+            progressGame.calibrationCount = 0;
+
+            // Hide skip button
+            document.getElementById('skipCalibrationBtn').style.display = 'none';
+
+            // Hide volume meter
+            document.getElementById('volumeMeter').style.display = 'none';
+
+            // Update status
+            document.getElementById('progressStatus').textContent = '🖱 Calibration skipped! Click letters to pop them.';
+
+            // Stop audio analysis
+            if (progressGame.audioAnalysisFrame) {
+                cancelAnimationFrame(progressGame.audioAnalysisFrame);
+                progressGame.audioAnalysisFrame = null;
+            }
+
+            updateProgressInstructions();
         }
 
         function resetProgressGame() {
@@ -3954,12 +6185,147 @@
                 document.getElementById('progressStatus').textContent = 'Progress reset! Click Start to begin.';
             }
         }
+        // ===================================
+        // AUTO-CALIBRATION FUNCTIONS
+        // ===================================
+
+        function startVoiceRecording() {
+            if (progressGame.currentRecorder) return; // Already recording
+
+            const stream = microphone.mediaStream;
+            const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+            const audioChunks = [];
+
+            recorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    audioChunks.push(event.data);
+                }
+            };
+
+            recorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                progressGame.calibrationAudioClips.push(audioBlob);
+                progressGame.currentRecorder = null;
+            };
+
+            recorder.start();
+            progressGame.currentRecorder = recorder;
+            console.log('🎤 Started recording for auto-calibration');
+        }
+
+        function stopVoiceRecording() {
+            if (progressGame.currentRecorder && progressGame.currentRecorder.state === 'recording') {
+                progressGame.currentRecorder.stop();
+                console.log('🛑 Stopped recording');
+            }
+        }
+
+        async function finishAutoCalibration(letter) {
+            document.getElementById('progressStatus').textContent = '✨ Processing your voice...';
+
+            try {
+                // Run clustering on patterns
+                const cluster = findBestCluster(progressGame.calibrationRecordings);
+                const baseline = averageSnapshots(cluster.cluster);
+
+                // Find index of first pattern in cluster
+                const bestIndex = cluster.indices[0];
+                const bestAudioClip = progressGame.calibrationAudioClips[bestIndex];
+
+                // Save to Supabase
+                const success = await saveAutoCalibration(letter, baseline, bestAudioClip);
+
+                if (success) {
+                    document.getElementById('progressStatus').textContent = `✅ Voice calibrated for ${letter}! Now tap to play!`;
+
+                    // Update local calibration data
+                    calibrationData[letter] = {
+                        pattern: [baseline],
+                        timestamp: Date.now()
+                    };
+
+                    // Switch to normal tap mode
+                    progressGame.calibrationMode = false;
+                    progressGame.calibrationRecordings = [];
+                    progressGame.calibrationAudioClips = [];
+                    progressGame.calibrationCount = 0;
+
+                    // Continue game normally
+                    updateProgressInstructions();
+                } else {
+                    document.getElementById('progressStatus').textContent = '❌ Save failed. Retrying...';
+                    // Reset to try again
+                    progressGame.calibrationRecordings = [];
+                    progressGame.calibrationAudioClips = [];
+                    progressGame.calibrationCount = 0;
+                }
+            } catch (error) {
+                console.error('Auto-calibration error:', error);
+                document.getElementById('progressStatus').textContent = '❌ Error occurred. Please try again.';
+                // Reset to try again
+                progressGame.calibrationRecordings = [];
+                progressGame.calibrationAudioClips = [];
+                progressGame.calibrationCount = 0;
+            }
+        }
+
+        async function saveAutoCalibration(letter, baseline, audioBlob) {
+            try {
+                // Upload audio to Supabase Storage
+                const filename = `${currentProfileId}/${letter}_${Date.now()}.webm`;
+                const { data: uploadData, error: uploadError } = await supabase.storage
+                    .from('calibration_audio')
+                    .upload(filename, audioBlob, {
+                        contentType: 'audio/webm',
+                        upsert: false
+                    });
+
+                if (uploadError) throw uploadError;
+
+                const audioUrl = `${SUPABASE_URL}/storage/v1/object/public/calibration_audio/${filename}`;
+
+                // Save calibration to database
+                const { data, error } = await supabase
+                    .from('calibrations')
+                    .upsert({
+                        profile_id: currentProfileId,
+                        letter: letter,
+                        pattern: baseline,
+                        audio_url: audioUrl,
+                        calibration_method: 'auto',
+                        updated_at: new Date().toISOString()
+                    }, {
+                        onConflict: 'profile_id,letter'
+                    });
+
+                if (error) throw error;
+
+                console.log(`✅ Auto-calibrated ${letter}`);
+                return true;
+            } catch (error) {
+                console.error(`❌ Failed to save auto-calibration for ${letter}:`, error);
+                return false;
+            }
+        }
 
         function gameLoop() {
             if (!progressGame.running) return;
 
             const now = Date.now();
             const { ctx, canvas } = progressGame;
+            const mode = GAME_MODES[currentGameMode];
+
+            // Apply screen shake if enabled
+            let shakeX = 0, shakeY = 0;
+            if (progressGame.shakeIntensity > 0) {
+                shakeX = (Math.random() - 0.5) * progressGame.shakeIntensity;
+                shakeY = (Math.random() - 0.5) * progressGame.shakeIntensity;
+                progressGame.shakeIntensity *= 0.9; // Decay
+                if (progressGame.shakeIntensity < 0.1) progressGame.shakeIntensity = 0;
+            }
+
+            ctx.save();
+            ctx.translate(shakeX, shakeY);
 
             // Clear canvas
             ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
@@ -4001,12 +6367,19 @@
                 return true;
             });
 
+            // Update and draw particles
+            particleSystem.update();
+            particleSystem.draw(ctx);
+
+            ctx.restore(); // Restore from screen shake transform
+
             progressGame.animationFrame = requestAnimationFrame(gameLoop);
         }
 
         function spawnFallingLetter() {
             const currentBatchLetters = getCurrentBatchLetters();
             const currentLetter = currentBatchLetters[progressGame.currentLetterIndex];
+            const mode = GAME_MODES[currentGameMode];
 
             if (progressGame.currentLevel === 1) {
                 // Level 1: Spawn only current letter
@@ -4015,7 +6388,7 @@
                     letter: currentLetter,
                     x: x,
                     y: -50,
-                    speed: 2,
+                    speed: mode.speed,
                     isTarget: true
                 };
                 progressGame.fallingLetters.push(letter);
@@ -4034,15 +6407,15 @@
 
                 for (let i = 0; i < numLetters; i++) {
                     const isTarget = i === targetIndex;
-                    const letterToSpawn = isTarget ? currentLetter : 
+                    const letterToSpawn = isTarget ? currentLetter :
                         availableLetters[Math.floor(Math.random() * availableLetters.length)] || currentLetter;
-                    
+
                     const x = (i + 1) * (progressGame.canvas.width / (numLetters + 1));
                     const letter = {
                         letter: letterToSpawn,
                         x: x,
                         y: -50 - (i * 100),  // Stagger vertically
-                        speed: 2,
+                        speed: mode.speed,
                         isTarget: isTarget
                     };
                     progressGame.fallingLetters.push(letter);
@@ -4058,7 +6431,7 @@
                     letter: currentLetter,
                     x: x,
                     y: -50,
-                    speed: 2,
+                    speed: mode.speed,
                     isTarget: true
                 };
                 progressGame.fallingLetters.push(letter);
@@ -4076,6 +6449,9 @@
 
         function handleCanvasClick(event) {
             if (!progressGame.running) return;
+
+            // In calibration mode, ignore clicks (voice-triggered only)
+            if (progressGame.calibrationMode) return;
 
             const rect = progressGame.canvas.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
@@ -4133,23 +6509,14 @@
         }
 
         function createProgressExplosion(x, y) {
-            const particles = ['💥', '⭐', '✨', '🌟', '💫', '🎉'];
-            const canvas = progressGame.canvas;
-            const rect = canvas.getBoundingClientRect();
+            const mode = GAME_MODES[currentGameMode];
 
-            for (let i = 0; i < 8; i++) {
-                const particle = document.createElement('div');
-                particle.textContent = particles[Math.floor(Math.random() * particles.length)];
-                particle.style.position = 'fixed';
-                particle.style.left = (rect.left + (x / canvas.width) * rect.width) + 'px';
-                particle.style.top = (rect.top + (y / canvas.height) * rect.height) + 'px';
-                particle.style.fontSize = '30px';
-                particle.style.pointerEvents = 'none';
-                particle.style.zIndex = '10000';
-                particle.style.animation = 'explosionBurst 0.8s ease-out forwards';
+            // Create particle explosion based on current mode
+            particleSystem.explode(x, y, mode.particleColors, mode.particleCount, mode.particleSpeed);
 
-                document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 800);
+            // Apply screen shake if mode has it enabled
+            if (mode.screenShake) {
+                progressGame.shakeIntensity = 15;
             }
         }
 
@@ -4158,9 +6525,15 @@
             const currentBatchLetters = getCurrentBatchLetters();
             const batchNames = ['Vowels (A,E,I,O,U)', 'Consonants 1 (B,C,D,F,G)', 'Consonants 2 (H,J,K,L,M)',
                                'Consonants 3 (N,P,Q,R,S)', 'Consonants 4 (T,V,W,X,Y,Z)'];
+            const mode = GAME_MODES[currentGameMode];
 
             document.getElementById('progressStatus').textContent =
                 `🎉 ${letter} mastered at Level ${progressGame.currentLevel}!`;
+
+            // Show confetti if mode enables it
+            if (mode.confettiOnMastery) {
+                particleSystem.confetti(progressGame.canvas.width / 2, progressGame.canvas.height / 2, 80);
+            }
 
             // Move to next letter in current batch
             progressGame.currentLetterIndex++;
@@ -4229,6 +6602,11 @@
         }
 
         function updateProgressUI() {
+            // Exit early if Progressive Game DOM elements don't exist (happens when Game tab uses Tuner layout)
+            if (!document.getElementById('currentLevel') || !document.getElementById('progressLetterGrid')) {
+                return;
+            }
+
             const currentBatchLetters = getCurrentBatchLetters();
             const allLetters = getAllLetters();
 
@@ -4276,62 +6654,205 @@
             });
         }
 
+        // COPIED FROM TUNER - PROVEN TO WORK!
         function analyzeProgressAudio() {
-            if (!progressGame.running || progressGame.currentLevel !== 3) return;
+            // Run for Level 3 OR calibration mode
+            if (!progressGame.running || (progressGame.currentLevel !== 3 && !progressGame.calibrationMode)) {
+                return;
+            }
+
+            if (!analyser || !dataArray) {
+                console.error('❌ No analyser or dataArray!');
+                return;
+            }
 
             analyser.getByteFrequencyData(dataArray);
-            const volume = Math.max(...dataArray);
+
+            // Calculate volume (same as Tuner)
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                sum += dataArray[i];
+            }
+            const volumePercent = (sum / dataArray.length / 128) * 100;
+            const volume = Math.max(...dataArray); // Peak volume for detection
+
+            // Update volume meter
+            const volumeBar = document.getElementById('volumeBar');
+            const micStatus = document.getElementById('micStatus');
+            const volumeDebug = document.getElementById('volumeDebug');
+
+            if (volumeBar) {
+                volumeBar.style.width = volumePercent + '%';
+            }
+
+            if (volumeDebug) {
+                volumeDebug.textContent = `Volume: ${Math.round(volume)}/255 (${Math.round(volumePercent)}%)`;
+            }
+
+            // Update mic status indicator
+            if (micStatus) {
+                if (volume > 80) {
+                    micStatus.textContent = '● VOICE DETECTED';
+                    micStatus.style.color = '#F44336';
+                } else if (volume > 40) {
+                    micStatus.textContent = '● SPEAKING';
+                    micStatus.style.color = '#FDD835';
+                } else if (volume > 10) {
+                    micStatus.textContent = '● AMBIENT';
+                    micStatus.style.color = '#2196F3';
+                } else {
+                    micStatus.textContent = '● LISTENING';
+                    micStatus.style.color = '#4CAF50';
+                }
+            }
+
+            // ALWAYS add current frame to buffer (sliding window) - SAME AS TUNER
+            const pattern = downsampleFrequencies(dataArray, PATTERN_BINS);
+            progressGame.patternBuffer.push(pattern);
+
+            // Keep buffer at PATTERN_LENGTH
+            if (progressGame.patternBuffer.length > PATTERN_LENGTH) {
+                progressGame.patternBuffer.shift();
+            }
+
+            // Check energy concentration (speech vs background noise)
+            const peakEnergy = Math.max(...pattern);
+            const avgEnergy = pattern.reduce((a, b) => a + b, 0) / pattern.length;
+            const energyConcentration = avgEnergy > 0 ? peakEnergy / avgEnergy : 0;
 
             const currentBatchLetters = getCurrentBatchLetters();
             const currentLetter = currentBatchLetters[progressGame.currentLetterIndex];
 
-            if (volume > 40 && currentLetter) {
-                const pattern = extractPattern(dataArray);
-                progressGame.patternBuffer.push(pattern);
+            // Dynamic thresholds (COPIED FROM TUNER)
+            const FRICATIVES = ['F', 'S', 'V', 'Z', 'H'];
+            const LIQUIDS = ['L', 'R'];
+            const isCurrentNasal = currentLetter && isNasal(currentLetter);
+            const isFricative = currentLetter && FRICATIVES.includes(currentLetter);
+            const isLiquid = currentLetter && LIQUIDS.includes(currentLetter);
 
-                if (progressGame.patternBuffer.length > 5) {
-                    progressGame.patternBuffer.shift();
+            let volumeThreshold = 15;
+            let concentrationThreshold = 2.0;
+
+            if (isCurrentNasal || isLiquid) {
+                volumeThreshold = 8;
+                concentrationThreshold = 1.5;
+            } else if (isFricative) {
+                volumeThreshold = 10;
+                concentrationThreshold = 1.8;
+            }
+
+            // ===== AUTO-CALIBRATION MODE (voice-triggered explosions) =====
+            if (progressGame.calibrationMode && currentLetter) {
+                // Use Tuner's detection logic!
+                if (progressGame.patternBuffer.length === PATTERN_LENGTH &&
+                    volume > volumeThreshold &&
+                    energyConcentration > concentrationThreshold &&
+                    !progressGame.currentRecorder) {
+
+                    // Voice detected! Start recording
+                    const pattern = extractPattern(dataArray);
+                    progressGame.calibrationRecordings.push(pattern);
+
+                    startVoiceRecording();
+
+                    // Find closest letter and trigger explosion
+                    let closestLetter = null;
+                    let closestIndex = -1;
+                    let minDist = Infinity;
+
+                    progressGame.fallingLetters.forEach((letter, index) => {
+                        if (letter.letter === currentLetter) {
+                            const centerDist = Math.abs(letter.y - progressGame.canvas.height / 2);
+                            if (centerDist < minDist) {
+                                minDist = centerDist;
+                                closestLetter = letter;
+                                closestIndex = index;
+                            }
+                        }
+                    });
+
+                    if (closestLetter && closestIndex !== -1) {
+                        // Remove the letter
+                        progressGame.fallingLetters.splice(closestIndex, 1);
+
+                        // Create explosion effect
+                        createProgressExplosion(closestLetter.x, closestLetter.y);
+
+                        // Continue recording for 700ms, then stop
+                        setTimeout(() => {
+                            stopVoiceRecording();
+
+                            progressGame.calibrationCount++;
+                            console.log(`✅ Recorded ${progressGame.calibrationCount}/${progressGame.calibrationTarget}`);
+
+                            document.getElementById('progressStatus').textContent =
+                                `🎤 Great! Say "${currentLetter}" again! (${progressGame.calibrationCount}/${progressGame.calibrationTarget})`;
+
+                            if (progressGame.calibrationCount >= progressGame.calibrationTarget) {
+                                // Done! Process calibrations
+                                setTimeout(() => finishAutoCalibration(currentLetter), 500);
+                            }
+                        }, 700);
+                    }
                 }
+            }
+            // ===== LEVEL 3 MODE (normal voice recognition) - COPIED FROM TUNER =====
+            else if (progressGame.currentLevel === 3 && currentLetter && !progressGame.calibrationMode) {
+                // Same detection logic as Tuner!
+                if (progressGame.patternBuffer.length === PATTERN_LENGTH &&
+                    volume > volumeThreshold &&
+                    energyConcentration > concentrationThreshold) {
 
-                if (progressGame.patternBuffer.length >= 3 && volume > 50) {
+                    // Run S11-Snapshot detection (same as Tuner)
                     const results = testAllPlosiveStrategies(progressGame.patternBuffer, currentLetter);
                     const result = results[0];
                     const score = Math.max(0, Math.min(100, result.score || 0));
                     const prediction = result.predictedLetter || '?';
+                    const isCorrect = prediction === currentLetter;
 
-                    // If correct sound detected, mark the nearest letter as "voice activated"
-                    if (prediction === currentLetter && score > 80) {
-                        // Find closest letter to center
+                    // Success if predicted correctly AND score > 80%
+                    if (isCorrect && score > 80) {
+                        console.log(`🎯 MATCH! ${currentLetter} detected with ${Math.round(score)}% confidence`);
+
+                        // Find closest falling letter
                         let closestLetter = null;
+                        let closestIndex = -1;
                         let minDist = Infinity;
-                        progressGame.fallingLetters.forEach(letter => {
+
+                        progressGame.fallingLetters.forEach((letter, index) => {
                             if (letter.letter === currentLetter) {
                                 const centerDist = Math.abs(letter.y - progressGame.canvas.height / 2);
                                 if (centerDist < minDist) {
                                     minDist = centerDist;
                                     closestLetter = letter;
+                                    closestIndex = index;
                                 }
                             }
                         });
 
-                        if (closestLetter) {
-                            // Highlight it briefly
-                            progressGame.ctx.save();
-                            progressGame.ctx.strokeStyle = '#7CB342';
-                            progressGame.ctx.lineWidth = 5;
-                            progressGame.ctx.beginPath();
-                            progressGame.ctx.arc(closestLetter.x, closestLetter.y, 60, 0, Math.PI * 2);
-                            progressGame.ctx.stroke();
-                            progressGame.ctx.restore();
+                        if (closestLetter && closestIndex !== -1) {
+                            // Remove letter and trigger explosion!
+                            progressGame.fallingLetters.splice(closestIndex, 1);
+                            createProgressExplosion(closestLetter.x, closestLetter.y);
+
+                            // Update progress (same as clicking)
+                            const levelKey = `level${progressGame.currentLevel}`;
+                            progressGame.letterProgress[currentLetter][levelKey]++;
+                            progressGame.score += 10;
+
+                            // Check if letter is mastered
+                            if (progressGame.letterProgress[currentLetter][levelKey] >= progressGame.hitsNeeded) {
+                                letterMasteredAtLevel(currentLetter);
+                            }
+
+                            updateProgressUI();
+                            saveProgressGameData();
                         }
 
+                        // Clear buffer after successful match
                         progressGame.patternBuffer = [];
                     }
                 }
-            }
-
-            if (volume < 30) {
-                progressGame.patternBuffer = [];
             }
 
             progressGame.audioAnalysisFrame = requestAnimationFrame(analyzeProgressAudio);
