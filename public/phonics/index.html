@@ -1212,7 +1212,6 @@
     <div class="container">
         <div class="tabs">
             <button class="tab active" onclick="switchTab('calibrate')">📊 Calibrate</button>
-            <button class="tab" onclick="switchTab('level1')">🎓 Level 1</button>
             <button class="tab" onclick="switchTab('tuner')">🎯 Tuner</button>
             <button class="tab" onclick="switchTab('game')">🎮 Game</button>
             <button class="tab" onclick="switchTab('game3')">🎮 Game 3</button>
@@ -1235,43 +1234,6 @@
             </div>
 
             <div id="calibrationStats" style="margin-top: 20px; text-align: center; color: #aaa;"></div>
-        </div>
-
-        <!-- Level 1 Tab -->
-        <div id="level1" class="tab-content">
-            <div class="info-box">
-                <strong>🎓 Level 1: Listen & Learn</strong><br>
-                Learn the vowels A, E, I, O, U by listening and practicing!
-            </div>
-
-            <div class="level1-instruction" id="level1Instruction">
-                Click START to begin!
-            </div>
-
-            <div class="level1-letter" id="level1Letter">?</div>
-
-            <div class="confidence-bar">
-                <div class="confidence-fill" id="level1ConfidenceFill"></div>
-            </div>
-
-            <div class="stats">
-                <div class="stat-item">
-                    <div>Progress</div>
-                    <div class="stat-value" id="level1Progress">0/5</div>
-                </div>
-                <div class="stat-item">
-                    <div>Mode</div>
-                    <div class="stat-value" id="level1Mode">Listen</div>
-                </div>
-            </div>
-
-            <canvas id="level1SpectrumCanvas" style="width: 100%; height: 120px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; margin: 20px 0;"></canvas>
-
-            <div id="level1Status" style="font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.4; text-align: center; margin: 20px 0;">Ready to start</div>
-
-            <div class="actions">
-                <button class="btn" id="level1Btn" onclick="toggleLevel1()">▶ Start Level 1</button>
-            </div>
         </div>
 
         <!-- Tuner Tab (Elimination Game) -->
@@ -1493,17 +1455,77 @@
             <p style="color: #ddd; font-size: 32px; text-align: center; line-height: 1.6; margin-bottom: 20px; font-weight: bold;">
                 You've learned your first letter!
             </p>
-            <p style="color: #4CAF50; font-size: 36px; text-align: center; margin-bottom: 20px;">
-                Now let's learn the next letter.
-            </p>
 
-            <!-- Demo Animation Container showing next letter -->
+            <!-- Demo Animation Container showing letter A -->
             <div class="demo-container">
-                <div class="demo-letter">B</div>
+                <div class="demo-letter">A</div>
             </div>
 
             <button class="instruction-start-btn celebration" onclick="closeLevel1Complete()">
                 ✨ Continue
+            </button>
+        </div>
+    </div>
+
+    <!-- Game 3 Settings Modal -->
+    <div id="game3SettingsModal" class="instruction-modal">
+        <div class="instruction-modal-content" style="max-width: 600px;">
+            <h2 style="color: #FDD835; font-size: 42px; margin-bottom: 20px; text-align: center;">⚙️ Settings</h2>
+
+            <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                <h3 style="color: #4CAF50; font-size: 24px; margin-bottom: 15px;">⌨️ Keyboard Shortcuts</h3>
+                <div style="color: #ddd; font-size: 18px; line-height: 2;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: #FDD835; font-weight: bold;">1-5</span>
+                        <span>Jump to Level 1-5</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: #FDD835; font-weight: bold;">C</span>
+                        <span>Show celebration modal</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: #FDD835; font-weight: bold;">W</span>
+                        <span>Instant win (9/10 successes)</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: #FDD835; font-weight: bold;">R</span>
+                        <span>Reset to Level 1</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: #FDD835; font-weight: bold;">S</span>
+                        <span>Open settings</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #FDD835; font-weight: bold;">H</span>
+                        <span>Show help in console</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                <h3 style="color: #4CAF50; font-size: 24px; margin-bottom: 15px;">🔊 Audio Playback</h3>
+                <div style="text-align: center; margin-top: 15px;">
+                    <div style="color: #ddd; font-size: 18px; margin-bottom: 10px;">
+                        Say this sound:
+                    </div>
+                    <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 48px; display: inline-block; opacity: 0.7; transition: opacity 0.2s, transform 0.2s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.1)';" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)';" title="Play my recording">🔊</span>
+                    <div style="color: #999; font-size: 14px; margin-top: 10px;">
+                        Click to hear your calibrated voice
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                <h3 style="color: #4CAF50; font-size: 24px; margin-bottom: 15px;">ℹ️ About</h3>
+                <p style="color: #ddd; font-size: 16px; line-height: 1.6;">
+                    <strong>Current Level:</strong> <span id="settingsCurrentLevel">1</span><br>
+                    <strong>Progress:</strong> <span id="settingsProgress">0/10</span><br>
+                    <strong>Version:</strong> 1.4 - Progressive Learning Mode
+                </p>
+            </div>
+
+            <button class="instruction-start-btn" onclick="closeGame3Settings()" style="background: #666;">
+                ✕ Close
             </button>
         </div>
     </div>
@@ -1847,7 +1869,10 @@
                 const supabaseData = await loadCalibrationsFromSupabase();
                 calibrationData = supabaseData;
                 updateCalibrationUI();
-            } else {
+
+                // Also load level progress from Supabase
+                await loadProgressFromSupabase();
+            } else{
                 calibrationData = {};
                 console.warn('⚠️ No profile ID - waiting for Supabase profile initialization');
             }
@@ -1902,8 +1927,13 @@
                 const label = sliderValue <= 70 ? 'Easy' : sliderValue >= 130 ? 'Strict' : 'Normal';
                 const sensitivityPercent = Math.round(sensitivity * 100);
 
+                // Get level progress for this letter
+                const progress = getLetterProgress(phoneme.letter);
+                const isGolden = progress.level_1_completed || progress.current_level > 1;
+                const letterStyle = isGolden ? 'background: linear-gradient(135deg, #FFD700, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold;' : '';
+
                 card.innerHTML = `
-                    <div class="phoneme-letter">${phoneme.letter}</div>
+                    <div class="phoneme-letter" style="${letterStyle}">${phoneme.letter}</div>
                     <div class="phoneme-hint">${phoneme.hint}</div>
                     ${phoneme.audioUrl ? `<div style="font-size: 30px; cursor: pointer; margin: 5px 0;" onclick="event.stopPropagation(); playPhonemeSound('${phoneme.letter}')" title="Listen to sound">🔊</div>` : ''}
                     <div class="snapshots-container" id="snapshots-${phoneme.letter}"></div>
@@ -3342,7 +3372,7 @@
         let activeConfetti3 = 0;
         const MAX_CONFETTI3 = 3;
         let lastCelebratedLetter3 = null;
-        let gameLevel3 = 1;
+        let gameLevel3 = parseInt(localStorage.getItem('gameLevel3')) || 1; // Load saved level or start at 1
         let letterY3 = 0;
         let letterSpeed3 = 0.5;
         let hasPlayedAudio3 = false;
@@ -3353,6 +3383,122 @@
         let letterWasMatched3 = false; // Track if current letter was successfully matched
         let instructionAudio = null; // Track instruction audio playback
 
+        // ===== LEVEL PROGRESS TRACKING (localStorage + Supabase Hybrid) =====
+
+        // Get letter progress from localStorage (instant)
+        function getLetterProgress(letter) {
+            const storageKey = `letterProgress_${currentProfile}`;
+            const allProgress = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            return allProgress[letter] || {
+                current_level: 1,
+                level_1_completed: false,
+                level_2_completed: false,
+                level_3_completed: false,
+                consecutive_successes: 0,
+                last_practiced: new Date().toISOString()
+            };
+        }
+
+        // Save letter progress to localStorage (instant) + sync to Supabase (background)
+        async function saveLetterProgress(letter, updates) {
+            const storageKey = `letterProgress_${currentProfile}`;
+            const allProgress = JSON.parse(localStorage.getItem(storageKey) || '{}');
+
+            // Merge updates
+            allProgress[letter] = {
+                ...allProgress[letter],
+                ...updates,
+                last_practiced: new Date().toISOString()
+            };
+
+            // Save to localStorage immediately (instant)
+            localStorage.setItem(storageKey, JSON.stringify(allProgress));
+            console.log(`💾 Saved ${letter} progress to localStorage:`, allProgress[letter]);
+
+            // Sync to Supabase in background (don't wait)
+            syncProgressToSupabase(letter, allProgress[letter]).catch(err => {
+                console.warn('⚠️ Failed to sync progress to Supabase:', err);
+            });
+        }
+
+        // Sync progress to Supabase (background)
+        async function syncProgressToSupabase(letter, progress) {
+            if (!currentProfile) {
+                console.log('⏭️ Skipping Supabase sync (no profile)');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .from('calibrations')
+                    .update({
+                        current_level: progress.current_level,
+                        level_1_completed: progress.level_1_completed,
+                        level_2_completed: progress.level_2_completed,
+                        level_3_completed: progress.level_3_completed,
+                        consecutive_successes: progress.consecutive_successes,
+                        last_practiced: progress.last_practiced
+                    })
+                    .eq('profile_id', currentProfile)
+                    .eq('letter', letter);
+
+                if (error) throw error;
+                console.log(`☁️ Synced ${letter} progress to Supabase`);
+            } catch (error) {
+                console.error('❌ Supabase sync error:', error);
+                throw error;
+            }
+        }
+
+        // Load all progress from Supabase on startup (updates localStorage)
+        async function loadProgressFromSupabase() {
+            if (!currentProfile) return;
+
+            try {
+                const { data, error } = await supabase
+                    .from('calibrations')
+                    .select('letter, current_level, level_1_completed, level_2_completed, level_3_completed, consecutive_successes, last_practiced')
+                    .eq('profile_id', currentProfile);
+
+                if (error) throw error;
+
+                if (data && data.length > 0) {
+                    const storageKey = `letterProgress_${currentProfile}`;
+                    const allProgress = {};
+
+                    data.forEach(row => {
+                        allProgress[row.letter] = {
+                            current_level: row.current_level || 1,
+                            level_1_completed: row.level_1_completed || false,
+                            level_2_completed: row.level_2_completed || false,
+                            level_3_completed: row.level_3_completed || false,
+                            consecutive_successes: row.consecutive_successes || 0,
+                            last_practiced: row.last_practiced
+                        };
+                    });
+
+                    localStorage.setItem(storageKey, JSON.stringify(allProgress));
+                    console.log(`📥 Loaded progress from Supabase for ${data.length} letters`);
+                }
+            } catch (error) {
+                console.warn('⚠️ Failed to load progress from Supabase:', error);
+            }
+        }
+
+        function updateLevelIndicator() {
+            const indicator = document.getElementById('gameLevelIndicator3');
+            if (indicator) {
+                const levelNames = {
+                    1: 'Level 1: Listen & Repeat (A)',
+                    2: 'Level 2: Independent (A)',
+                    3: 'Level 3: Listen & Repeat (E)',
+                    4: 'Level 4: Independent (E)',
+                    5: 'Level 5: Mixed Practice (A & E)'
+                };
+                indicator.textContent = levelNames[gameLevel3] || `Level ${gameLevel3}`;
+            }
+        }
+
         function skipLetterGame3() {
             if (isRunningGame3) {
                 setNextTargetGame3();
@@ -3360,17 +3506,22 @@
         }
 
         function openGame3Settings() {
-            // TODO: Open settings modal with:
-            // - Play calibration sound (speaker icon)
-            // - Sensitivity slider
-            // - Skip letter button
-            // - Future settings...
-            alert('Settings coming soon!\n\nWill include:\n- 🔊 Play sound\n- 📊 Sensitivity\n- ⏭️ Skip letter');
+            const modal = document.getElementById('game3SettingsModal');
+            modal.classList.add('active');
+
+            // Update current level and progress display
+            document.getElementById('settingsCurrentLevel').textContent = gameLevel3;
+            document.getElementById('settingsProgress').textContent = `${consecutiveSuccesses3}/10`;
+        }
+
+        function closeGame3Settings() {
+            const modal = document.getElementById('game3SettingsModal');
+            modal.classList.remove('active');
         }
 
         function setNextTargetGame3() {
-            // Level 1: Check if previous letter timed out without being matched
-            if (gameLevel3 === 1 && !letterWasMatched3 && consecutiveSuccesses3 > 0) {
+            // Levels 1-5: Check if previous letter timed out without being matched
+            if (gameLevel3 >= 1 && gameLevel3 <= 5 && !letterWasMatched3 && consecutiveSuccesses3 > 0) {
                 console.log(`❌ Letter timed out! Resetting consecutive count from ${consecutiveSuccesses3} to 0`);
                 consecutiveSuccesses3 = 0;
 
@@ -3381,13 +3532,23 @@
                 }
             }
 
-            // Level 1: Only letter A (for children who don't know letters yet)
-            if (gameLevel3 === 1) {
+            // Select letter based on global game level (not per-letter)
+            if (gameLevel3 === 1 || gameLevel3 === 2) {
+                // Levels 1-2: Letter A
                 currentTargetGame3 = 'A';
+            } else if (gameLevel3 === 3 || gameLevel3 === 4) {
+                // Levels 3-4: Letter E
+                currentTargetGame3 = 'E';
+            } else if (gameLevel3 === 5) {
+                // Level 5: Mixed A & E (random)
+                currentTargetGame3 = Math.random() < 0.5 ? 'A' : 'E';
             } else {
-                // Other levels: random or alphabet mode
+                // Level 6+: All letters (future expansion)
                 currentTargetGame3 = alphabetModeEnabled ? pickNextAlphabetLetter() : pickRandomLetter();
             }
+
+            updateLevelIndicator();
+            console.log(`📊 Global Level ${gameLevel3}: ${currentTargetGame3}`);
 
             if (currentTargetGame3) {
                 const letterEl = document.getElementById('targetLetterGame3');
@@ -3400,15 +3561,20 @@
                 letterWasMatched3 = false; // Reset match flag for new letter
                 letterEl.style.transition = 'none';
                 letterEl.style.top = `${letterY3}%`;
+                letterEl.style.transform = 'translateX(-50%) scale(1)'; // Reset from pop animation
+                letterEl.style.opacity = '1'; // Reset from pop animation
 
                 letterEl.offsetHeight;
 
                 letterEl.textContent = currentTargetGame3;
-                if (gameLevel3 === 1) {
-                    document.getElementById('statusGame3').textContent = `🎓 Level 1: Listen and learn - ${currentTargetGame3}`;
-                } else {
-                    document.getElementById('statusGame3').textContent = `Say: ${currentTargetGame3}`;
-                }
+                const statusMessages = {
+                    1: `🎓 Listen and repeat: ${currentTargetGame3}`,
+                    2: `🎯 Say it yourself: ${currentTargetGame3}`,
+                    3: `🎓 Listen and repeat: ${currentTargetGame3}`,
+                    4: `🎯 Say it yourself: ${currentTargetGame3}`,
+                    5: `🌟 Mixed practice: ${currentTargetGame3}`
+                };
+                document.getElementById('statusGame3').textContent = statusMessages[gameLevel3] || `Say: ${currentTargetGame3}`;
                 patternBufferGame3 = [];
                 lastCelebratedLetter3 = null;
 
@@ -3534,7 +3700,7 @@
 
             // Auto-play celebration audio
             console.log('🎉 Loading celebration audio...');
-            const audioPath = 'voice-instructions/' + encodeURIComponent('A success B start.mp3');
+            const audioPath = 'voice-instructions/' + encodeURIComponent('Congratulation level 1.mp3');
             const celebrationAudio = new Audio(audioPath);
 
             celebrationAudio.onloadeddata = () => {
@@ -3557,6 +3723,16 @@
             const confettiContainer = document.getElementById('celebrationConfetti');
             if (confettiContainer) {
                 confettiContainer.innerHTML = '';
+            }
+
+            // Automatically start next level
+            const btn = document.getElementById('tunerBtnGame3');
+            if (btn) {
+                btn.textContent = '⏸ Stop Game';
+                isRunningGame3 = true;
+                updateLevelIndicator(); // Update to show new level
+                setNextTargetGame3(); // Start new letter
+                analyzeTunerGame3(); // Start game loop
             }
         }
 
@@ -3611,8 +3787,8 @@
                 const letterEl = document.getElementById('targetLetterGame3');
                 letterEl.style.top = `${letterY3}%`;
 
-                // Level 1: Auto-play calibration audio immediately when letter enters screen
-                if (gameLevel3 === 1 && !hasPlayedAudio3 && letterY3 >= -20) {
+                // Levels 1 & 3: Auto-play calibration audio immediately when letter enters screen (learning mode)
+                if ((gameLevel3 === 1 || gameLevel3 === 3) && !hasPlayedAudio3 && letterY3 >= -20) {
                     hasPlayedAudio3 = true;
                     isListeningForStudent3 = false;
 
@@ -3661,8 +3837,22 @@
                     }
                 }
 
-                // Level 1: Letter slows down, stops at bottom, pauses 3 seconds, then respawns
-                if (gameLevel3 === 1) {
+                // Levels 2, 4, 5: NO audio - start listening immediately when letter enters screen (independent mode)
+                if ((gameLevel3 === 2 || gameLevel3 === 4 || gameLevel3 === 5) && !hasPlayedAudio3 && letterY3 >= -20) {
+                    hasPlayedAudio3 = true; // Mark as "played" even though no audio
+                    isListeningForStudent3 = true; // Start listening immediately
+
+                    // Update mic indicator to green (listening)
+                    const micIndicator = document.getElementById('micIndicator3');
+                    if (micIndicator) {
+                        micIndicator.style.background = '#4CAF50';
+                        micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
+                    }
+                    console.log(`👂 Level ${gameLevel3}: No audio - listening for student to say: ${currentTargetGame3}`);
+                }
+
+                // Levels 1-5: Letter slows down, stops at bottom, pauses 3 seconds, then respawns
+                if (gameLevel3 >= 1 && gameLevel3 <= 5) {
                     // Start slowing down at 55% (earlier for smoother deceleration)
                     if (letterY3 > 55 && letterY3 < 70 && letterSpeed3 > 0.15) {
                         letterSpeed3 = 0.15;
@@ -3682,7 +3872,7 @@
                         }
                     }
                 } else {
-                    // Other levels: Letter respawns when it falls off screen
+                    // Level 6+: Letter respawns when it falls off screen
                     if (letterY3 > 150) {
                         setNextTargetGame3();
                     }
@@ -3796,8 +3986,8 @@
 
                         document.getElementById('statusGame3').textContent = `✓ MATCH! ${Math.round(score)}%\n\n` + statusText;
 
-                        // Level 1: Immediate pop and respawn
-                        if (gameLevel3 === 1) {
+                        // Levels 1-5: Immediate pop and respawn
+                        if (gameLevel3 >= 1 && gameLevel3 <= 5) {
                             console.log(`🎉 Student matched ${currentTargetGame3}! Popping letter...`);
                             isListeningForStudent3 = false;
                             letterWasMatched3 = true; // Mark this letter as matched
@@ -3819,13 +4009,39 @@
                             letterEl.style.transform = 'translateX(-50%) scale(2)';
                             letterEl.style.opacity = '0';
 
-                            // Check if Level 1 is completed (10 consecutive successes)
+                            // Check if current level is completed (10 consecutive successes)
                             if (consecutiveSuccesses3 >= 10) {
-                                setTimeout(() => {
+                                setTimeout(async () => {
                                     // Stop the game
                                     isRunningGame3 = false;
                                     const btn = document.getElementById('tunerBtnGame3');
                                     if (btn) btn.textContent = '▶ Start Game';
+
+                                    // Advance to next level
+                                    const completedLevel = gameLevel3;
+                                    gameLevel3++;
+
+                                    // Save global game level to localStorage
+                                    localStorage.setItem('gameLevel3', gameLevel3);
+                                    console.log(`🎓 Level ${completedLevel} completed! Advancing to Level ${gameLevel3}`);
+
+                                    // Mark letter as completed in calibration (for golden letter effect)
+                                    if (completedLevel === 1 || completedLevel === 2) {
+                                        await saveLetterProgress('A', {
+                                            level_1_completed: completedLevel === 1,
+                                            level_2_completed: completedLevel === 2,
+                                            current_level: completedLevel + 1
+                                        });
+                                    } else if (completedLevel === 3 || completedLevel === 4) {
+                                        await saveLetterProgress('E', {
+                                            level_3_completed: completedLevel === 3,
+                                            level_4_completed: completedLevel === 4,
+                                            current_level: completedLevel + 1
+                                        });
+                                    }
+
+                                    // Refresh calibration grid to show golden letters
+                                    createCalibrationGrid();
 
                                     // Show celebration modal
                                     showLevel1CompleteModal();
@@ -3843,7 +4059,7 @@
                                 setNextTargetGame3();
                             }, 300);
                         } else {
-                            // Other levels: delay before next letter
+                            // Level 6+: delay before next letter
                             setTimeout(() => {
                                 setNextTargetGame3();
                             }, 1000);
@@ -5310,387 +5526,6 @@
             gameCtx.fillText(`Score: ${gameScore}`, gameCanvas.width / 2, gameCanvas.height / 2 + 20);
         }
 
-        // ========== LEVEL 1 LEARNING GAME ==========
-
-        const VOWELS_LEARNING = ['A', 'E', 'I', 'O', 'U'];
-        let level1Running = false;
-        let level1State = {
-            phase: 'intro',
-            currentVowelIndex: 0,
-            repetition: 0,
-            mode: 'listen',
-            mixedRound: 0,
-            learnedVowels: [],
-            demoPattern: [],
-            demoIndex: 0
-        };
-        let level1PatternBuffer = [];
-        let level1Canvas, level1CanvasCtx;
-
-        async function toggleLevel1() {
-            if (level1Running) {
-                stopLevel1();
-            } else {
-                if (!audioContext) {
-                    await setupAudio();
-                }
-                startLevel1();
-            }
-        }
-
-        function startLevel1() {
-            level1Running = true;
-            level1State = {
-                phase: 'teach',
-                currentVowelIndex: 0,
-                repetition: 0,
-                mode: 'listen',
-                mixedRound: 0,
-                learnedVowels: [],
-                demoPattern: [],
-                demoIndex: 0
-            };
-            level1PatternBuffer = [];
-
-            level1Canvas = document.getElementById('level1SpectrumCanvas');
-            level1CanvasCtx = level1Canvas.getContext('2d');
-            level1Canvas.width = 800;
-            level1Canvas.height = 120;
-
-            document.getElementById('level1Btn').textContent = '⏸ Stop';
-
-            nextLevel1Step();
-            analyzeLevel1Audio();
-        }
-
-        function stopLevel1() {
-            level1Running = false;
-            document.getElementById('level1Btn').textContent = '▶ Start Level 1';
-            document.getElementById('level1Letter').textContent = '?';
-            document.getElementById('level1Instruction').textContent = 'Stopped';
-        }
-
-        function nextLevel1Step() {
-            if (!level1Running) return;
-
-            const state = level1State;
-            const currentLetter = VOWELS_LEARNING[state.currentVowelIndex];
-
-            if (state.phase === 'teach') {
-                if (state.mode === 'listen') {
-                    if (state.repetition < 5) {
-                        showLevel1Letter(currentLetter);
-                        document.getElementById('level1Instruction').textContent = `👂 Listen: ${currentLetter}`;
-                        document.getElementById('level1Mode').textContent = 'Listen';
-                        document.getElementById('level1Progress').textContent = `${state.repetition + 1}/5`;
-
-                        setTimeout(() => {
-                            playPhonemeSound(currentLetter);
-                            state.repetition++;
-                            setTimeout(() => nextLevel1Step(), 1500);
-                        }, 500);
-                    } else {
-                        state.repetition = 0;
-                        state.mode = 'practice';
-                        nextLevel1Step();
-                    }
-                } else if (state.mode === 'practice') {
-                    if (state.repetition < 5) {
-                        showLevel1Letter(currentLetter);
-                        document.getElementById('level1Instruction').textContent = `🎤 Your turn! Say: ${currentLetter}`;
-                        document.getElementById('level1Mode').textContent = 'Practice';
-                        document.getElementById('level1Progress').textContent = `${state.repetition + 1}/5`;
-                    } else {
-                        state.learnedVowels.push(currentLetter);
-
-                        if (state.learnedVowels.length >= 2) {
-                            state.phase = 'demo';
-                            state.demoPattern = generateMixedPattern(state.learnedVowels);
-                            state.demoIndex = 0;
-                            state.repetition = 0;
-                            nextLevel1Step();
-                        } else {
-                            state.currentVowelIndex++;
-                            if (state.currentVowelIndex >= VOWELS_LEARNING.length) {
-                                completeLevel1();
-                            } else {
-                                state.repetition = 0;
-                                state.mode = 'listen';
-                                nextLevel1Step();
-                            }
-                        }
-                    }
-                }
-            } else if (state.phase === 'demo') {
-                if (state.demoIndex === 0) {
-                    document.getElementById('level1Instruction').textContent = `👀 Watch! I'll show you the pattern first...`;
-                }
-
-                if (state.demoIndex < state.demoPattern.length) {
-                    const letter = state.demoPattern[state.demoIndex];
-                    showLevel1Letter(letter);
-                    document.getElementById('level1Mode').textContent = 'Demo';
-
-                    setTimeout(() => {
-                        playPhonemeSound(letter);
-                        state.demoIndex++;
-                        setTimeout(() => nextLevel1Step(), 1500);
-                    }, 500);
-                } else {
-                    state.phase = 'mixed';
-                    state.mixedRound = 0;
-                    state.repetition = 0;
-                    nextLevel1Step();
-                }
-            } else if (state.phase === 'mixed') {
-                if (state.mixedRound < 5) {
-                    const letter = state.learnedVowels[state.repetition % state.learnedVowels.length];
-                    showLevel1Letter(letter);
-                    document.getElementById('level1Instruction').textContent = `🎤 Say: ${letter}`;
-                    document.getElementById('level1Mode').textContent = 'Mixed';
-                    document.getElementById('level1Progress').textContent = `Round ${state.mixedRound + 1}/5`;
-                } else {
-                    state.currentVowelIndex++;
-                    if (state.currentVowelIndex >= VOWELS_LEARNING.length) {
-                        completeLevel1();
-                    } else {
-                        state.phase = 'teach';
-                        state.mode = 'listen';
-                        state.repetition = 0;
-                        nextLevel1Step();
-                    }
-                }
-            }
-        }
-
-        function generateMixedPattern(vowels) {
-            const pattern = [];
-            for (let i = 0; i < vowels.length; i++) {
-                pattern.push(vowels[i]);
-                if (i < vowels.length - 1) {
-                    pattern.push(vowels[i + 1]);
-                }
-            }
-            return pattern;
-        }
-
-        function showLevel1Letter(letter) {
-            const letterEl = document.getElementById('level1Letter');
-            letterEl.textContent = letter;
-            letterEl.classList.remove('fade-in');
-            void letterEl.offsetWidth;
-            letterEl.classList.add('fade-in');
-        }
-
-        function analyzeLevel1Audio() {
-            if (!level1Running) return;
-            requestAnimationFrame(analyzeLevel1Audio);
-
-            analyser.getByteFrequencyData(dataArray);
-
-            drawLevel1Spectrum();
-
-            const pattern = downsampleFrequencies(dataArray, PATTERN_BINS);
-            level1PatternBuffer.push(pattern);
-
-            if (level1PatternBuffer.length > PATTERN_LENGTH) {
-                level1PatternBuffer.shift();
-            }
-
-            let sum = 0;
-            for (let i = 0; i < dataArray.length; i++) {
-                sum += dataArray[i];
-            }
-            const volume = (sum / dataArray.length / 128) * 100;
-
-            const peakEnergy = Math.max(...pattern);
-            const avgEnergy = pattern.reduce((a, b) => a + b, 0) / pattern.length;
-            const energyConcentration = avgEnergy > 0 ? peakEnergy / avgEnergy : 0;
-
-            if (level1State.phase === 'teach' && level1State.mode === 'practice' && level1PatternBuffer.length === PATTERN_LENGTH) {
-                const targetLetter = VOWELS_LEARNING[level1State.currentVowelIndex];
-
-                if (volume > 15 && energyConcentration > 2.0) {
-                    const results = testAllPlosiveStrategies(level1PatternBuffer, targetLetter);
-                    const result = results[0];
-                    const score = Math.max(0, Math.min(100, result.score || 0));
-                    const prediction = result.predictedLetter || '?';
-                    const isCorrect = prediction === targetLetter;
-
-                    document.getElementById('level1Status').textContent = `Prediction: ${prediction} | Score: ${Math.round(score)}%`;
-                    document.getElementById('level1ConfidenceFill').style.width = score + '%';
-
-                    if (isCorrect && score > 80) {
-                        celebrateLevel1Match();
-                        level1State.repetition++;
-                        level1PatternBuffer = [];
-                        setTimeout(() => nextLevel1Step(), 1000);
-                    }
-                }
-            } else if (level1State.phase === 'mixed' && level1PatternBuffer.length === PATTERN_LENGTH) {
-                const targetLetter = level1State.learnedVowels[level1State.repetition % level1State.learnedVowels.length];
-
-                if (volume > 15 && energyConcentration > 2.0) {
-                    const results = testAllPlosiveStrategies(level1PatternBuffer, targetLetter);
-                    const result = results[0];
-                    const score = Math.max(0, Math.min(100, result.score || 0));
-                    const prediction = result.predictedLetter || '?';
-                    const isCorrect = prediction === targetLetter;
-
-                    document.getElementById('level1Status').textContent = `Prediction: ${prediction} | Score: ${Math.round(score)}%`;
-                    document.getElementById('level1ConfidenceFill').style.width = score + '%';
-
-                    if (isCorrect && score > 80) {
-                        celebrateLevel1Match();
-                        level1State.repetition++;
-                        level1PatternBuffer = [];
-
-                        if (level1State.repetition >= level1State.learnedVowels.length * 2) {
-                            level1State.mixedRound++;
-                            level1State.repetition = 0;
-                        }
-
-                        setTimeout(() => nextLevel1Step(), 1000);
-                    }
-                }
-            }
-        }
-
-        function drawLevel1Spectrum() {
-            if (!level1Canvas) return;
-
-            const width = level1Canvas.width;
-            const height = level1Canvas.height;
-
-            level1CanvasCtx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-            level1CanvasCtx.fillRect(0, 0, width, height);
-
-            const barWidth = width / dataArray.length * 2.5;
-            let x = 0;
-
-            for (let i = 0; i < dataArray.length; i++) {
-                const barHeight = (dataArray[i] / 255) * height;
-                const hue = (i / dataArray.length) * 120 + 100;
-                level1CanvasCtx.fillStyle = `hsl(${hue}, 70%, 50%)`;
-                level1CanvasCtx.fillRect(x, height - barHeight, barWidth, barHeight);
-                x += barWidth + 1;
-            }
-        }
-
-        function celebrateLevel1Match() {
-            const letterEl = document.getElementById('level1Letter');
-
-            // Play success sound
-            if (audioContext) {
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-
-                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
-
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.4);
-            }
-
-            // Exciting animation sequence
-            letterEl.style.transition = 'all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-
-            // Bounce and color sequence
-            letterEl.style.transform = 'scale(1.5) rotate(5deg)';
-            letterEl.style.color = '#FDD835';
-
-            setTimeout(() => {
-                letterEl.style.transform = 'scale(1.3) rotate(-5deg)';
-                letterEl.style.color = '#7CB342';
-            }, 150);
-
-            setTimeout(() => {
-                letterEl.style.transform = 'scale(1.6) rotate(0deg)';
-                letterEl.style.color = '#00BCD4';
-            }, 300);
-
-            setTimeout(() => {
-                letterEl.style.transform = 'scale(1.2)';
-                letterEl.style.color = '#FF5722';
-            }, 450);
-
-            setTimeout(() => {
-                letterEl.style.transform = 'scale(1.4)';
-                letterEl.style.color = '#9C27B0';
-            }, 600);
-
-            setTimeout(() => {
-                letterEl.style.transition = 'all 0.3s ease-out';
-                letterEl.style.transform = 'scale(1)';
-                letterEl.style.color = '#FDD835';
-            }, 800);
-
-            // Create confetti particles
-            createLevel1Confetti(letterEl);
-        }
-
-        function createLevel1Confetti(centerEl) {
-            const container = centerEl.parentElement;
-            const rect = centerEl.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-
-            const colors = ['#FDD835', '#7CB342', '#00BCD4', '#FF5722', '#9C27B0'];
-
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.style.position = 'fixed';
-                particle.style.left = centerX + 'px';
-                particle.style.top = centerY + 'px';
-                particle.style.width = '10px';
-                particle.style.height = '10px';
-                particle.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.pointerEvents = 'none';
-                particle.style.zIndex = '9999';
-
-                document.body.appendChild(particle);
-
-                const angle = (Math.PI * 2 * i) / 20;
-                const velocity = 100 + Math.random() * 100;
-                const vx = Math.cos(angle) * velocity;
-                const vy = Math.sin(angle) * velocity;
-
-                let x = 0, y = 0, time = 0;
-                const gravity = 500;
-
-                const animate = () => {
-                    time += 0.016; // ~60fps
-                    x = vx * time;
-                    y = vy * time + 0.5 * gravity * time * time;
-
-                    particle.style.transform = `translate(${x}px, ${y}px) rotate(${time * 360}deg)`;
-                    particle.style.opacity = Math.max(0, 1 - time * 1.5);
-
-                    if (time < 1) {
-                        requestAnimationFrame(animate);
-                    } else {
-                        particle.remove();
-                    }
-                };
-
-                requestAnimationFrame(animate);
-            }
-        }
-
-        function completeLevel1() {
-            level1Running = false;
-            document.getElementById('level1Letter').textContent = '🎉';
-            document.getElementById('level1Instruction').textContent = 'Amazing! You completed Level 1!';
-            document.getElementById('level1Btn').textContent = '🔄 Play Again';
-        }
 
         // Initialize
         (async () => {
@@ -6860,6 +6695,108 @@
 
         // Initialize on load
         loadProgressGameData();
+
+        // ============================================
+        // DEV MODE: Keyboard Shortcuts for Testing
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            // Only work on Game 3 tab
+            if (document.querySelector('.tab.active')?.textContent?.includes('Game 3')) {
+
+                // Press '1-5' to jump to that level
+                if (e.key >= '1' && e.key <= '5') {
+                    const targetLevel = parseInt(e.key);
+                    gameLevel3 = targetLevel;
+                    localStorage.setItem('gameLevel3', gameLevel3);
+                    consecutiveSuccesses3 = 0; // Reset progress when jumping levels
+                    updateLevelIndicator();
+                    console.log(`🎮 DEV: Jumped to Level ${targetLevel}`);
+
+                    // Update counter display
+                    const counterEl = document.getElementById('successCounter3');
+                    if (counterEl) {
+                        counterEl.textContent = `⭐ 0/10`;
+                        counterEl.style.display = 'block';
+                    }
+
+                    // If game is running, update the current letter
+                    if (isRunningGame3) {
+                        setNextTargetGame3();
+                    } else {
+                        // If game is not running, start it
+                        const btn = document.getElementById('tunerBtnGame3');
+                        if (btn && btn.textContent === '▶ Start Game') {
+                            console.log('🎮 DEV: Auto-starting game...');
+                            toggleTunerGame3();
+                        }
+                    }
+                }
+
+                // Press 'C' to show celebration modal
+                if (e.key.toLowerCase() === 'c') {
+                    console.log('🎉 DEV: Showing celebration modal');
+                    showLevel1CompleteModal();
+                }
+
+                // Press 'W' to instant win (set successes to 9, so next match completes)
+                if (e.key.toLowerCase() === 'w') {
+                    consecutiveSuccesses3 = 9;
+                    const counterEl = document.getElementById('successCounter3');
+                    if (counterEl) {
+                        counterEl.textContent = `⭐ 9/10`;
+                        counterEl.style.display = 'block';
+                    }
+                    console.log('⚡ DEV: Set successes to 9/10 - next match will complete level!');
+                }
+
+                // Press 'R' to reset progress (back to Level 1)
+                if (e.key.toLowerCase() === 'r') {
+                    gameLevel3 = 1;
+                    consecutiveSuccesses3 = 0;
+                    localStorage.setItem('gameLevel3', '1');
+                    updateLevelIndicator();
+                    const counterEl = document.getElementById('successCounter3');
+                    if (counterEl) {
+                        counterEl.textContent = `⭐ 0/10`;
+                        counterEl.style.display = 'block';
+                    }
+                    console.log('🔄 DEV: Reset to Level 1');
+
+                    if (isRunningGame3) {
+                        setNextTargetGame3();
+                    } else {
+                        // If game is not running, start it
+                        const btn = document.getElementById('tunerBtnGame3');
+                        if (btn && btn.textContent === '▶ Start Game') {
+                            console.log('🎮 DEV: Auto-starting game...');
+                            toggleTunerGame3();
+                        }
+                    }
+                }
+
+                // Press 'S' to open settings
+                if (e.key.toLowerCase() === 's') {
+                    console.log('⚙️ DEV: Opening settings');
+                    openGame3Settings();
+                }
+
+                // Press 'H' to show help
+                if (e.key.toLowerCase() === 'h') {
+                    console.log(`
+🎮 DEV MODE KEYBOARD SHORTCUTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1-5  → Jump to Level 1-5
+C    → Show celebration modal
+W    → Instant win (9/10 successes)
+R    → Reset to Level 1
+S    → Open settings
+H    → Show this help
+                    `);
+                }
+            }
+        });
+
+        console.log('🎮 DEV MODE enabled! Press H for keyboard shortcuts.');
     </script>
 </body>
 </html>

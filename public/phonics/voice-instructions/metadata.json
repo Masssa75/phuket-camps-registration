@@ -47,5 +47,11 @@
     "voice": "nova",
     "speed": "1",
     "favorite": true
+  },
+  "Congratulation level 1.mp3": {
+    "text": "AMAZING!! You've learned your first letter! Now we'll show you the letter WITHOUT sound. Say the letter sound as soon as you see it! This will POP the letter. You'll get points for every letter you pop :)",
+    "voice": "nova",
+    "speed": "1",
+    "favorite": true
   }
 }
