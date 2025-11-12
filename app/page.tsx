@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { MessageCircle } from 'lucide-react'
 import './home.css'
 import type { Metadata } from 'next'
+import HeroVideo from '@/components/HeroVideo'
 
 export const metadata: Metadata = {
   title: 'Phuket Nature Camp - Christmas & Winter Camps 2025-2026 | Bamboo Valley',
@@ -110,11 +111,7 @@ export default function Home() {
 
       {/* Hero Section with Video */}
       <section className="hero">
-        <div className="hero-video">
-          <video autoPlay muted loop playsInline>
-            <source src="/videos/No text flyover.mp4" type="video/mp4" />
-          </video>
-        </div>
+        <HeroVideo />
         <img src="/Logo with text.png" alt="Bamboo Valley Phuket Nature Camps Logo" className="hero-logo" />
         <div className="hero-content">
           <div className="hero-header">Phuket Nature Camp</div>
