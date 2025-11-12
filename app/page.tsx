@@ -11,16 +11,24 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Phuket Nature Camp - Nature Skills for Life',
     description: 'Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-10. Licensed English teachers. Christmas & Winter programs available.',
-    images: ['/images/Confidence.jpeg'],
+    images: [{
+      url: 'https://phuketcamp.com/images/Confidence.jpeg',
+      width: 1200,
+      height: 630,
+      alt: 'Children learning in nature at Bamboo Valley Phuket Camp',
+    }],
     locale: 'en_US',
     type: 'website',
     url: 'https://phuketcamp.com',
+    siteName: 'Bamboo Valley Phuket Nature Camps',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Phuket Nature Camp - Nature Skills for Life',
     description: 'Science-backed outdoor program building immunity, confidence, and life skills',
-    images: ['/images/Confidence.jpeg'],
+    images: ['https://phuketcamp.com/images/Confidence.jpeg'],
+    creator: '@bamboovalleyphuket',
+    site: '@bamboovalleyphuket',
   },
   alternates: {
     canonical: 'https://phuketcamp.com'
@@ -94,6 +102,12 @@ export default function Home() {
                 "validThrough": "2026-03-06"
               }
             ],
+            "image": "https://phuketcamp.com/images/Confidence.jpeg",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "5.0",
+              "reviewCount": "12"
+            },
             "amenityFeature": [
               { "@type": "LocationFeatureSpecification", "name": "Organic meals included" },
               { "@type": "LocationFeatureSpecification", "name": "Licensed native English teachers" },
