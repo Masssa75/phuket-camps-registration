@@ -1,19 +1,28 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function HeroVideo() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+  const [hidePoster, setHidePoster] = useState(false)
+
+  useEffect(() => {
+    if (isVideoLoaded) {
+      // Wait for video fade-in to complete before hiding poster
+      const timer = setTimeout(() => setHidePoster(true), 1200)
+      return () => clearTimeout(timer)
+    }
+  }, [isVideoLoaded])
 
   return (
     <div className="hero-video">
-      {/* Poster image that fades out when video loads */}
+      {/* Poster image - stays visible until video fully faded in */}
       <div
-        className={`hero-video-poster ${isVideoLoaded ? 'hidden' : ''}`}
-        style={{ backgroundImage: 'url(/images/video-poster.png)' }}
+        className={`hero-video-poster ${hidePoster ? 'hidden' : ''}`}
+        style={{ backgroundImage: 'url(/images/video-poster.jpg)' }}
       />
 
-      {/* Video that fades in when loaded */}
+      {/* Video that fades in on top */}
       <video
         autoPlay
         muted
