@@ -195,7 +195,7 @@ export default function Home() {
                 <p style={{fontSize: '1rem', lineHeight: 1.5}}>Helping friends, working together, sharing discoveries</p>
               </div>
             </div>
-            <div style={{position: 'relative', height: '400px', backgroundImage: 'url(/images/IMG_0829.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '15px', overflow: 'hidden'}}>
+            <div style={{position: 'relative', height: '400px', backgroundImage: 'url(/images/IMG_0829.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '15px', overflow: 'hidden'}}>
               <div style={{position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(122, 154, 59, 0.95), rgba(122, 154, 59, 0.7))', padding: '30px', color: 'white'}}>
                 <h3 style={{fontSize: '1.8rem', marginBottom: '10px', fontWeight: 700}}>Strong Immunity</h3>
                 <p style={{fontSize: '1rem', lineHeight: 1.5}}>Forest play builds immunity and reduces autoimmune disorders</p>
@@ -253,7 +253,7 @@ export default function Home() {
           <h2 className="section-title">Daily Activities</h2>
           <div style={{maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px'}}>
             {[
-              {img: 'Animal-Care-1.jpeg', title: 'Animal Care'},
+              {img: 'Animal-Care-1.jpg', title: 'Animal Care'},
               {img: 'Outdoor-exploration.JPG', title: 'Nature Exploration'},
               {img: 'Gardening.jpeg', title: 'Gardening'},
               {img: 'Baking.jpeg', title: 'Baking'},
