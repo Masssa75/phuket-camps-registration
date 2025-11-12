@@ -212,7 +212,7 @@
             width: 0%;
             transition: width 0.1s;
         }
-        #spectrumCanvas, #spectrumCanvasGame, #spectrumCanvasGame2 {
+        #spectrumCanvas {
             width: 100%;
             height: 120px;
             background: rgba(0, 0, 0, 0.3);
@@ -742,157 +742,6 @@
         }
 
         /* Instruction Modal Styles */
-        .instruction-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 20000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease-out;
-        }
-        .instruction-modal.active {
-            display: flex;
-        }
-        .instruction-modal-content {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
-            border-radius: 40px;
-            padding: 60px;
-            max-width: 700px;
-            width: 90%;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
-            border: 4px solid #FDD835;
-            position: relative;
-            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        .instruction-modal-content.celebration {
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.95) 0%, rgba(124, 179, 66, 0.95) 100%);
-            border: 5px solid #FDD835;
-        }
-        .instruction-start-btn {
-            background: linear-gradient(135deg, #FDD835 0%, #F9A825 100%);
-            color: #333;
-            border: none;
-            padding: 20px 50px;
-            border-radius: 50px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: block;
-            margin: 0 auto;
-            box-shadow: 0 10px 30px rgba(253, 216, 53, 0.4);
-        }
-        .instruction-start-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(253, 216, 53, 0.6);
-        }
-        .instruction-start-btn:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-        .instruction-start-btn.celebration {
-            background: linear-gradient(135deg, #FF6B6B 0%, #FF5722 100%);
-            color: white;
-            font-size: 32px;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-        .confetti-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes popIn {
-            0% {
-                transform: scale(0.3);
-                opacity: 0;
-            }
-            70% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 15px 40px rgba(255, 87, 34, 0.6);
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 20px 50px rgba(255, 87, 34, 0.8);
-            }
-        }
-        @keyframes confettiFall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        /* Demo Container Styles */
-        .demo-container {
-            background: #000;
-            width: 300px;
-            height: 250px;
-            margin: 0 auto 30px auto;
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        .demo-letter {
-            position: absolute;
-            font-size: 80px;
-            font-weight: bold;
-            color: #4CAF50;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 0;
-            animation: demoFall 3s ease-in-out infinite;
-        }
-        @keyframes demoFall {
-            0% {
-                top: -80px;
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            50% {
-                top: 85px;
-            }
-            55% {
-                opacity: 1;
-                transform: translateX(-50%) scale(1);
-            }
-            60% {
-                opacity: 0;
-                transform: translateX(-50%) scale(2);
-            }
-            100% {
-                top: 85px;
-                opacity: 0;
-                transform: translateX(-50%) scale(2);
-            }
-        }
     </style>
 
     <!-- Supabase Client -->
@@ -1212,10 +1061,8 @@
     <div class="container">
         <div class="tabs">
             <button class="tab active" onclick="switchTab('calibrate')">📊 Calibrate</button>
-            <button class="tab" onclick="switchTab('tuner')">🎯 Tuner</button>
-            <button class="tab" onclick="switchTab('game')">🎮 Game</button>
-            <button class="tab" onclick="switchTab('game3')">🎮 Game 3</button>
-            <button class="tab" onclick="switchTab('game4')">🎮 Game 4</button>
+            <button class="tab" onclick="switchTab('tuner')">▶ Play</button>
+            <button class="tab" onclick="switchTab('stats')">📈 Stats</button>
         </div>
 
         <!-- Calibration Tab -->
@@ -1236,19 +1083,25 @@
             <div id="calibrationStats" style="margin-top: 20px; text-align: center; color: #aaa;"></div>
         </div>
 
-        <!-- Tuner Tab (Elimination Game) -->
+        <!-- Play Tab (Voice Recognition Game) -->
         <div id="tuner" class="tab-content">
+            <!-- Letter Progress Tracker -->
+            <div id="letterProgressTracker" style="display: none; margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                <div style="font-size: 14px; color: #aaa; margin-bottom: 10px;">Letters in Practice:</div>
+                <div id="letterProgressCards" style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <!-- Cards will be inserted here -->
+                </div>
+            </div>
+
+            <div class="actions" style="margin-bottom: 20px;">
+                <button class="btn" id="tunerBtn" onclick="toggleTuner()">▶ Start Game</button>
+                <button class="btn" onclick="tryAgain()" style="background: #7CB342; display: none;" id="tryAgainBtn">🔄 Try Again</button>
+                <button class="btn" onclick="skipLetter()" style="background: #999;">Skip</button>
+            </div>
+
             <div style="text-align: center; margin-bottom: 20px; color: #ddd; font-size: 18px;">
                 Say this sound:
                 <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 24px; margin-left: 10px; display: inline-block; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Play my recording">🔊</span>
-            </div>
-
-            <div style="text-align: center; margin-bottom: 15px;">
-                <label style="color: #ddd; cursor: pointer;">
-                    <input type="checkbox" id="alphabetMode" onchange="toggleAlphabetMode()" style="margin-right: 5px;">
-                    Alphabet Test Mode (A→Z loop)
-                </label>
-                <span id="alphabetProgress" style="margin-left: 15px; color: #FDD835; display: none;"></span>
             </div>
 
             <div id="targetLetter" style="text-align: center; font-size: 180px; font-weight: bold; color: #FDD835; margin: 20px 0; text-shadow: 0 10px 30px rgba(253, 216, 53, 0.5); transition: all 0.3s;">?</div>
@@ -1271,302 +1124,105 @@
             <canvas id="spectrumCanvas"></canvas>
 
             <div id="status" style="font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.4;">Click Start to begin</div>
+        </div>
 
-            <div class="actions">
-                <button class="btn" id="tunerBtn" onclick="toggleTuner()">▶ Start Game</button>
-                <button class="btn" onclick="tryAgain()" style="background: #7CB342; display: none;" id="tryAgainBtn">🔄 Try Again</button>
-                <button class="btn" onclick="skipLetter()" style="background: #999;">Skip</button>
+        <!-- Stats Tab (Adaptive Learning) -->
+        <div id="stats" class="tab-content">
+            <div class="info-box" style="margin-bottom: 20px;">
+                <strong>📈 Adaptive Learning Statistics</strong>
+                <p style="margin-top: 10px; color: #ddd;">Track your progress across sessions. The system adapts letter selection based on your proficiency.</p>
             </div>
 
-            <div class="actions" style="margin-top: 15px;">
-                <button class="btn" onclick="viewStats()" style="background: #5E35B1;">📊 View Stats (<span id="trialsCount">0</span> trials)</button>
-                <button class="btn" onclick="exportResults()" style="background: #00897B;">💾 Export Results</button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
+                    <div style="color: #999; font-size: 14px; margin-bottom: 8px;">Session Phase</div>
+                    <div id="statsPhase" style="color: #FDD835; font-size: 24px; font-weight: bold;">Not Started</div>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
+                    <div style="color: #999; font-size: 14px; margin-bottom: 8px;">Total Attempts</div>
+                    <div id="statsAttempts" style="color: #4CAF50; font-size: 24px; font-weight: bold;">0</div>
+                </div>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="color: #FDD835; margin-top: 0; margin-bottom: 15px;">Letter Proficiency Pools</h3>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center;">
+                    <div style="background: rgba(255,215,0,0.1); padding: 15px; border-radius: 10px; border: 2px solid #FFD700;">
+                        <div style="color: #FFD700; font-size: 36px; font-weight: bold;" id="statsMastered">0</div>
+                        <div style="color: #FFD700; font-size: 14px; font-weight: bold; margin-top: 5px;">MASTERED</div>
+                        <div style="color: #999; font-size: 11px; margin-top: 5px;">Long-term memory</div>
+                    </div>
+                    <div style="background: rgba(76,175,80,0.1); padding: 15px; border-radius: 10px; border: 2px solid #4CAF50;">
+                        <div style="color: #4CAF50; font-size: 36px; font-weight: bold;" id="statsKnown">0</div>
+                        <div style="color: #4CAF50; font-size: 14px; font-weight: bold; margin-top: 5px;">KNOWN</div>
+                        <div style="color: #999; font-size: 11px; margin-top: 5px;">Recent mastery</div>
+                    </div>
+                    <div style="background: rgba(253,216,53,0.1); padding: 15px; border-radius: 10px; border: 2px solid #FDD835;">
+                        <div style="color: #FDD835; font-size: 36px; font-weight: bold;" id="statsSometimes">0</div>
+                        <div style="color: #FDD835; font-size: 14px; font-weight: bold; margin-top: 5px;">SOMETIMES</div>
+                        <div style="color: #999; font-size: 11px; margin-top: 5px;">Inconsistent</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; border: 2px solid #666;">
+                        <div style="color: #999; font-size: 36px; font-weight: bold;" id="statsUnknown">0</div>
+                        <div style="color: #999; font-size: 14px; font-weight: bold; margin-top: 5px;">UNKNOWN</div>
+                        <div style="color: #999; font-size: 11px; margin-top: 5px;">Not learned</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px;">
+                <h3 style="color: #FDD835; margin-top: 0; margin-bottom: 15px;">Current Session</h3>
+                <div style="color: #ddd; font-size: 16px;">
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span><strong>🆕 New Letters Introduced:</strong></span>
+                        <span id="statsNewLetters" style="color: #FDD835;">None</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span><strong>🎓 Graduated to KNOWN:</strong></span>
+                        <span id="statsGraduated" style="color: #4CAF50;">None</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span><strong>🔥 Current Streak:</strong></span>
+                        <span id="statsStreak" style="color: #FF5722; font-size: 20px; font-weight: bold;">0</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Game Tab (EXACT COPY OF TUNER) -->
-        <div id="game" class="tab-content">
-            <div class="actions" style="margin-bottom: 20px;">
-                <button class="btn" id="tunerBtnGame" onclick="toggleTunerGame()">▶ Start Game</button>
-                <button class="btn" onclick="skipLetterGame()" style="background: #999;">Skip</button>
-            </div>
-
-            <div style="text-align: center; margin-bottom: 20px; color: #ddd; font-size: 18px;">
-                Say this sound:
-                <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 24px; margin-left: 10px; display: inline-block; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Play my recording">🔊</span>
-            </div>
-
-            <div style="text-align: center; margin-bottom: 15px;">
-                <label style="color: #ddd; cursor: pointer;">
-                    <input type="checkbox" id="alphabetModeGame" onchange="toggleAlphabetMode()" style="margin-right: 5px;">
-                    Alphabet Test Mode (A→Z loop)
-                </label>
-                <span id="alphabetProgressGame" style="margin-left: 15px; color: #FDD835; display: none;"></span>
-            </div>
-
-            <!-- Game Canvas/Screen -->
-            <div style="position: relative; width: 600px; height: 400px; margin: 20px auto; background: rgba(0, 0, 0, 0.5); border-radius: 20px; border: 3px solid rgba(253, 216, 53, 0.3); overflow: hidden;">
-                <!-- Level indicator -->
-                <div id="gameLevelIndicator" style="position: absolute; top: 20px; left: 20px; font-size: 24px; font-weight: bold; color: #FDD835; text-shadow: 0 2px 10px rgba(253, 216, 53, 0.5); z-index: 10;">Level 1</div>
-
-                <canvas id="gameCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                <div id="targetLetterGame" style="position: absolute; top: -50%; left: 50%; transform: translateX(-50%); font-size: 180px; font-weight: bold; color: #FDD835; text-shadow: 0 10px 30px rgba(253, 216, 53, 0.5);">?</div>
-            </div>
-
-            <div class="confidence-bar">
-                <div class="confidence-fill" id="confidenceFillGame"></div>
-            </div>
-
-            <div class="stats">
-                <div class="stat-item">
-                    <div>Match Score</div>
-                    <div class="stat-value" id="matchScoreGame">0%</div>
-                </div>
-                <div class="stat-item">
-                    <div>Volume</div>
-                    <div class="stat-value" id="volumeGame">0%</div>
-                </div>
-            </div>
-
-            <canvas id="spectrumCanvasGame"></canvas>
-
-            <div id="statusGame" style="font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.4;">Click Start to begin</div>
-        </div>
-
-        <!-- Game 3 Tab (COPY OF GAME 2 FOR NEW FEATURES) -->
-        <div id="game3" class="tab-content">
-            <div class="actions" style="margin-bottom: 20px;">
-                <button class="btn" id="tunerBtnGame3" onclick="toggleTunerGame3()">▶ Start Game</button>
-                <button class="btn" onclick="openGame3Settings()" style="background: #666;">⚙️ Settings</button>
-            </div>
-
-            <div style="text-align: center; margin-bottom: 20px; color: #ddd; font-size: 18px;">
-                Say this sound:
-                <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 24px; margin-left: 10px; display: inline-block; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Play my recording">🔊</span>
-            </div>
-
-            <!-- Game Canvas/Screen -->
-            <div style="position: relative; width: 600px; height: 600px; margin: 20px auto; background: rgba(0, 0, 0, 0.5); border-radius: 20px; border: 3px solid rgba(253, 216, 53, 0.3); overflow: hidden;">
-                <!-- Level indicator -->
-                <div id="gameLevelIndicator3" style="position: absolute; top: 20px; left: 20px; font-size: 24px; font-weight: bold; color: #FDD835; text-shadow: 0 2px 10px rgba(253, 216, 53, 0.5); z-index: 10;">Level 1</div>
-
-                <!-- Success counter -->
-                <div id="successCounter3" style="position: absolute; top: 60px; left: 20px; font-size: 48px; font-weight: bold; color: #4CAF50; text-shadow: 0 2px 10px rgba(76, 175, 80, 0.8); z-index: 10; display: none;">⭐ 0/10</div>
-
-                <!-- Mic indicator -->
-                <div id="micIndicator3" style="position: absolute; top: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #F44336; box-shadow: 0 0 20px rgba(244, 67, 54, 0.8); z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 30px; transition: all 0.3s;">🎤</div>
-
-                <canvas id="gameCanvas3" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                <div id="targetLetterGame3" style="position: absolute; top: -50%; left: 50%; transform: translateX(-50%); font-size: 180px; font-weight: bold; color: #FDD835; text-shadow: 0 10px 30px rgba(253, 216, 53, 0.5);">?</div>
-            </div>
-
-            <div class="confidence-bar">
-                <div class="confidence-fill" id="confidenceFillGame3"></div>
-            </div>
-
-            <div class="stats">
-                <div class="stat-item">
-                    <div>Match Score</div>
-                    <div class="stat-value" id="matchScoreGame3">0%</div>
-                </div>
-                <div class="stat-item">
-                    <div>Volume</div>
-                    <div class="stat-value" id="volumeGame3">0%</div>
-                </div>
-            </div>
-
-            <canvas id="spectrumCanvasGame3"></canvas>
-
-            <div id="statusGame3" style="font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.4;">Click Start to begin</div>
-        </div>
-
-        <!-- Game 4 Tab (COPY OF GAME 3 FOR NEW FEATURES) -->
-        <div id="game4" class="tab-content">
-            <div class="actions" style="margin-bottom: 20px;">
-                <button class="btn" id="tunerBtnGame4" onclick="toggleTunerGame4()">▶ Start Game</button>
-                <button class="btn" onclick="openGame4Settings()" style="background: #666;">⚙️ Settings</button>
-            </div>
-
-            <div style="text-align: center; margin-bottom: 20px; color: #ddd; font-size: 18px;">
-                Say this sound:
-                <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 24px; margin-left: 10px; display: inline-block; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Play my recording">🔊</span>
-            </div>
-
-            <!-- Game Canvas/Screen -->
-            <div style="position: relative; width: 600px; height: 600px; margin: 20px auto; background: rgba(0, 0, 0, 0.5); border-radius: 20px; border: 3px solid rgba(253, 216, 53, 0.3); overflow: hidden;">
-                <!-- Level indicator -->
-                <div id="gameLevelIndicator4" style="position: absolute; top: 20px; left: 20px; font-size: 24px; font-weight: bold; color: #FDD835; text-shadow: 0 2px 10px rgba(253, 216, 53, 0.5); z-index: 10;">Level 1</div>
-
-                <!-- Success counter -->
-                <div id="successCounter4" style="position: absolute; top: 60px; left: 20px; font-size: 48px; font-weight: bold; color: #4CAF50; text-shadow: 0 2px 10px rgba(76, 175, 80, 0.8); z-index: 10; display: none;">⭐ 0/10</div>
-
-                <!-- Mic indicator -->
-                <div id="micIndicator4" style="position: absolute; top: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #F44336; box-shadow: 0 0 20px rgba(244, 67, 54, 0.8); z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 30px; transition: all 0.3s;">🎤</div>
-
-                <canvas id="gameCanvas4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                <div id="targetLetterGame4" style="position: absolute; top: -50%; left: 50%; transform: translateX(-50%); font-size: 180px; font-weight: bold; color: #FDD835; text-shadow: 0 10px 30px rgba(253, 216, 53, 0.5);">?</div>
-            </div>
-
-            <div class="confidence-bar">
-                <div class="confidence-fill" id="confidenceFillGame4"></div>
-            </div>
-
-            <div class="stats">
-                <div class="stat-item">
-                    <div>Match Score</div>
-                    <div class="stat-value" id="matchScoreGame4">0%</div>
-                </div>
-                <div class="stat-item">
-                    <div>Volume</div>
-                    <div class="stat-value" id="volumeGame4">0%</div>
-                </div>
-            </div>
-
-            <canvas id="spectrumCanvasGame4"></canvas>
-
-            <div id="statusGame4" style="font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.4;">Click Start to begin</div>
-        </div>
     </div>
 
-    <!-- Game 3 Instruction Popup -->
-    <div id="game3InstructionModal" class="instruction-modal">
-        <div class="instruction-modal-content">
-            <h2 style="color: #FDD835; font-size: 48px; margin-bottom: 20px; text-align: center;">🎮 Level 1</h2>
-            <p style="color: #ddd; font-size: 24px; text-align: center; line-height: 1.6; margin-bottom: 20px;">
-                Listen to the letter sound, then speak the sound to pop the letter. Click the yellow button to start!
-            </p>
-
-            <!-- Demo Animation Container -->
-            <div class="demo-container">
-                <div id="demoLetter" class="demo-letter">A</div>
-            </div>
-
-            <button class="instruction-start-btn" onclick="startGame3FromInstructions()">
-                🚀 Start Game
-            </button>
-        </div>
-    </div>
-
-    <!-- Game 3 Level Complete Popup -->
-    <div id="game3LevelCompleteModal" class="instruction-modal celebration">
-        <div class="instruction-modal-content celebration">
-            <div class="confetti-container" id="celebrationConfetti"></div>
-            <h2 style="color: #FDD835; font-size: 64px; margin-bottom: 20px; text-align: center;">🌟 AMAZING!! 🌟</h2>
-            <p style="color: #ddd; font-size: 32px; text-align: center; line-height: 1.6; margin-bottom: 20px; font-weight: bold;">
-                You've learned your first letter!
-            </p>
-
-            <!-- Demo Animation Container showing letter A -->
-            <div class="demo-container">
-                <div class="demo-letter">A</div>
-            </div>
-
-            <button class="instruction-start-btn celebration" onclick="closeLevel1Complete()">
-                ✨ Continue
-            </button>
-        </div>
-    </div>
-
-    <!-- Game 3 Settings Modal -->
-    <div id="game3SettingsModal" class="instruction-modal">
-        <div class="instruction-modal-content" style="max-width: 600px;">
-            <h2 style="color: #FDD835; font-size: 42px; margin-bottom: 20px; text-align: center;">⚙️ Settings</h2>
-
-            <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="color: #4CAF50; font-size: 24px; margin-bottom: 15px;">⌨️ Keyboard Shortcuts</h3>
-                <div style="color: #ddd; font-size: 18px; line-height: 2;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: #FDD835; font-weight: bold;">1-5</span>
-                        <span>Jump to Level 1-5</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: #FDD835; font-weight: bold;">C</span>
-                        <span>Show celebration modal</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: #FDD835; font-weight: bold;">W</span>
-                        <span>Instant win (9/10 successes)</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: #FDD835; font-weight: bold;">R</span>
-                        <span>Reset to Level 1</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: #FDD835; font-weight: bold;">S</span>
-                        <span>Open settings</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="color: #FDD835; font-weight: bold;">H</span>
-                        <span>Show help in console</span>
-                    </div>
-                </div>
-            </div>
-
-            <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="color: #4CAF50; font-size: 24px; margin-bottom: 15px;">🔊 Audio Playback</h3>
-                <div style="text-align: center; margin-top: 15px;">
-                    <div style="color: #ddd; font-size: 18px; margin-bottom: 10px;">
-                        Say this sound:
-                    </div>
-                    <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 48px; display: inline-block; opacity: 0.7; transition: opacity 0.2s, transform 0.2s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.1)';" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)';" title="Play my recording">🔊</span>
-                    <div style="color: #999; font-size: 14px; margin-top: 10px;">
-                        Click to hear your calibrated voice
-                    </div>
-                </div>
-            </div>
-
-            <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="color: #4CAF50; font-size: 24px; margin-bottom: 15px;">ℹ️ About</h3>
-                <p style="color: #ddd; font-size: 16px; line-height: 1.6;">
-                    <strong>Current Level:</strong> <span id="settingsCurrentLevel">1</span><br>
-                    <strong>Progress:</strong> <span id="settingsProgress">0/10</span><br>
-                    <strong>Version:</strong> 1.4 - Progressive Learning Mode
-                </p>
-            </div>
-
-            <button class="instruction-start-btn" onclick="closeGame3Settings()" style="background: #666;">
-                ✕ Close
-            </button>
-        </div>
-    </div>
-
-    <!-- Game 4 Instruction Popup -->
-    <div id="game4InstructionModal" class="instruction-modal">
-        <div class="instruction-modal-content">
-            <h2 style="color: #FDD835; font-size: 48px; margin-bottom: 20px; text-align: center;">🎮 Level 1</h2>
-            <p style="color: #ddd; font-size: 24px; text-align: center; line-height: 1.6; margin-bottom: 20px;">
-                Listen to the letter sound, then speak the sound to pop the letter. Click the yellow button to start!
-            </p>
-
-            <!-- Demo Animation Container -->
-            <div class="demo-container">
-                <div id="demoLetter4" class="demo-letter">A</div>
-            </div>
-
-            <button class="instruction-start-btn" onclick="startGame4FromInstructions()">
-                🚀 Start Game
-            </button>
-        </div>
-    </div>
-
-    <!-- Game 4 Level Complete Popup -->
-    <div id="game4LevelCompleteModal" class="instruction-modal celebration">
-        <div class="instruction-modal-content celebration">
-            <div class="confetti-container" id="celebrationConfetti4"></div>
-            <h2 style="color: #FDD835; font-size: 64px; margin-bottom: 20px; text-align: center;">🌟 AMAZING!! 🌟</h2>
-            <p style="color: #ddd; font-size: 32px; text-align: center; line-height: 1.6; margin-bottom: 20px; font-weight: bold;">
-                You've learned your first letter!
-            </p>
-            <p style="color: #4CAF50; font-size: 36px; text-align: center; margin-bottom: 30px;">
-                Now let's learn the next letter.
-            </p>
-            <button class="instruction-start-btn celebration" onclick="closeGame4LevelComplete()">
-                ✨ Continue
-            </button>
-        </div>
-    </div>
 
     <script>
+        // ========== ADAPTIVE LEARNING SYSTEM ==========
+
+        // Proficiency levels (stored in Supabase)
+        const LetterProficiency = {
+            UNKNOWN: 0,      // Never learned or forgot
+            SOMETIMES: 1,    // Getting it ~50% in current session
+            KNOWN: 2,        // Mastered in current session (10+ correct without LISTEN)
+            MASTERED: 3      // Long-term memory (correct from first attempts in next session)
+        };
+
+        // Session configuration
+        const SESSION_CONFIG = {
+            TIMEOUT_MINUTES: 30,
+            GRADUATION_THRESHOLD: 10,              // 10 correct without LISTEN to graduate
+            MAX_NEW_LETTERS_PER_SESSION: 3,
+            GRADUATION_TEST_ATTEMPTS: 3,          // First 3 attempts next session
+            GRADUATION_TEST_REQUIRED: 2,          // 2 of 3 must be correct
+            MASTERED_DEMOTION_LISTEN_CLICKS: 2,
+            KNOWN_DEMOTION_LISTEN_CLICKS: 1,
+            RAPID_REP_COUNT: 5,                   // 5 reps after LISTEN click
+            WARMUP_COUNT: 5,                      // First 5 letters are warmup
+            MIX_RATIO_PRACTICING: 0.5,            // 50% practicing letters
+            RECENT_HISTORY_SIZE: 3                // Avoid last 3 letters
+        };
+
+        // Current session data (localStorage)
+        let currentSession = null;
+
+        // ========== GLOBAL VARIABLES ==========
+
         let audioContext;
         let analyser;
         let microphone;
@@ -1585,6 +1241,615 @@
         const canvasCtx = canvas.getContext('2d');
         canvas.width = 800;
         canvas.height = 240;
+
+        // ========== SESSION MANAGEMENT FUNCTIONS ==========
+
+        function initializeSession(profileId) {
+            const now = new Date();
+            const existingSessionKey = `session_${profileId}`;
+            const existingSessionData = localStorage.getItem(existingSessionKey);
+
+            // Check if we can resume existing session
+            if (existingSessionData) {
+                try {
+                    const session = JSON.parse(existingSessionData);
+                    const lastActivity = new Date(session.lastActivityTime);
+                    const minutesSinceActivity = (now - lastActivity) / 1000 / 60;
+
+                    if (minutesSinceActivity < SESSION_CONFIG.TIMEOUT_MINUTES) {
+                        // Resume session
+                        console.log(`📝 Resuming session from ${minutesSinceActivity.toFixed(1)} minutes ago`);
+                        session.lastActivityTime = now.toISOString();
+
+                        // Convert letterStats back to Map
+                        session.letterStats = new Map(Object.entries(session.letterStats || {}));
+
+                        // Initialize unknownLettersIntroduced if missing (backward compatibility)
+                        if (!session.unknownLettersIntroduced) {
+                            session.unknownLettersIntroduced = [];
+                        }
+
+                        currentSession = session;
+                        saveSessionData();
+                        return session;
+                    } else {
+                        // Session expired - end it and start new
+                        console.log('⏰ Session expired, starting new session');
+                        endSession(session);
+                    }
+                } catch (error) {
+                    console.error('❌ Error loading session:', error);
+                }
+            }
+
+            // Create new session
+            const newSession = {
+                sessionId: generateUUID(),
+                profileId: profileId,
+                startTime: now.toISOString(),
+                lastActivityTime: now.toISOString(),
+                attempts: [],
+                letterStats: new Map(),
+                newLettersIntroduced: [],
+                unknownLettersIntroduced: [], // Track letters introduced as UNKNOWN (for 3-letter limit)
+                lettersGraduated: [],
+                recentHistory: []
+            };
+
+            console.log('🆕 Created new session:', newSession.sessionId);
+            currentSession = newSession;
+            saveSessionData();
+            return newSession;
+        }
+
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function getSessionData() {
+            if (!currentSession) {
+                console.warn('⚠️ No active session');
+                return null;
+            }
+            return currentSession;
+        }
+
+        function saveSessionData() {
+            if (!currentSession) return;
+
+            const sessionKey = `session_${currentSession.profileId}`;
+
+            // Convert Map to Object for JSON storage
+            const sessionToSave = {
+                ...currentSession,
+                letterStats: Object.fromEntries(currentSession.letterStats)
+            };
+
+            localStorage.setItem(sessionKey, JSON.stringify(sessionToSave));
+        }
+
+        function recordAttempt(letter, success, clickedListen, matchScore) {
+            if (!currentSession) {
+                console.warn('⚠️ No active session to record attempt');
+                return;
+            }
+
+            const now = Date.now();
+            currentSession.lastActivityTime = new Date(now).toISOString();
+
+            // Add to attempts array
+            currentSession.attempts.push({
+                letter,
+                clickedListen,
+                success,
+                matchScore,
+                timestamp: now
+            });
+
+            // Update letter stats
+            let stats = currentSession.letterStats.get(letter);
+            if (!stats) {
+                stats = {
+                    total_attempts: 0,
+                    successes: 0,
+                    listen_clicks: 0,
+                    first_attempts_result: [],
+                    consecutive_success_no_listen: 0,
+                    rapid_reps_remaining: 0,
+                    state: 'new'
+                };
+                currentSession.letterStats.set(letter, stats);
+            }
+
+            stats.total_attempts++;
+            if (success) stats.successes++;
+            if (clickedListen) {
+                stats.listen_clicks++;
+                // Start rapid reinforcement: 5 additional reps after LISTEN
+                stats.rapid_reps_remaining = SESSION_CONFIG.RAPID_REP_COUNT;
+            }
+
+            // Track first 3 attempts for graduation test (MASTERED)
+            if (stats.first_attempts_result.length < SESSION_CONFIG.GRADUATION_TEST_ATTEMPTS) {
+                stats.first_attempts_result.push(success && !clickedListen);
+            }
+
+            // Track consecutive successes without LISTEN for graduation to KNOWN
+            if (success && !clickedListen) {
+                stats.consecutive_success_no_listen++;
+            } else {
+                stats.consecutive_success_no_listen = 0;
+            }
+
+            // Check for graduation to KNOWN in this session
+            if (currentSession.newLettersIntroduced.includes(letter) &&
+                !currentSession.lettersGraduated.includes(letter) &&
+                stats.consecutive_success_no_listen >= SESSION_CONFIG.GRADUATION_THRESHOLD) {
+
+                stats.state = 'graduated_to_known';
+                currentSession.lettersGraduated.push(letter);
+                console.log(`🎓 ${letter} graduated to KNOWN!`);
+
+                // Remove from unknown letters list (frees up slot for new UNKNOWN letter)
+                if (currentSession.unknownLettersIntroduced) {
+                    const index = currentSession.unknownLettersIntroduced.indexOf(letter);
+                    if (index > -1) {
+                        currentSession.unknownLettersIntroduced.splice(index, 1);
+                        console.log(`✨ Freed up slot - can now introduce another UNKNOWN letter (${currentSession.unknownLettersIntroduced.length}/${SESSION_CONFIG.MAX_NEW_LETTERS_PER_SESSION})`);
+                    }
+                }
+
+                // Update proficiency in Supabase immediately
+                updateLetterProficiency(currentProfileId, [{ letter, proficiency: LetterProficiency.KNOWN }]);
+
+                // TODO: Show celebration animation
+            }
+
+            saveSessionData();
+            console.log(`📝 Recorded attempt: ${letter} ${success ? '✅' : '❌'} ${clickedListen ? '🔊' : ''} (${stats.consecutive_success_no_listen} streak)`);
+
+            // Update displays
+            updateLetterProgressTracker();
+
+            // Update stats display if Stats tab is active
+            const statsTab = document.getElementById('stats');
+            if (statsTab && statsTab.classList.contains('active')) {
+                updateAdaptiveStatsDisplay();
+            }
+        }
+
+        async function endSession(session = currentSession) {
+            if (!session) return;
+
+            console.log('🏁 Ending session:', session.sessionId);
+
+            // Calculate proficiency updates
+            const updates = [];
+
+            for (const [letter, stats] of session.letterStats.entries()) {
+                // Get current proficiency from Supabase
+                const currentProficiency = await getLetterProficiencyFromDB(letter);
+                let newProficiency = currentProficiency;
+
+                // Check for graduation to KNOWN
+                if (session.lettersGraduated.includes(letter)) {
+                    newProficiency = LetterProficiency.KNOWN;
+                    console.log(`📈 ${letter}: UNKNOWN → KNOWN`);
+                }
+
+                // Check for graduation to MASTERED (from previous KNOWN)
+                if (currentProficiency === LetterProficiency.KNOWN) {
+                    const firstThreeResults = stats.first_attempts_result.slice(0, 3);
+                    const correctCount = firstThreeResults.filter(r => r === true).length;
+
+                    if (correctCount >= SESSION_CONFIG.GRADUATION_TEST_REQUIRED && stats.listen_clicks === 0) {
+                        newProficiency = LetterProficiency.MASTERED;
+                        console.log(`🌟 ${letter}: KNOWN → MASTERED`);
+                        // TODO: Show MASTERED celebration
+                    }
+                }
+
+                // Check for demotion from MASTERED
+                if (currentProficiency === LetterProficiency.MASTERED) {
+                    if (stats.listen_clicks >= SESSION_CONFIG.MASTERED_DEMOTION_LISTEN_CLICKS) {
+                        newProficiency = LetterProficiency.UNKNOWN;
+                        console.log(`📉 ${letter}: MASTERED → UNKNOWN (${stats.listen_clicks} LISTEN clicks)`);
+                    } else if (stats.listen_clicks === 1) {
+                        newProficiency = LetterProficiency.SOMETIMES;
+                        console.log(`📉 ${letter}: MASTERED → SOMETIMES (1 LISTEN click)`);
+                    }
+                }
+
+                // Check for demotion from KNOWN
+                if (currentProficiency === LetterProficiency.KNOWN) {
+                    if (stats.listen_clicks >= SESSION_CONFIG.KNOWN_DEMOTION_LISTEN_CLICKS) {
+                        newProficiency = LetterProficiency.SOMETIMES;
+                        console.log(`📉 ${letter}: KNOWN → SOMETIMES (${stats.listen_clicks} LISTEN clicks)`);
+                    }
+                }
+
+                updates.push({ letter, proficiency: newProficiency });
+            }
+
+            // Batch update Supabase
+            await updateLetterProficiency(session.profileId, updates);
+
+            // Clear session data
+            localStorage.removeItem(`session_${session.profileId}`);
+            currentSession = null;
+
+            console.log('✅ Session ended and proficiency saved');
+        }
+
+        async function getLetterProficiencyFromDB(letter) {
+            if (!currentProfileId) return LetterProficiency.UNKNOWN;
+
+            try {
+                const { data, error } = await supabase
+                    .from('calibrations')
+                    .select('proficiency')
+                    .eq('profile_id', currentProfileId)
+                    .eq('letter', letter)
+                    .single();
+
+                if (error || !data) return LetterProficiency.UNKNOWN;
+                return data.proficiency || LetterProficiency.UNKNOWN;
+            } catch (error) {
+                console.error('Error loading proficiency:', error);
+                return LetterProficiency.UNKNOWN;
+            }
+        }
+
+        async function updateLetterProficiency(profileId, updates) {
+            if (!profileId || updates.length === 0) return;
+
+            try {
+                const promises = updates.map(update =>
+                    supabase
+                        .from('calibrations')
+                        .update({
+                            proficiency: update.proficiency,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('profile_id', profileId)
+                        .eq('letter', update.letter)
+                );
+
+                await Promise.all(promises);
+                console.log(`✅ Updated proficiency for ${updates.length} letters`);
+            } catch (error) {
+                console.error('❌ Error updating proficiency:', error);
+            }
+        }
+
+        // ========== ADAPTIVE SELECTION ALGORITHM ==========
+
+        async function loadProficiencyMap(profileId) {
+            const calibratedLetters = Object.keys(calibrationData);
+            const proficiencyMap = {};
+
+            for (const letter of calibratedLetters) {
+                proficiencyMap[letter] = await getLetterProficiencyFromDB(letter);
+            }
+
+            return proficiencyMap;
+        }
+
+        function groupLettersByProficiency(proficiencyMap, calibratedLetters) {
+            const pools = {
+                mastered: [],
+                known: [],
+                sometimes: [],
+                unknown: []
+            };
+
+            calibratedLetters.forEach(letter => {
+                const proficiency = proficiencyMap[letter] || LetterProficiency.UNKNOWN;
+
+                switch (proficiency) {
+                    case LetterProficiency.MASTERED:
+                        pools.mastered.push(letter);
+                        break;
+                    case LetterProficiency.KNOWN:
+                        pools.known.push(letter);
+                        break;
+                    case LetterProficiency.SOMETIMES:
+                        pools.sometimes.push(letter);
+                        break;
+                    default:
+                        pools.unknown.push(letter);
+                }
+            });
+
+            return pools;
+        }
+
+        function selectRandomLetter(pool, recentHistory = []) {
+            if (!pool || pool.length === 0) return null;
+
+            // Filter out recently seen letters
+            const available = pool.filter(l => !recentHistory.includes(l));
+
+            if (available.length === 0) {
+                // If all filtered out, just use full pool
+                return pool[Math.floor(Math.random() * pool.length)];
+            }
+
+            return available[Math.floor(Math.random() * available.length)];
+        }
+
+        async function updateLetterProgressTracker() {
+            const tracker = document.getElementById('letterProgressTracker');
+            const cardsContainer = document.getElementById('letterProgressCards');
+
+            if (!tracker || !cardsContainer) return;
+
+            // Only show if there's an active session with introduced letters
+            if (!currentSession || currentSession.newLettersIntroduced.length === 0) {
+                tracker.style.display = 'none';
+                return;
+            }
+
+            tracker.style.display = 'block';
+
+            // Get proficiency map to show current level
+            const proficiencyMap = await loadProficiencyMap(currentProfileId);
+
+            // Clear and rebuild cards
+            cardsContainer.innerHTML = '';
+
+            // Show ALL introduced letters (not just practicing)
+            currentSession.newLettersIntroduced.forEach(letter => {
+                const stats = currentSession.letterStats.get(letter);
+                if (!stats) return;
+
+                // Check if graduated in current session first, then fall back to database proficiency
+                let currentProficiency = proficiencyMap[letter] || LetterProficiency.UNKNOWN;
+
+                // If graduated to KNOWN in this session, update proficiency locally
+                if (currentSession.lettersGraduated.includes(letter)) {
+                    currentProficiency = LetterProficiency.KNOWN;
+                }
+                const rawProgress = stats.consecutive_success_no_listen || 0;
+
+                // Always show progress toward NEXT level (not current achievement)
+                let target, nextLevel, progress, showProgressBar;
+
+                if (currentProficiency === LetterProficiency.MASTERED) {
+                    // Already at max level
+                    target = null;
+                    nextLevel = 'MASTERED ✓';
+                    progress = 0;
+                    showProgressBar = false;
+                } else if (currentProficiency === LetterProficiency.KNOWN) {
+                    // Show progress toward MASTERED
+                    // Note: MASTERED requires first 3 attempts of NEXT session to be perfect
+                    // But we can still show current session progress
+                    target = SESSION_CONFIG.GRADUATION_THRESHOLD; // Show progress toward 10
+                    nextLevel = 'MASTERED';
+                    progress = Math.min(rawProgress, target);
+                    showProgressBar = true;
+                } else {
+                    // UNKNOWN or SOMETIMES - show progress toward KNOWN
+                    target = SESSION_CONFIG.GRADUATION_THRESHOLD;
+                    nextLevel = 'KNOWN';
+
+                    // If already at or past threshold, show as ready for next level
+                    if (rawProgress >= target) {
+                        // Ready to graduate to KNOWN, continue showing progress toward MASTERED
+                        progress = target; // Show as full (10/10)
+                    } else {
+                        progress = rawProgress;
+                    }
+                    showProgressBar = true;
+                }
+
+                const percentage = target ? Math.round((progress / target) * 100) : 100;
+
+                const card = document.createElement('div');
+                card.style.cssText = `
+                    background: rgba(255,255,255,0.08);
+                    border-radius: 6px;
+                    padding: 10px 14px;
+                    min-width: 130px;
+                    flex: 0 0 auto;
+                `;
+
+                const progressText = target ? `${progress}/${target} to ${nextLevel}` : nextLevel;
+
+                const progressBarHTML = showProgressBar ? `
+                    <div style="background: rgba(0,0,0,0.3); height: 6px; border-radius: 3px; overflow: hidden;">
+                        <div style="background: #7CB342; height: 100%; width: ${percentage}%; transition: width 0.3s;"></div>
+                    </div>
+                ` : '';
+
+                card.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 8px; ${showProgressBar ? 'margin-bottom: 6px;' : ''}">
+                        <div style="font-size: 20px; font-weight: bold; color: #FDD835;">${letter}</div>
+                        <div style="font-size: 11px; color: #aaa;">${progressText}</div>
+                    </div>
+                    ${progressBarHTML}
+                `;
+
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        function selectWarmupLetter(pools, recentHistory) {
+            // Give them letters they know (MASTERED or KNOWN)
+            const comfortableLetters = [...pools.mastered, ...pools.known];
+
+            let selectedLetter;
+            if (comfortableLetters.length === 0) {
+                // All letters are new, pick random calibrated letter
+                const allCalibrated = Object.keys(calibrationData);
+                selectedLetter = selectRandomLetter(allCalibrated, recentHistory);
+            } else {
+                // Prefer MASTERED over KNOWN (2:1 ratio)
+                if (pools.mastered.length > 0 && Math.random() < 0.67) {
+                    selectedLetter = selectRandomLetter(pools.mastered, recentHistory);
+                } else {
+                    selectedLetter = selectRandomLetter(comfortableLetters, recentHistory);
+                }
+            }
+
+            // Add to newLettersIntroduced if not already there
+            if (selectedLetter && currentSession && !currentSession.newLettersIntroduced.includes(selectedLetter)) {
+                currentSession.newLettersIntroduced.push(selectedLetter);
+                console.log(`🔥 Warmup introduced: ${selectedLetter}`);
+            }
+
+            return selectedLetter;
+        }
+
+        async function introduceNewLetter(pools, sessionData) {
+            // Only enforce limit on UNKNOWN letters that haven't graduated yet
+            const currentUnknownCount = sessionData.unknownLettersIntroduced?.length || 0;
+
+            if (currentUnknownCount >= SESSION_CONFIG.MAX_NEW_LETTERS_PER_SESSION) {
+                console.log(`⚠️ Max UNKNOWN letters (${SESSION_CONFIG.MAX_NEW_LETTERS_PER_SESSION}) reached this session`);
+                return null;
+            }
+
+            // Pick from UNKNOWN or SOMETIMES pool
+            const newLetterPool = pools.unknown.length > 0 ? pools.unknown : pools.sometimes;
+
+            if (newLetterPool.length === 0) {
+                console.log('✅ No new letters available - all letters practiced!');
+                return null;
+            }
+
+            // Filter out already introduced letters
+            const available = newLetterPool.filter(l => !sessionData.newLettersIntroduced.includes(l));
+
+            if (available.length === 0) {
+                return null;
+            }
+
+            const newLetter = available[Math.floor(Math.random() * available.length)];
+            sessionData.newLettersIntroduced.push(newLetter);
+
+            // Track as unknown letter (counts toward 3-letter limit)
+            if (!sessionData.unknownLettersIntroduced) {
+                sessionData.unknownLettersIntroduced = [];
+            }
+            sessionData.unknownLettersIntroduced.push(newLetter);
+
+            saveSessionData();
+
+            console.log(`🆕 Introduced new UNKNOWN letter: ${newLetter} (${currentUnknownCount + 1}/${SESSION_CONFIG.MAX_NEW_LETTERS_PER_SESSION} unknown)`);
+            return newLetter;
+        }
+
+        async function selectMixedPracticeLetter(pools, sessionData, recentHistory) {
+            // Get currently practicing letters (introduced but not graduated)
+            const practicingLetters = sessionData.newLettersIntroduced.filter(
+                letter => !sessionData.lettersGraduated.includes(letter)
+            );
+
+            if (practicingLetters.length === 0) {
+                // No letters in practice, try to introduce new one
+                const newLetter = await introduceNewLetter(pools, sessionData);
+                if (newLetter) {
+                    return newLetter;
+                }
+
+                // Can't introduce new letter (max reached or none available)
+                // Fall back to comfortable letters for review
+                const comfortableLetters = [...pools.mastered, ...pools.known];
+                if (comfortableLetters.length > 0) {
+                    console.log('📚 Reviewing comfortable letters (max new letters reached)');
+                    return selectRandomLetter(comfortableLetters, recentHistory);
+                }
+
+                // No letters available at all - should rarely happen
+                console.warn('⚠️ No letters available for practice');
+                return null;
+            }
+
+            // 50% chance: practicing letter
+            // 50% chance: comfortable letter (known/mastered)
+            const rand = Math.random();
+
+            if (rand < SESSION_CONFIG.MIX_RATIO_PRACTICING) {
+                return selectRandomLetter(practicingLetters, recentHistory);
+            } else {
+                const comfortableLetters = [...pools.mastered, ...pools.known];
+
+                if (comfortableLetters.length === 0) {
+                    // No comfortable letters, stick with practicing
+                    return selectRandomLetter(practicingLetters, recentHistory);
+                }
+
+                return selectRandomLetter(comfortableLetters, recentHistory);
+            }
+        }
+
+        async function selectNextLetter() {
+            if (!currentSession) {
+                console.error('❌ No active session for adaptive selection');
+                return null;
+            }
+
+            const calibratedLetters = Object.keys(calibrationData);
+            if (calibratedLetters.length === 0) {
+                console.warn('⚠️ No calibrated letters yet');
+                return null;
+            }
+
+            // Load proficiency map
+            const proficiencyMap = await loadProficiencyMap(currentProfileId);
+            const pools = groupLettersByProficiency(proficiencyMap, calibratedLetters);
+
+            console.log('📊 Pools:', {
+                mastered: pools.mastered.length,
+                known: pools.known.length,
+                sometimes: pools.sometimes.length,
+                unknown: pools.unknown.length
+            });
+
+            const attemptCount = currentSession.attempts.length;
+            const recentHistory = currentSession.recentHistory || [];
+
+            // Phase 1: Warmup (first 5 attempts)
+            if (attemptCount < SESSION_CONFIG.WARMUP_COUNT) {
+                console.log(`🔥 Warmup phase (${attemptCount + 1}/${SESSION_CONFIG.WARMUP_COUNT})`);
+                return selectWarmupLetter(pools, recentHistory);
+            }
+
+            // Phase 2: Check if we need rapid reinforcement (letter with remaining rapid reps)
+            if (currentSession.attempts.length > 0) {
+                // Check all letters to see if any are in rapid reinforcement mode
+                for (const [letter, stats] of currentSession.letterStats) {
+                    if (stats.rapid_reps_remaining > 0) {
+                        const repsCompleted = SESSION_CONFIG.RAPID_REP_COUNT - stats.rapid_reps_remaining + 1;
+                        console.log(`🔁 Rapid reinforcement: ${letter} (${repsCompleted}/${SESSION_CONFIG.RAPID_REP_COUNT})`);
+                        // Decrement counter for next round
+                        stats.rapid_reps_remaining--;
+                        return letter;
+                    }
+                }
+            }
+
+            // Phase 3: Mixed practice or introduce new letter
+            const selected = await selectMixedPracticeLetter(pools, currentSession, recentHistory);
+
+            // Update recent history
+            if (selected) {
+                currentSession.recentHistory = currentSession.recentHistory || [];
+                currentSession.recentHistory.push(selected);
+                if (currentSession.recentHistory.length > SESSION_CONFIG.RECENT_HISTORY_SIZE) {
+                    currentSession.recentHistory.shift();
+                }
+                saveSessionData();
+            }
+
+            return selected;
+        }
 
         const PHONEMES = [
             // ===== VOWELS =====
@@ -1870,8 +2135,6 @@
                 calibrationData = supabaseData;
                 updateCalibrationUI();
 
-                // Also load level progress from Supabase
-                await loadProgressFromSupabase();
             } else{
                 calibrationData = {};
                 console.warn('⚠️ No profile ID - waiting for Supabase profile initialization');
@@ -1927,9 +2190,8 @@
                 const label = sliderValue <= 70 ? 'Easy' : sliderValue >= 130 ? 'Strict' : 'Normal';
                 const sensitivityPercent = Math.round(sensitivity * 100);
 
-                // Get level progress for this letter
-                const progress = getLetterProgress(phoneme.letter);
-                const isGolden = progress.level_1_completed || progress.current_level > 1;
+                // Golden letters when calibrated (removed level progress tracking)
+                const isGolden = isCalibrated;
                 const letterStyle = isGolden ? 'background: linear-gradient(135deg, #FFD700, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold;' : '';
 
                 card.innerHTML = `
@@ -2302,7 +2564,7 @@
             statsEl.textContent = `Calibrated: ${calibrated} / ${total} phonemes`;
 
             if (calibrated === total) {
-                statsEl.innerHTML += '<br><strong style="color: #7CB342;">✓ All phonemes calibrated! Switch to Tuner tab.</strong>';
+                statsEl.innerHTML += '<br><strong style="color: #7CB342;">✓ All phonemes calibrated! Switch to Play tab.</strong>';
             }
         }
 
@@ -2692,26 +2954,6 @@
         // Elimination game mode
         let patternBuffer = [];
         let currentTarget = null;
-        let experimentResults = []; // Track all trials for analysis
-        let alphabetModeEnabled = false;
-        let currentAlphabetIndex = 0;
-
-        function toggleAlphabetMode() {
-            alphabetModeEnabled = document.getElementById('alphabetMode').checked;
-            currentAlphabetIndex = 0;
-            updateAlphabetProgress();
-        }
-
-        function updateAlphabetProgress() {
-            const progressEl = document.getElementById('alphabetProgress');
-            if (alphabetModeEnabled && currentTarget) {
-                progressEl.style.display = 'inline';
-                const letterIndex = PHONEMES.findIndex(p => p.letter === currentTarget) + 1;
-                progressEl.textContent = `Letter ${letterIndex}/26: ${currentTarget}`;
-            } else {
-                progressEl.style.display = 'none';
-            }
-        }
 
         function pickRandomLetter() {
             // Only pick from letters that are BOTH calibrated AND in current PHONEMES list
@@ -2721,25 +2963,6 @@
             );
             if (calibratedLetters.length === 0) return null;
             return calibratedLetters[Math.floor(Math.random() * calibratedLetters.length)];
-        }
-
-        function pickNextAlphabetLetter() {
-            const allLetters = PHONEMES.map(p => p.letter);
-            const calibratedLetters = Object.keys(calibrationData);
-
-            // Start from current index and find next calibrated letter
-            let attempts = 0;
-            while (attempts < 26) {
-                const letter = allLetters[currentAlphabetIndex];
-                currentAlphabetIndex = (currentAlphabetIndex + 1) % 26;
-
-                if (calibratedLetters.includes(letter)) {
-                    return letter;
-                }
-                attempts++;
-            }
-
-            return null;
         }
 
         function skipLetter() {
@@ -2757,16 +2980,27 @@
             analyzeTuner();
         }
 
-        function setNextTarget() {
-            currentTarget = alphabetModeEnabled ? pickNextAlphabetLetter() : pickRandomLetter();
+        async function setNextTarget() {
+            // Use adaptive selection if session is active, otherwise use random
+            if (currentSession) {
+                currentTarget = await selectNextLetter();
+            } else {
+                currentTarget = pickRandomLetter();
+            }
+
             if (currentTarget) {
                 document.getElementById('targetLetter').textContent = currentTarget;
                 document.getElementById('status').textContent = `Say: ${currentTarget}`;
                 document.getElementById('tryAgainBtn').style.display = 'none';
                 patternBuffer = [];
-                updateAlphabetProgress();
+                listenClickedThisRound = false; // Reset LISTEN tracking for this letter
             }
+
+            // Update progress tracker
+            updateLetterProgressTracker();
         }
+
+        let listenClickedThisRound = false; // Track if LISTEN was clicked for current letter
 
         async function toggleTuner() {
             const btn = document.getElementById('tunerBtn');
@@ -2775,7 +3009,7 @@
             if (btn.textContent === '▶ Next Letter') {
                 btn.textContent = '⏸ Stop Game';
                 isRunning = true;
-                setNextTarget();
+                await setNextTarget(); // Changed to await since it's now async
                 analyzeTuner();
                 return;
             }
@@ -2793,9 +3027,17 @@
                 if (!audioContext) {
                     await setupAudio();
                 }
+
+                // Initialize adaptive learning session
+                if (currentProfileId) {
+                    initializeSession(currentProfileId);
+                    console.log('▶ Play started with adaptive learning');
+                }
+
                 isRunning = true;
                 btn.textContent = '⏸ Stop Game';
-                setNextTarget();
+                await setNextTarget(); // Changed to await since it's now async
+                updateLetterProgressTracker();
                 analyzeTuner();
             }
         }
@@ -2884,17 +3126,13 @@
                 if (isCorrect && score > 80) {
                     celebrateMatch();
 
-                    // Log this trial for analysis
-                    experimentResults.push({
-                        target: currentTarget,
-                        timestamp: Date.now(),
-                        strategies: results
-                    });
+                    // Record attempt in adaptive learning session
+                    if (currentSession) {
+                        recordAttempt(currentTarget, true, listenClickedThisRound, score);
+                    }
 
-                    // Prepend success message to experimental results
-                    const trialsCount = experimentResults.length;
-                    document.getElementById('trialsCount').textContent = trialsCount;
-                    document.getElementById('status').textContent = `✓ MATCH! ${Math.round(score)}% - Trial #${trialsCount} logged\n\n` + statusText;
+                    // Show success message
+                    document.getElementById('status').textContent = `✓ MATCH! ${Math.round(score)}%\n\n` + statusText;
                     // Stop analyzing so results stay visible
                     isRunning = false;
                     document.getElementById('tunerBtn').textContent = '▶ Next Letter';
@@ -2923,6 +3161,12 @@
                     // Success! Pattern matched AND it's the best match
                     if (score > 85 && bestMatch.letter === currentTarget) {
                         celebrateMatch();
+
+                        // Record attempt in adaptive learning session
+                        if (currentSession) {
+                            recordAttempt(currentTarget, true, listenClickedThisRound, score);
+                        }
+
                         document.getElementById('status').textContent = `✓ PERFECT MATCH! (Try Again or Next Letter)\nBest match: ${bestMatch.letter} (${Math.round(bestMatch.score)}%)`;
                         // Stop analyzing so results stay visible
                         isRunning = false;
@@ -3052,1682 +3296,6 @@
                 };
 
                 requestAnimationFrame(animate);
-            }
-        }
-
-        // ========== GAME TAB FUNCTIONS (COPY OF TUNER) ==========
-
-        let isRunningGame = false;
-        let currentTargetGame = null;
-        let patternBufferGame = [];
-        let gameAnimationFrame = null; // Track animation frame to prevent stacking
-        let gameFrameCounter = 0; // Debug counter
-        let activeOscillators = 0; // Track active audio oscillators
-        let activeConfetti = 0; // Track active confetti animations
-        const MAX_CONFETTI = 3; // Limit concurrent confetti
-        let lastCelebratedLetter = null; // Track last celebrated letter to prevent multiple celebrations
-        let gameLevel = 1; // Current game level
-        let letterY = 0; // Letter vertical position (for falling animation)
-        let letterSpeed = 1; // Letter falling speed
-
-        function skipLetterGame() {
-            if (isRunningGame) {
-                setNextTargetGame();
-            }
-        }
-
-        // tryAgainGame() removed - button no longer exists
-
-        function setNextTargetGame() {
-            currentTargetGame = alphabetModeEnabled ? pickNextAlphabetLetter() : pickRandomLetter();
-            if (currentTargetGame) {
-                const letterEl = document.getElementById('targetLetterGame');
-
-                // Reset position instantly (no transition)
-                letterY = -50; // Start above the visible area (negative %)
-                letterEl.style.transition = 'none'; // Disable transitions
-                letterEl.style.top = `${letterY}%`; // Set position immediately
-
-                // Force reflow to apply the position change
-                letterEl.offsetHeight;
-
-                // Now update the letter content
-                letterEl.textContent = currentTargetGame;
-                document.getElementById('statusGame').textContent = `Say: ${currentTargetGame}`;
-                patternBufferGame = [];
-                lastCelebratedLetter = null; // Reset celebration flag for new letter
-
-                updateAlphabetProgress();
-            }
-        }
-
-        async function toggleTunerGame() {
-            const btn = document.getElementById('tunerBtnGame');
-
-            if (btn.textContent === '▶ Next Letter') {
-                btn.textContent = '⏸ Stop Game';
-                isRunningGame = true;
-                setNextTargetGame();
-                analyzeTunerGame();
-                return;
-            }
-
-            if (isRunningGame) {
-                isRunningGame = false;
-                btn.textContent = '▶ Start Game';
-                document.getElementById('statusGame').textContent = 'Stopped';
-                document.getElementById('targetLetterGame').textContent = '?';
-
-                // Clean up animation frame
-                if (gameAnimationFrame) {
-                    cancelAnimationFrame(gameAnimationFrame);
-                    gameAnimationFrame = null;
-                }
-            } else {
-                if (Object.keys(calibrationData).length === 0) {
-                    alert('Please calibrate at least one phoneme first!');
-                    return;
-                }
-                if (!audioContext) {
-                    await setupAudio();
-                }
-                isRunningGame = true;
-                btn.textContent = '⏸ Stop Game';
-                setNextTargetGame();
-                analyzeTunerGame();
-            }
-        }
-
-        function analyzeTunerGame() {
-            if (!isRunningGame) {
-                // Cancel animation frame if stopped
-                if (gameAnimationFrame) {
-                    cancelAnimationFrame(gameAnimationFrame);
-                    gameAnimationFrame = null;
-                }
-                console.log(`🛑 Game stopped. Frames: ${gameFrameCounter}, Active oscillators: ${activeOscillators}`);
-                gameFrameCounter = 0;
-                return;
-            }
-
-            // Cancel previous frame before requesting new one (prevent stacking)
-            if (gameAnimationFrame) {
-                cancelAnimationFrame(gameAnimationFrame);
-            }
-            gameAnimationFrame = requestAnimationFrame(analyzeTunerGame);
-
-            gameFrameCounter++;
-            if (gameFrameCounter % 300 === 0) { // Log every 5 seconds (60fps * 5)
-                console.log(`📊 Game stats: Frames: ${gameFrameCounter}, Active oscillators: ${activeOscillators}, Audio context state: ${audioContext?.state}`);
-            }
-
-            // Animate letter falling (Level 1+)
-            if (gameLevel >= 1 && currentTargetGame) {
-                letterY += letterSpeed; // Move down
-                const letterEl = document.getElementById('targetLetterGame');
-                // Update position: start from top (-50%), move to bottom (150%)
-                letterEl.style.top = `${letterY}%`;
-
-                // If letter goes off screen, spawn new letter
-                if (letterY > 150) {
-                    setNextTargetGame(); // New letter instead of looping
-                }
-            }
-
-            analyser.getByteFrequencyData(dataArray);
-
-            // Draw spectrum (only every 3 frames to reduce overhead)
-            if (gameFrameCounter % 3 === 0) {
-                const canvas = document.getElementById('spectrumCanvasGame');
-                if (canvas) {
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = 800;
-                    canvas.height = 240;
-
-                    const width = canvas.width;
-                    const height = canvas.height;
-
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-                    ctx.fillRect(0, 0, width, height);
-
-                    const barWidth = width / dataArray.length;
-                    for (let i = 0; i < dataArray.length; i++) {
-                        const barHeight = (dataArray[i] / 255) * height;
-                        const x = i * barWidth;
-                        const hue = (i / dataArray.length) * 360;
-                        ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
-                        ctx.fillRect(x, height - barHeight, barWidth, barHeight);
-                    }
-                }
-            }
-
-            // Calculate volume
-            let sum = 0;
-            for (let i = 0; i < dataArray.length; i++) {
-                sum += dataArray[i];
-            }
-            const volume = (sum / dataArray.length / 128) * 100;
-            document.getElementById('volumeGame').textContent = Math.round(volume) + '%';
-
-            // ALWAYS add current frame to buffer
-            const pattern = downsampleFrequencies(dataArray, PATTERN_BINS);
-            patternBufferGame.push(pattern);
-
-            if (patternBufferGame.length > PATTERN_LENGTH) {
-                patternBufferGame.shift();
-            }
-
-            if (currentTargetGame && patternBufferGame.length < PATTERN_LENGTH) {
-                document.getElementById('statusGame').textContent = `Buffer: ${patternBufferGame.length}/${PATTERN_LENGTH} frames (keep talking...)`;
-            }
-
-            const peakEnergy = Math.max(...pattern);
-            const avgEnergy = pattern.reduce((a, b) => a + b, 0) / pattern.length;
-            const energyConcentration = avgEnergy > 0 ? peakEnergy / avgEnergy : 0;
-
-            if (isPlayingRecording) {
-                return;
-            }
-
-            const FRICATIVES = ['F', 'S', 'V', 'Z', 'H'];
-            const LIQUIDS = ['L', 'R'];
-            const isCurrentNasal = currentTargetGame && isNasal(currentTargetGame);
-            const isFricative = currentTargetGame && FRICATIVES.includes(currentTargetGame);
-            const isLiquid = currentTargetGame && LIQUIDS.includes(currentTargetGame);
-
-            let volumeThreshold = 15;
-            let concentrationThreshold = 2.0;
-
-            if (isCurrentNasal || isLiquid) {
-                volumeThreshold = 8;
-                concentrationThreshold = 1.5;
-            } else if (isFricative) {
-                volumeThreshold = 10;
-                concentrationThreshold = 1.8;
-            }
-
-            if (patternBufferGame.length === PATTERN_LENGTH && volume > volumeThreshold && energyConcentration > concentrationThreshold && currentTargetGame) {
-                const results = testAllPlosiveStrategies(patternBufferGame, currentTargetGame);
-
-                const result = results[0];
-                const score = Math.max(0, Math.min(100, result.score || 0));
-                const targetScore = Math.max(0, Math.min(100, result.targetScore || 0));
-                const prediction = result.predictedLetter || '?';
-                const isCorrect = prediction === currentTargetGame;
-
-                const barCount = Math.max(0, Math.floor(score / 10));
-                const bar = '█'.repeat(barCount);
-                const statusText = `🎯 S11-Snapshot: ${isCorrect ? '✓' : '✗'} Predicted: ${prediction} | Score: ${Math.round(score)}% ${bar}\nTarget ${currentTargetGame}: ${Math.round(targetScore)}%`;
-
-                document.getElementById('statusGame').textContent = statusText;
-                document.getElementById('matchScoreGame').textContent = Math.round(score) + '%';
-                document.getElementById('confidenceFillGame').style.width = score + '%';
-
-                if (isCorrect && score > 80) {
-                    // Only celebrate if we haven't already celebrated this letter (prevent multiple celebrations per letter)
-                    if (lastCelebratedLetter !== currentTargetGame) {
-                        lastCelebratedLetter = currentTargetGame;
-                        celebrateMatchGame();
-
-                        document.getElementById('statusGame').textContent = `✓ MATCH! ${Math.round(score)}%\n\n` + statusText;
-
-                        // Auto-advance to next letter after short delay
-                        setTimeout(() => {
-                            setNextTargetGame();
-                        }, 1000); // 1 second delay to see celebration
-                    }
-
-                    // DON'T stop the game - keep running
-                    // isRunningGame stays true
-                    // Button stays as "Pause"
-                }
-            }
-        }
-
-        function celebrateMatchGame() {
-            const targetEl = document.getElementById('targetLetterGame');
-
-            // LIMIT concurrent sounds to prevent crackling (max 2)
-            if (audioContext && activeOscillators < 2) {
-                activeOscillators++;
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-
-                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
-                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
-                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
-
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-
-                const startTime = audioContext.currentTime;
-                oscillator.start(startTime);
-                oscillator.stop(startTime + 0.4);
-
-                // Clean up nodes after sound finishes
-                oscillator.onended = () => {
-                    try {
-                        oscillator.disconnect();
-                        gainNode.disconnect();
-                        activeOscillators--;
-                        console.log(`🔊 Oscillator cleaned up. Active: ${activeOscillators}`);
-                    } catch (e) {
-                        console.warn('Oscillator cleanup error:', e);
-                    }
-                };
-            }
-
-            targetEl.style.transition = 'all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-            targetEl.style.transform = 'scale(1.5) rotate(5deg)';
-            targetEl.style.color = '#FDD835';
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.3) rotate(-5deg)';
-                targetEl.style.color = '#7CB342';
-            }, 150);
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.6) rotate(0deg)';
-                targetEl.style.color = '#00BCD4';
-            }, 300);
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.2)';
-                targetEl.style.color = '#FF5722';
-            }, 450);
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.4)';
-                targetEl.style.color = '#9C27B0';
-            }, 600);
-
-            setTimeout(() => {
-                targetEl.style.transition = 'all 0.3s ease-out';
-                targetEl.style.transform = 'scale(1)';
-                targetEl.style.color = '#FDD835';
-            }, 800);
-
-            // Only create confetti if under limit
-            if (activeConfetti < MAX_CONFETTI) {
-                activeConfetti++;
-                createConfetti(targetEl);
-                // Decrease counter after confetti animation finishes (~1 second)
-                setTimeout(() => {
-                    activeConfetti--;
-                }, 1000);
-            }
-        }
-
-        // ========== GAME 3 TAB FUNCTIONS ==========
-
-        let isRunningGame3 = false;
-        let currentTargetGame3 = null;
-        let patternBufferGame3 = [];
-        let gameAnimationFrame3 = null;
-        let gameFrameCounter3 = 0;
-        let activeOscillators3 = 0;
-        let activeConfetti3 = 0;
-        const MAX_CONFETTI3 = 3;
-        let lastCelebratedLetter3 = null;
-        let gameLevel3 = parseInt(localStorage.getItem('gameLevel3')) || 1; // Load saved level or start at 1
-        let letterY3 = 0;
-        let letterSpeed3 = 0.5;
-        let hasPlayedAudio3 = false;
-        let currentLetterIndex3 = 0;
-        let isListeningForStudent3 = false;
-        let bottomPauseTimer3 = 0; // Track when letter reached bottom for pause
-        let consecutiveSuccesses3 = 0; // Track consecutive successful matches for Level 1
-        let letterWasMatched3 = false; // Track if current letter was successfully matched
-        let instructionAudio = null; // Track instruction audio playback
-
-        // ===== LEVEL PROGRESS TRACKING (localStorage + Supabase Hybrid) =====
-
-        // Get letter progress from localStorage (instant)
-        function getLetterProgress(letter) {
-            const storageKey = `letterProgress_${currentProfile}`;
-            const allProgress = JSON.parse(localStorage.getItem(storageKey) || '{}');
-            return allProgress[letter] || {
-                current_level: 1,
-                level_1_completed: false,
-                level_2_completed: false,
-                level_3_completed: false,
-                consecutive_successes: 0,
-                last_practiced: new Date().toISOString()
-            };
-        }
-
-        // Save letter progress to localStorage (instant) + sync to Supabase (background)
-        async function saveLetterProgress(letter, updates) {
-            const storageKey = `letterProgress_${currentProfile}`;
-            const allProgress = JSON.parse(localStorage.getItem(storageKey) || '{}');
-
-            // Merge updates
-            allProgress[letter] = {
-                ...allProgress[letter],
-                ...updates,
-                last_practiced: new Date().toISOString()
-            };
-
-            // Save to localStorage immediately (instant)
-            localStorage.setItem(storageKey, JSON.stringify(allProgress));
-            console.log(`💾 Saved ${letter} progress to localStorage:`, allProgress[letter]);
-
-            // Sync to Supabase in background (don't wait)
-            syncProgressToSupabase(letter, allProgress[letter]).catch(err => {
-                console.warn('⚠️ Failed to sync progress to Supabase:', err);
-            });
-        }
-
-        // Sync progress to Supabase (background)
-        async function syncProgressToSupabase(letter, progress) {
-            if (!currentProfile) {
-                console.log('⏭️ Skipping Supabase sync (no profile)');
-                return;
-            }
-
-            try {
-                const { data, error } = await supabase
-                    .from('calibrations')
-                    .update({
-                        current_level: progress.current_level,
-                        level_1_completed: progress.level_1_completed,
-                        level_2_completed: progress.level_2_completed,
-                        level_3_completed: progress.level_3_completed,
-                        consecutive_successes: progress.consecutive_successes,
-                        last_practiced: progress.last_practiced
-                    })
-                    .eq('profile_id', currentProfile)
-                    .eq('letter', letter);
-
-                if (error) throw error;
-                console.log(`☁️ Synced ${letter} progress to Supabase`);
-            } catch (error) {
-                console.error('❌ Supabase sync error:', error);
-                throw error;
-            }
-        }
-
-        // Load all progress from Supabase on startup (updates localStorage)
-        async function loadProgressFromSupabase() {
-            if (!currentProfile) return;
-
-            try {
-                const { data, error } = await supabase
-                    .from('calibrations')
-                    .select('letter, current_level, level_1_completed, level_2_completed, level_3_completed, consecutive_successes, last_practiced')
-                    .eq('profile_id', currentProfile);
-
-                if (error) throw error;
-
-                if (data && data.length > 0) {
-                    const storageKey = `letterProgress_${currentProfile}`;
-                    const allProgress = {};
-
-                    data.forEach(row => {
-                        allProgress[row.letter] = {
-                            current_level: row.current_level || 1,
-                            level_1_completed: row.level_1_completed || false,
-                            level_2_completed: row.level_2_completed || false,
-                            level_3_completed: row.level_3_completed || false,
-                            consecutive_successes: row.consecutive_successes || 0,
-                            last_practiced: row.last_practiced
-                        };
-                    });
-
-                    localStorage.setItem(storageKey, JSON.stringify(allProgress));
-                    console.log(`📥 Loaded progress from Supabase for ${data.length} letters`);
-                }
-            } catch (error) {
-                console.warn('⚠️ Failed to load progress from Supabase:', error);
-            }
-        }
-
-        function updateLevelIndicator() {
-            const indicator = document.getElementById('gameLevelIndicator3');
-            if (indicator) {
-                const levelNames = {
-                    1: 'Level 1: Listen & Repeat (A)',
-                    2: 'Level 2: Independent (A)',
-                    3: 'Level 3: Listen & Repeat (E)',
-                    4: 'Level 4: Independent (E)',
-                    5: 'Level 5: Mixed Practice (A & E)'
-                };
-                indicator.textContent = levelNames[gameLevel3] || `Level ${gameLevel3}`;
-            }
-        }
-
-        function skipLetterGame3() {
-            if (isRunningGame3) {
-                setNextTargetGame3();
-            }
-        }
-
-        function openGame3Settings() {
-            const modal = document.getElementById('game3SettingsModal');
-            modal.classList.add('active');
-
-            // Update current level and progress display
-            document.getElementById('settingsCurrentLevel').textContent = gameLevel3;
-            document.getElementById('settingsProgress').textContent = `${consecutiveSuccesses3}/10`;
-        }
-
-        function closeGame3Settings() {
-            const modal = document.getElementById('game3SettingsModal');
-            modal.classList.remove('active');
-        }
-
-        function setNextTargetGame3() {
-            // Levels 1-5: Check if previous letter timed out without being matched
-            if (gameLevel3 >= 1 && gameLevel3 <= 5 && !letterWasMatched3 && consecutiveSuccesses3 > 0) {
-                console.log(`❌ Letter timed out! Resetting consecutive count from ${consecutiveSuccesses3} to 0`);
-                consecutiveSuccesses3 = 0;
-
-                // Update counter display
-                const counterEl = document.getElementById('successCounter3');
-                if (counterEl) {
-                    counterEl.textContent = `⭐ 0/10`;
-                }
-            }
-
-            // Select letter based on global game level (not per-letter)
-            if (gameLevel3 === 1 || gameLevel3 === 2) {
-                // Levels 1-2: Letter A
-                currentTargetGame3 = 'A';
-            } else if (gameLevel3 === 3 || gameLevel3 === 4) {
-                // Levels 3-4: Letter E
-                currentTargetGame3 = 'E';
-            } else if (gameLevel3 === 5) {
-                // Level 5: Mixed A & E (random)
-                currentTargetGame3 = Math.random() < 0.5 ? 'A' : 'E';
-            } else {
-                // Level 6+: All letters (future expansion)
-                currentTargetGame3 = alphabetModeEnabled ? pickNextAlphabetLetter() : pickRandomLetter();
-            }
-
-            updateLevelIndicator();
-            console.log(`📊 Global Level ${gameLevel3}: ${currentTargetGame3}`);
-
-            if (currentTargetGame3) {
-                const letterEl = document.getElementById('targetLetterGame3');
-
-                letterY3 = -50;
-                letterSpeed3 = 0.5; // Reset to normal speed
-                hasPlayedAudio3 = false; // Reset audio flag for new letter
-                isListeningForStudent3 = false; // Reset listening flag
-                bottomPauseTimer3 = 0; // Reset pause timer
-                letterWasMatched3 = false; // Reset match flag for new letter
-                letterEl.style.transition = 'none';
-                letterEl.style.top = `${letterY3}%`;
-                letterEl.style.transform = 'translateX(-50%) scale(1)'; // Reset from pop animation
-                letterEl.style.opacity = '1'; // Reset from pop animation
-
-                letterEl.offsetHeight;
-
-                letterEl.textContent = currentTargetGame3;
-                const statusMessages = {
-                    1: `🎓 Listen and repeat: ${currentTargetGame3}`,
-                    2: `🎯 Say it yourself: ${currentTargetGame3}`,
-                    3: `🎓 Listen and repeat: ${currentTargetGame3}`,
-                    4: `🎯 Say it yourself: ${currentTargetGame3}`,
-                    5: `🌟 Mixed practice: ${currentTargetGame3}`
-                };
-                document.getElementById('statusGame3').textContent = statusMessages[gameLevel3] || `Say: ${currentTargetGame3}`;
-                patternBufferGame3 = [];
-                lastCelebratedLetter3 = null;
-
-                updateAlphabetProgress();
-            }
-        }
-
-        async function toggleTunerGame3() {
-            const btn = document.getElementById('tunerBtnGame3');
-
-            if (btn.textContent === '▶ Next Letter') {
-                btn.textContent = '⏸ Stop Game';
-                isRunningGame3 = true;
-                setNextTargetGame3();
-                analyzeTunerGame3();
-                return;
-            }
-
-            if (isRunningGame3) {
-                isRunningGame3 = false;
-                btn.textContent = '▶ Start Game';
-                document.getElementById('statusGame3').textContent = 'Stopped';
-                document.getElementById('targetLetterGame3').textContent = '?';
-
-                // Hide success counter when stopping
-                const counterEl = document.getElementById('successCounter3');
-                if (counterEl) {
-                    counterEl.style.display = 'none';
-                }
-
-                if (gameAnimationFrame3) {
-                    cancelAnimationFrame(gameAnimationFrame3);
-                    gameAnimationFrame3 = null;
-                }
-            } else {
-                if (Object.keys(calibrationData).length === 0) {
-                    alert('Please calibrate at least one phoneme first!');
-                    return;
-                }
-
-                // Show instruction popup instead of starting immediately
-                showGame3Instructions();
-            }
-        }
-
-        function showGame3Instructions() {
-            const modal = document.getElementById('game3InstructionModal');
-            modal.classList.add('active');
-
-            // Auto-play instruction audio (properly encoded)
-            console.log('🔊 Loading instruction audio...');
-            const audioPath = 'voice-instructions/' + encodeURIComponent('game play 1_v2.mp3');
-            console.log('📂 Audio path:', audioPath);
-            instructionAudio = new Audio(audioPath);
-
-            instructionAudio.onloadeddata = () => {
-                console.log('✅ Audio loaded successfully');
-            };
-
-            instructionAudio.oncanplaythrough = () => {
-                console.log('✅ Audio can play through');
-            };
-
-            instructionAudio.onerror = (e) => {
-                console.error('❌ Audio loading error:', e);
-                console.error('Attempted path:', audioPath);
-                console.error('Error details:', instructionAudio.error);
-            };
-
-            const playPromise = instructionAudio.play();
-
-            if (playPromise !== undefined) {
-                playPromise
-                    .then(() => {
-                        console.log('✅ Audio playing successfully');
-                    })
-                    .catch(err => {
-                        console.error('❌ Audio autoplay blocked or failed:', err);
-                    });
-            }
-        }
-
-        async function startGame3FromInstructions() {
-            // Stop instruction audio if playing
-            if (instructionAudio) {
-                instructionAudio.pause();
-                instructionAudio.currentTime = 0;
-                instructionAudio = null;
-            }
-
-            // Close modal
-            const modal = document.getElementById('game3InstructionModal');
-            modal.classList.remove('active');
-
-            // Setup audio if needed
-            if (!audioContext) {
-                await setupAudio();
-            }
-
-            // Start the game
-            const btn = document.getElementById('tunerBtnGame3');
-            isRunningGame3 = true;
-            btn.textContent = '⏸ Stop Game';
-
-            // Reset to start from 'A' in Level 1
-            if (gameLevel3 === 1) {
-                currentLetterIndex3 = 0;
-                // Show success counter for Level 1
-                const counterEl = document.getElementById('successCounter3');
-                if (counterEl) {
-                    counterEl.style.display = 'block';
-                    counterEl.textContent = `⭐ ${consecutiveSuccesses3}/10`;
-                }
-            }
-
-            setNextTargetGame3();
-            analyzeTunerGame3();
-        }
-
-        function showLevel1CompleteModal() {
-            const modal = document.getElementById('game3LevelCompleteModal');
-            modal.classList.add('active');
-
-            // Auto-play celebration audio
-            console.log('🎉 Loading celebration audio...');
-            const audioPath = 'voice-instructions/' + encodeURIComponent('Congratulation level 1.mp3');
-            const celebrationAudio = new Audio(audioPath);
-
-            celebrationAudio.onloadeddata = () => {
-                console.log('✅ Celebration audio loaded');
-            };
-
-            celebrationAudio.play().catch(err => {
-                console.error('❌ Celebration audio autoplay blocked:', err);
-            });
-
-            // Add confetti animation
-            createCelebrationConfetti();
-        }
-
-        function closeLevel1Complete() {
-            const modal = document.getElementById('game3LevelCompleteModal');
-            modal.classList.remove('active');
-
-            // Clear confetti
-            const confettiContainer = document.getElementById('celebrationConfetti');
-            if (confettiContainer) {
-                confettiContainer.innerHTML = '';
-            }
-
-            // Automatically start next level
-            const btn = document.getElementById('tunerBtnGame3');
-            if (btn) {
-                btn.textContent = '⏸ Stop Game';
-                isRunningGame3 = true;
-                updateLevelIndicator(); // Update to show new level
-                setNextTargetGame3(); // Start new letter
-                analyzeTunerGame3(); // Start game loop
-            }
-        }
-
-        function createCelebrationConfetti() {
-            const container = document.getElementById('celebrationConfetti');
-            if (!container) return;
-
-            // Clear existing confetti
-            container.innerHTML = '';
-
-            // Create 50 confetti pieces
-            const colors = ['#FDD835', '#FF6B6B', '#4CAF50', '#2196F3', '#FF5722', '#9C27B0'];
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.style.position = 'absolute';
-                confetti.style.width = '10px';
-                confetti.style.height = '10px';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.top = -20 + 'px';
-                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                confetti.style.animation = `confettiFall ${2 + Math.random() * 3}s linear infinite`;
-                confetti.style.animationDelay = Math.random() * 2 + 's';
-                confetti.style.opacity = '0.8';
-                container.appendChild(confetti);
-            }
-        }
-
-        function analyzeTunerGame3() {
-            if (!isRunningGame3) {
-                if (gameAnimationFrame3) {
-                    cancelAnimationFrame(gameAnimationFrame3);
-                    gameAnimationFrame3 = null;
-                }
-                console.log(`🛑 Game 3 stopped. Frames: ${gameFrameCounter3}, Active oscillators: ${activeOscillators3}`);
-                gameFrameCounter3 = 0;
-                return;
-            }
-
-            if (gameAnimationFrame3) {
-                cancelAnimationFrame(gameAnimationFrame3);
-            }
-            gameAnimationFrame3 = requestAnimationFrame(analyzeTunerGame3);
-
-            gameFrameCounter3++;
-            if (gameFrameCounter3 % 300 === 0) {
-                console.log(`📊 Game 3 stats: Frames: ${gameFrameCounter3}, Active oscillators: ${activeOscillators3}, Audio context state: ${audioContext?.state}`);
-            }
-
-            if (gameLevel3 >= 1 && currentTargetGame3) {
-                letterY3 += letterSpeed3;
-                const letterEl = document.getElementById('targetLetterGame3');
-                letterEl.style.top = `${letterY3}%`;
-
-                // Levels 1 & 3: Auto-play calibration audio immediately when letter enters screen (learning mode)
-                if ((gameLevel3 === 1 || gameLevel3 === 3) && !hasPlayedAudio3 && letterY3 >= -20) {
-                    hasPlayedAudio3 = true;
-                    isListeningForStudent3 = false;
-
-                    // Update mic indicator to red (not listening)
-                    const micIndicator = document.getElementById('micIndicator3');
-                    if (micIndicator) {
-                        micIndicator.style.background = '#F44336';
-                        micIndicator.style.boxShadow = '0 0 20px rgba(244, 67, 54, 0.8)';
-                    }
-
-                    // Play calibration audio
-                    const calibration = calibrationData[currentTargetGame3];
-                    if (calibration && calibration.audioUrl) {
-                        const audio = new Audio(calibration.audioUrl);
-
-                        // When audio finishes, start listening
-                        audio.onended = () => {
-                            isListeningForStudent3 = true;
-                            console.log(`✅ Audio finished, now listening for student to say: ${currentTargetGame3}`);
-
-                            // Update mic indicator to green (listening)
-                            if (micIndicator) {
-                                micIndicator.style.background = '#4CAF50';
-                                micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
-                            }
-                        };
-
-                        audio.play().catch(err => {
-                            console.log('Audio play error:', err);
-                            // If audio fails, still start listening
-                            isListeningForStudent3 = true;
-                            if (micIndicator) {
-                                micIndicator.style.background = '#4CAF50';
-                                micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
-                            }
-                        });
-                        console.log(`🔊 Playing ${currentTargetGame3} sound from calibration`);
-                    } else {
-                        console.log(`⚠️ No calibration audio for ${currentTargetGame3}`);
-                        // If no audio, start listening immediately
-                        isListeningForStudent3 = true;
-                        if (micIndicator) {
-                            micIndicator.style.background = '#4CAF50';
-                            micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
-                        }
-                    }
-                }
-
-                // Levels 2, 4, 5: NO audio - start listening immediately when letter enters screen (independent mode)
-                if ((gameLevel3 === 2 || gameLevel3 === 4 || gameLevel3 === 5) && !hasPlayedAudio3 && letterY3 >= -20) {
-                    hasPlayedAudio3 = true; // Mark as "played" even though no audio
-                    isListeningForStudent3 = true; // Start listening immediately
-
-                    // Update mic indicator to green (listening)
-                    const micIndicator = document.getElementById('micIndicator3');
-                    if (micIndicator) {
-                        micIndicator.style.background = '#4CAF50';
-                        micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
-                    }
-                    console.log(`👂 Level ${gameLevel3}: No audio - listening for student to say: ${currentTargetGame3}`);
-                }
-
-                // Levels 1-5: Letter slows down, stops at bottom, pauses 3 seconds, then respawns
-                if (gameLevel3 >= 1 && gameLevel3 <= 5) {
-                    // Start slowing down at 55% (earlier for smoother deceleration)
-                    if (letterY3 > 55 && letterY3 < 70 && letterSpeed3 > 0.15) {
-                        letterSpeed3 = 0.15;
-                    }
-
-                    // Stop completely at bottom (70% - keeps letter comfortably visible)
-                    if (letterY3 >= 70) {
-                        letterY3 = 70;
-
-                        // Start counting pause frames
-                        bottomPauseTimer3++;
-
-                        // After 3 seconds (180 frames at 60fps), spawn new letter
-                        if (bottomPauseTimer3 >= 180) {
-                            console.log('🔄 Pause complete, spawning new letter...');
-                            setNextTargetGame3();
-                        }
-                    }
-                } else {
-                    // Level 6+: Letter respawns when it falls off screen
-                    if (letterY3 > 150) {
-                        setNextTargetGame3();
-                    }
-                }
-            }
-
-            analyser.getByteFrequencyData(dataArray);
-
-            if (gameFrameCounter3 % 3 === 0) {
-                const canvas = document.getElementById('spectrumCanvasGame3');
-                if (canvas) {
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = 800;
-                    canvas.height = 240;
-
-                    const width = canvas.width;
-                    const height = canvas.height;
-
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-                    ctx.fillRect(0, 0, width, height);
-
-                    const barWidth = width / dataArray.length;
-                    for (let i = 0; i < dataArray.length; i++) {
-                        const barHeight = (dataArray[i] / 255) * height;
-                        const x = i * barWidth;
-                        const hue = (i / dataArray.length) * 360;
-                        ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
-                        ctx.fillRect(x, height - barHeight, barWidth, barHeight);
-                    }
-                }
-            }
-
-            let sum = 0;
-            for (let i = 0; i < dataArray.length; i++) {
-                sum += dataArray[i];
-            }
-            const volume = (sum / dataArray.length / 128) * 100;
-            document.getElementById('volumeGame3').textContent = Math.round(volume) + '%';
-
-            const pattern = downsampleFrequencies(dataArray, PATTERN_BINS);
-            patternBufferGame3.push(pattern);
-
-            if (patternBufferGame3.length > PATTERN_LENGTH) {
-                patternBufferGame3.shift();
-            }
-
-            if (currentTargetGame3 && patternBufferGame3.length < PATTERN_LENGTH) {
-                document.getElementById('statusGame3').textContent = `Buffer: ${patternBufferGame3.length}/${PATTERN_LENGTH} frames (keep talking...)`;
-            }
-
-            const peakEnergy = Math.max(...pattern);
-            const avgEnergy = pattern.reduce((a, b) => a + b, 0) / pattern.length;
-            const energyConcentration = avgEnergy > 0 ? peakEnergy / avgEnergy : 0;
-
-            if (isPlayingRecording) {
-                return;
-            }
-
-            // In Level 1, only do voice recognition if we're listening for student
-            if (gameLevel3 === 1 && !isListeningForStudent3) {
-                return;
-            }
-
-            const FRICATIVES = ['F', 'S', 'V', 'Z', 'H'];
-            const LIQUIDS = ['L', 'R'];
-            const isCurrentNasal = currentTargetGame3 && isNasal(currentTargetGame3);
-            const isFricative = currentTargetGame3 && FRICATIVES.includes(currentTargetGame3);
-            const isLiquid = currentTargetGame3 && LIQUIDS.includes(currentTargetGame3);
-
-            let volumeThreshold = 15;
-            let concentrationThreshold = 2.0;
-
-            if (isCurrentNasal || isLiquid) {
-                volumeThreshold = 8;
-                concentrationThreshold = 1.5;
-            } else if (isFricative) {
-                volumeThreshold = 10;
-                concentrationThreshold = 1.8;
-            }
-
-            if (patternBufferGame3.length === PATTERN_LENGTH && volume > volumeThreshold && energyConcentration > concentrationThreshold && currentTargetGame3) {
-                const results = testAllPlosiveStrategies(patternBufferGame3, currentTargetGame3);
-
-                const result = results[0];
-                const score = Math.max(0, Math.min(100, result.score || 0));
-                const targetScore = Math.max(0, Math.min(100, result.targetScore || 0));
-                const prediction = result.predictedLetter || '?';
-                const isCorrect = prediction === currentTargetGame3;
-
-                const barCount = Math.max(0, Math.floor(score / 10));
-                const bar = '█'.repeat(barCount);
-                const statusText = `🎯 S11-Snapshot: ${isCorrect ? '✓' : '✗'} Predicted: ${prediction} | Score: ${Math.round(score)}% ${bar}\nTarget ${currentTargetGame3}: ${Math.round(targetScore)}%`;
-
-                document.getElementById('statusGame3').textContent = statusText;
-                document.getElementById('matchScoreGame3').textContent = Math.round(score) + '%';
-                document.getElementById('confidenceFillGame3').style.width = score + '%';
-
-                // Apply letter-specific sensitivity to score threshold
-                const sensitivity = letterSensitivity[currentTargetGame3] || 1.0;
-                // Lower sensitivity (0.5) = higher threshold (harder to match)
-                // Higher sensitivity (1.5) = lower threshold (easier to match)
-                const baseThreshold = 80;
-                const adjustedScoreThreshold = baseThreshold / sensitivity;
-
-                console.log(`📊 ${currentTargetGame3} sensitivity: ${sensitivity}x, threshold: ${adjustedScoreThreshold.toFixed(1)}%, score: ${score.toFixed(1)}%`);
-
-                if (isCorrect && score > adjustedScoreThreshold) {
-                    if (lastCelebratedLetter3 !== currentTargetGame3) {
-                        lastCelebratedLetter3 = currentTargetGame3;
-                        celebrateMatchGame3();
-
-                        document.getElementById('statusGame3').textContent = `✓ MATCH! ${Math.round(score)}%\n\n` + statusText;
-
-                        // Levels 1-5: Immediate pop and respawn
-                        if (gameLevel3 >= 1 && gameLevel3 <= 5) {
-                            console.log(`🎉 Student matched ${currentTargetGame3}! Popping letter...`);
-                            isListeningForStudent3 = false;
-                            letterWasMatched3 = true; // Mark this letter as matched
-
-                            // Increment consecutive successes
-                            consecutiveSuccesses3++;
-                            console.log(`⭐ Consecutive successes: ${consecutiveSuccesses3}/10`);
-
-                            // Update counter display
-                            const counterEl = document.getElementById('successCounter3');
-                            if (counterEl) {
-                                counterEl.textContent = `⭐ ${consecutiveSuccesses3}/10`;
-                                counterEl.style.display = 'block';
-                            }
-
-                            // Make letter explode/pop
-                            const letterEl = document.getElementById('targetLetterGame3');
-                            letterEl.style.transition = 'all 0.2s ease-out';
-                            letterEl.style.transform = 'translateX(-50%) scale(2)';
-                            letterEl.style.opacity = '0';
-
-                            // Check if current level is completed (10 consecutive successes)
-                            if (consecutiveSuccesses3 >= 10) {
-                                setTimeout(async () => {
-                                    // Stop the game
-                                    isRunningGame3 = false;
-                                    const btn = document.getElementById('tunerBtnGame3');
-                                    if (btn) btn.textContent = '▶ Start Game';
-
-                                    // Advance to next level
-                                    const completedLevel = gameLevel3;
-                                    gameLevel3++;
-
-                                    // Save global game level to localStorage
-                                    localStorage.setItem('gameLevel3', gameLevel3);
-                                    console.log(`🎓 Level ${completedLevel} completed! Advancing to Level ${gameLevel3}`);
-
-                                    // Mark letter as completed in calibration (for golden letter effect)
-                                    if (completedLevel === 1 || completedLevel === 2) {
-                                        await saveLetterProgress('A', {
-                                            level_1_completed: completedLevel === 1,
-                                            level_2_completed: completedLevel === 2,
-                                            current_level: completedLevel + 1
-                                        });
-                                    } else if (completedLevel === 3 || completedLevel === 4) {
-                                        await saveLetterProgress('E', {
-                                            level_3_completed: completedLevel === 3,
-                                            level_4_completed: completedLevel === 4,
-                                            current_level: completedLevel + 1
-                                        });
-                                    }
-
-                                    // Refresh calibration grid to show golden letters
-                                    createCalibrationGrid();
-
-                                    // Show celebration modal
-                                    showLevel1CompleteModal();
-                                    consecutiveSuccesses3 = 0;
-                                    if (counterEl) counterEl.textContent = `⭐ 0/10`;
-                                }, 300);
-                                return; // Don't spawn next letter
-                            }
-
-                            // Immediately spawn next letter (only if not completed)
-                            setTimeout(() => {
-                                letterEl.style.transition = 'none';
-                                letterEl.style.transform = 'translateX(-50%) scale(1)';
-                                letterEl.style.opacity = '1';
-                                setNextTargetGame3();
-                            }, 300);
-                        } else {
-                            // Level 6+: delay before next letter
-                            setTimeout(() => {
-                                setNextTargetGame3();
-                            }, 1000);
-                        }
-                    }
-                }
-            }
-        }
-
-        function celebrateMatchGame3() {
-            const targetEl = document.getElementById('targetLetterGame3');
-
-            if (audioContext && activeOscillators3 < 2) {
-                activeOscillators3++;
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-
-                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
-                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
-                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
-
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-
-                const startTime = audioContext.currentTime;
-                oscillator.start(startTime);
-                oscillator.stop(startTime + 0.4);
-
-                oscillator.onended = () => {
-                    try {
-                        oscillator.disconnect();
-                        gainNode.disconnect();
-                        activeOscillators3--;
-                        console.log(`🔊 Game 3 Oscillator cleaned up. Active: ${activeOscillators3}`);
-                    } catch (e) {
-                        console.warn('Game 3 Oscillator cleanup error:', e);
-                    }
-                };
-            }
-
-            targetEl.style.transition = 'all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-            targetEl.style.transform = 'scale(1.5) rotate(5deg)';
-            targetEl.style.color = '#FDD835';
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.3) rotate(-5deg)';
-                targetEl.style.color = '#7CB342';
-            }, 150);
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.6) rotate(0deg)';
-                targetEl.style.color = '#00BCD4';
-            }, 300);
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.2)';
-                targetEl.style.color = '#FF5722';
-            }, 450);
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.4)';
-                targetEl.style.color = '#9C27B0';
-            }, 600);
-
-            setTimeout(() => {
-                targetEl.style.transition = 'all 0.3s ease-out';
-                targetEl.style.transform = 'scale(1)';
-                targetEl.style.color = '#FDD835';
-            }, 800);
-
-            if (activeConfetti3 < MAX_CONFETTI3) {
-                activeConfetti3++;
-                createConfetti(targetEl);
-                setTimeout(() => {
-                    activeConfetti3--;
-                }, 1000);
-            }
-        }
-
-        // ========== GAME 4 TAB FUNCTIONS ==========
-
-        let isRunningGame4 = false;
-        let currentTargetGame4 = null;
-        let patternBufferGame4 = [];
-        let gameAnimationFrame4 = null;
-        let gameFrameCounter4 = 0;
-        let activeOscillators4 = 0;
-        let activeConfetti4 = 0;
-        const MAX_CONFETTI4 = 3;
-        let lastCelebratedLetter4 = null;
-        let gameLevel4 = 1;
-        let letterY4 = 0;
-        let letterSpeed4 = 0.5;
-        let hasPlayedAudio4 = false;
-        let currentLetterIndex4 = 0;
-        let isListeningForStudent4 = false;
-        let bottomPauseTimer4 = 0; // Track when letter reached bottom for pause
-        let consecutiveSuccesses4 = 0; // Track consecutive successful matches for Level 1
-        let letterWasMatched4 = false; // Track if current letter was successfully matched
-        let instructionAudio4 = null; // Track instruction audio playback
-
-        function skipLetterGame4() {
-            if (isRunningGame4) {
-                setNextTargetGame4();
-            }
-        }
-
-        function openGame4Settings() {
-            // TODO: Open settings modal with:
-            // - Play calibration sound (speaker icon)
-            // - Sensitivity slider
-            // - Skip letter button
-            // - Future settings...
-            alert('Settings coming soon!\n\nWill include:\n- 🔊 Play sound\n- 📊 Sensitivity\n- ⏭️ Skip letter');
-        }
-
-        function setNextTargetGame4() {
-            // Level 1: Check if previous letter timed out without being matched
-            if (gameLevel4 === 1 && !letterWasMatched4 && consecutiveSuccesses4 > 0) {
-                console.log(`❌ Letter timed out! Resetting consecutive count from ${consecutiveSuccesses4} to 0`);
-                consecutiveSuccesses4 = 0;
-
-                // Update counter display
-                const counterEl = document.getElementById('successCounter4');
-                if (counterEl) {
-                    counterEl.textContent = `⭐ 0/10`;
-                }
-            }
-
-            // Level 1: Only letter A (for children who don't know letters yet)
-            if (gameLevel4 === 1) {
-                currentTargetGame4 = 'A';
-            } else {
-                // Other levels: random or alphabet mode
-                currentTargetGame4 = alphabetModeEnabled ? pickNextAlphabetLetter() : pickRandomLetter();
-            }
-
-            if (currentTargetGame4) {
-                const letterEl = document.getElementById('targetLetterGame4');
-
-                letterY4 = -50;
-                letterSpeed4 = 0.5; // Reset to normal speed
-                hasPlayedAudio4 = false; // Reset audio flag for new letter
-                isListeningForStudent4 = false; // Reset listening flag
-                bottomPauseTimer4 = 0; // Reset pause timer
-                letterWasMatched4 = false; // Reset match flag for new letter
-                letterEl.style.transition = 'none';
-                letterEl.style.top = `${letterY4}%`;
-
-                letterEl.offsetHeight;
-
-                letterEl.textContent = currentTargetGame4;
-                if (gameLevel4 === 1) {
-                    document.getElementById('statusGame4').textContent = `🎓 Level 1: Listen and learn - ${currentTargetGame4}`;
-                } else {
-                    document.getElementById('statusGame4').textContent = `Say: ${currentTargetGame4}`;
-                }
-                patternBufferGame4 = [];
-                lastCelebratedLetter4 = null;
-
-                updateAlphabetProgress();
-            }
-        }
-
-        async function toggleTunerGame4() {
-            const btn = document.getElementById('tunerBtnGame4');
-
-            if (btn.textContent === '▶ Next Letter') {
-                btn.textContent = '⏸ Stop Game';
-                isRunningGame4 = true;
-                setNextTargetGame4();
-                analyzeTunerGame4();
-                return;
-            }
-
-            if (isRunningGame4) {
-                isRunningGame4 = false;
-                btn.textContent = '▶ Start Game';
-                document.getElementById('statusGame4').textContent = 'Stopped';
-                document.getElementById('targetLetterGame4').textContent = '?';
-
-                // Hide success counter when stopping
-                const counterEl = document.getElementById('successCounter4');
-                if (counterEl) {
-                    counterEl.style.display = 'none';
-                }
-
-                if (gameAnimationFrame4) {
-                    cancelAnimationFrame(gameAnimationFrame4);
-                    gameAnimationFrame4 = null;
-                }
-            } else {
-                if (Object.keys(calibrationData).length === 0) {
-                    alert('Please calibrate at least one phoneme first!');
-                    return;
-                }
-
-                // Show instruction popup instead of starting immediately
-                showGame4Instructions();
-            }
-        }
-
-        function showGame4Instructions() {
-            const modal = document.getElementById('game4InstructionModal');
-            modal.classList.add('active');
-
-            // Auto-play instruction audio (properly encoded)
-            console.log('🔊 Loading instruction audio...');
-            const audioPath = 'voice-instructions/' + encodeURIComponent('game play 1_v2.mp3');
-            console.log('📂 Audio path:', audioPath);
-            instructionAudio4 = new Audio(audioPath);
-
-            instructionAudio4.onloadeddata = () => {
-                console.log('✅ Audio loaded successfully');
-            };
-
-            instructionAudio4.oncanplaythrough = () => {
-                console.log('✅ Audio can play through');
-            };
-
-            instructionAudio4.onerror = (e) => {
-                console.error('❌ Audio loading error:', e);
-                console.error('Attempted path:', audioPath);
-                console.error('Error details:', instructionAudio4.error);
-            };
-
-            const playPromise = instructionAudio4.play();
-
-            if (playPromise !== undefined) {
-                playPromise
-                    .then(() => {
-                        console.log('✅ Audio playing successfully');
-                    })
-                    .catch(err => {
-                        console.error('❌ Audio autoplay blocked or failed:', err);
-                    });
-            }
-        }
-
-        async function startGame4FromInstructions() {
-            // Stop instruction audio if playing
-            if (instructionAudio4) {
-                instructionAudio4.pause();
-                instructionAudio4.currentTime = 0;
-                instructionAudio4 = null;
-            }
-
-            // Close modal
-            const modal = document.getElementById('game4InstructionModal');
-            modal.classList.remove('active');
-
-            // Setup audio if needed
-            if (!audioContext) {
-                await setupAudio();
-            }
-
-            // Start the game
-            const btn = document.getElementById('tunerBtnGame4');
-            isRunningGame4 = true;
-            btn.textContent = '⏸ Stop Game';
-
-            // Reset to start from 'A' in Level 1
-            if (gameLevel4 === 1) {
-                currentLetterIndex4 = 0;
-                // Show success counter for Level 1
-                const counterEl = document.getElementById('successCounter4');
-                if (counterEl) {
-                    counterEl.style.display = 'block';
-                    counterEl.textContent = `⭐ ${consecutiveSuccesses4}/10`;
-                }
-            }
-
-            setNextTargetGame4();
-            analyzeTunerGame4();
-        }
-
-        function showGame4LevelComplete() {
-            const modal = document.getElementById('game4LevelCompleteModal');
-            modal.classList.add('active');
-
-            // Auto-play celebration audio
-            console.log('🎉 Loading celebration audio...');
-            const audioPath = 'voice-instructions/' + encodeURIComponent('A success B start.mp3');
-            const celebrationAudio = new Audio(audioPath);
-
-            celebrationAudio.onloadeddata = () => {
-                console.log('✅ Celebration audio loaded');
-            };
-
-            celebrationAudio.play().catch(err => {
-                console.error('❌ Celebration audio autoplay blocked:', err);
-            });
-
-            // Add confetti animation
-            createCelebrationConfetti4();
-        }
-
-        function closeGame4LevelComplete() {
-            const modal = document.getElementById('game4LevelCompleteModal');
-            modal.classList.remove('active');
-
-            // Clear confetti
-            const confettiContainer = document.getElementById('celebrationConfetti4');
-            if (confettiContainer) {
-                confettiContainer.innerHTML = '';
-            }
-        }
-
-        function createCelebrationConfetti4() {
-            const container = document.getElementById('celebrationConfetti4');
-            if (!container) return;
-
-            // Clear existing confetti
-            container.innerHTML = '';
-
-            // Create 50 confetti pieces
-            const colors = ['#FDD835', '#FF6B6B', '#4CAF50', '#2196F3', '#FF5722', '#9C27B0'];
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.style.position = 'absolute';
-                confetti.style.width = '10px';
-                confetti.style.height = '10px';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.top = -20 + 'px';
-                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                confetti.style.animation = `confettiFall ${2 + Math.random() * 3}s linear infinite`;
-                confetti.style.animationDelay = Math.random() * 2 + 's';
-                confetti.style.opacity = '0.8';
-                container.appendChild(confetti);
-            }
-        }
-
-        function analyzeTunerGame4() {
-            if (!isRunningGame4) {
-                if (gameAnimationFrame4) {
-                    cancelAnimationFrame(gameAnimationFrame4);
-                    gameAnimationFrame4 = null;
-                }
-                console.log(`🛑 Game 4 stopped. Frames: ${gameFrameCounter4}, Active oscillators: ${activeOscillators4}`);
-                gameFrameCounter4 = 0;
-                return;
-            }
-
-            if (gameAnimationFrame4) {
-                cancelAnimationFrame(gameAnimationFrame4);
-            }
-            gameAnimationFrame4 = requestAnimationFrame(analyzeTunerGame4);
-
-            gameFrameCounter4++;
-            if (gameFrameCounter4 % 300 === 0) {
-                console.log(`📊 Game 4 stats: Frames: ${gameFrameCounter4}, Active oscillators: ${activeOscillators4}, Audio context state: ${audioContext?.state}`);
-            }
-
-            if (gameLevel4 >= 1 && currentTargetGame4) {
-                letterY4 += letterSpeed4;
-                const letterEl = document.getElementById('targetLetterGame4');
-                letterEl.style.top = `${letterY4}%`;
-
-                // Level 1: Auto-play calibration audio immediately when letter enters screen
-                if (gameLevel4 === 1 && !hasPlayedAudio4 && letterY4 >= -20) {
-                    hasPlayedAudio4 = true;
-                    isListeningForStudent4 = false;
-
-                    // Update mic indicator to red (not listening)
-                    const micIndicator = document.getElementById('micIndicator4');
-                    if (micIndicator) {
-                        micIndicator.style.background = '#F44336';
-                        micIndicator.style.boxShadow = '0 0 20px rgba(244, 67, 54, 0.8)';
-                    }
-
-                    // Play calibration audio
-                    const calibration = calibrationData[currentTargetGame4];
-                    if (calibration && calibration.audioUrl) {
-                        const audio = new Audio(calibration.audioUrl);
-
-                        // When audio finishes, start listening
-                        audio.onended = () => {
-                            isListeningForStudent4 = true;
-                            console.log(`✅ Audio finished, now listening for student to say: ${currentTargetGame4}`);
-
-                            // Update mic indicator to green (listening)
-                            if (micIndicator) {
-                                micIndicator.style.background = '#4CAF50';
-                                micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
-                            }
-                        };
-
-                        audio.play().catch(err => {
-                            console.log('Audio play error:', err);
-                            // If audio fails, still start listening
-                            isListeningForStudent4 = true;
-                            if (micIndicator) {
-                                micIndicator.style.background = '#4CAF50';
-                                micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
-                            }
-                        });
-                        console.log(`🔊 Playing ${currentTargetGame4} sound from calibration`);
-                    } else {
-                        console.log(`⚠️ No calibration audio for ${currentTargetGame4}`);
-                        // If no audio, start listening immediately
-                        isListeningForStudent4 = true;
-                        if (micIndicator) {
-                            micIndicator.style.background = '#4CAF50';
-                            micIndicator.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
-                        }
-                    }
-                }
-
-                // Level 1: Letter slows down, stops at bottom, pauses 3 seconds, then respawns
-                if (gameLevel4 === 1) {
-                    // Start slowing down at 55% (earlier for smoother deceleration)
-                    if (letterY4 > 55 && letterY4 < 70 && letterSpeed4 > 0.15) {
-                        letterSpeed4 = 0.15;
-                    }
-
-                    // Stop completely at bottom (70% - keeps letter comfortably visible)
-                    if (letterY4 >= 70) {
-                        letterY4 = 70;
-
-                        // Start counting pause frames
-                        bottomPauseTimer4++;
-
-                        // After 3 seconds (180 frames at 60fps), spawn new letter
-                        if (bottomPauseTimer4 >= 180) {
-                            console.log('🔄 Pause complete, spawning new letter...');
-                            setNextTargetGame4();
-                        }
-                    }
-                } else {
-                    // Other levels: Letter respawns when it falls off screen
-                    if (letterY4 > 150) {
-                        setNextTargetGame4();
-                    }
-                }
-            }
-
-            analyser.getByteFrequencyData(dataArray);
-
-            if (gameFrameCounter4 % 3 === 0) {
-                const canvas = document.getElementById('spectrumCanvasGame4');
-                if (canvas) {
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = 800;
-                    canvas.height = 240;
-
-                    const width = canvas.width;
-                    const height = canvas.height;
-
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-                    ctx.fillRect(0, 0, width, height);
-
-                    const barWidth = width / dataArray.length;
-                    for (let i = 0; i < dataArray.length; i++) {
-                        const barHeight = (dataArray[i] / 255) * height;
-                        const x = i * barWidth;
-                        const hue = (i / dataArray.length) * 360;
-                        ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
-                        ctx.fillRect(x, height - barHeight, barWidth, barHeight);
-                    }
-                }
-            }
-
-            let sum = 0;
-            for (let i = 0; i < dataArray.length; i++) {
-                sum += dataArray[i];
-            }
-            const volume = (sum / dataArray.length / 128) * 100;
-            document.getElementById('volumeGame4').textContent = Math.round(volume) + '%';
-
-            const pattern = downsampleFrequencies(dataArray, PATTERN_BINS);
-            patternBufferGame4.push(pattern);
-
-            if (patternBufferGame4.length > PATTERN_LENGTH) {
-                patternBufferGame4.shift();
-            }
-
-            if (currentTargetGame4 && patternBufferGame4.length < PATTERN_LENGTH) {
-                document.getElementById('statusGame4').textContent = `Buffer: ${patternBufferGame4.length}/${PATTERN_LENGTH} frames (keep talking...)`;
-            }
-
-            const peakEnergy = Math.max(...pattern);
-            const avgEnergy = pattern.reduce((a, b) => a + b, 0) / pattern.length;
-            const energyConcentration = avgEnergy > 0 ? peakEnergy / avgEnergy : 0;
-
-            if (isPlayingRecording) {
-                return;
-            }
-
-            // In Level 1, only do voice recognition if we're listening for student
-            if (gameLevel4 === 1 && !isListeningForStudent4) {
-                return;
-            }
-
-            const FRICATIVES = ['F', 'S', 'V', 'Z', 'H'];
-            const LIQUIDS = ['L', 'R'];
-            const isCurrentNasal = currentTargetGame4 && isNasal(currentTargetGame4);
-            const isFricative = currentTargetGame4 && FRICATIVES.includes(currentTargetGame4);
-            const isLiquid = currentTargetGame4 && LIQUIDS.includes(currentTargetGame4);
-
-            let volumeThreshold = 15;
-            let concentrationThreshold = 2.0;
-
-            if (isCurrentNasal || isLiquid) {
-                volumeThreshold = 8;
-                concentrationThreshold = 1.5;
-            } else if (isFricative) {
-                volumeThreshold = 10;
-                concentrationThreshold = 1.8;
-            }
-
-            if (patternBufferGame4.length === PATTERN_LENGTH && volume > volumeThreshold && energyConcentration > concentrationThreshold && currentTargetGame4) {
-                const results = testAllPlosiveStrategies(patternBufferGame4, currentTargetGame4);
-
-                const result = results[0];
-                const score = Math.max(0, Math.min(100, result.score || 0));
-                const targetScore = Math.max(0, Math.min(100, result.targetScore || 0));
-                const prediction = result.predictedLetter || '?';
-                const isCorrect = prediction === currentTargetGame4;
-
-                const barCount = Math.max(0, Math.floor(score / 10));
-                const bar = '█'.repeat(barCount);
-                const statusText = `🎯 S11-Snapshot: ${isCorrect ? '✓' : '✗'} Predicted: ${prediction} | Score: ${Math.round(score)}% ${bar}\nTarget ${currentTargetGame4}: ${Math.round(targetScore)}%`;
-
-                document.getElementById('statusGame4').textContent = statusText;
-                document.getElementById('matchScoreGame4').textContent = Math.round(score) + '%';
-                document.getElementById('confidenceFillGame4').style.width = score + '%';
-
-                // Apply letter-specific sensitivity to score threshold
-                const sensitivity = letterSensitivity[currentTargetGame4] || 1.0;
-                // Lower sensitivity (0.5) = higher threshold (harder to match)
-                // Higher sensitivity (1.5) = lower threshold (easier to match)
-                const baseThreshold = 80;
-                const adjustedScoreThreshold = baseThreshold / sensitivity;
-
-                console.log(`📊 ${currentTargetGame4} sensitivity: ${sensitivity}x, threshold: ${adjustedScoreThreshold.toFixed(1)}%, score: ${score.toFixed(1)}%`);
-
-                if (isCorrect && score > adjustedScoreThreshold) {
-                    if (lastCelebratedLetter4 !== currentTargetGame4) {
-                        lastCelebratedLetter4 = currentTargetGame4;
-                        celebrateMatchGame4();
-
-                        document.getElementById('statusGame4').textContent = `✓ MATCH! ${Math.round(score)}%\n\n` + statusText;
-
-                        // Level 1: Immediate pop and respawn
-                        if (gameLevel4 === 1) {
-                            console.log(`🎉 Student matched ${currentTargetGame4}! Popping letter...`);
-                            isListeningForStudent4 = false;
-                            letterWasMatched4 = true; // Mark this letter as matched
-
-                            // Increment consecutive successes
-                            consecutiveSuccesses4++;
-                            console.log(`⭐ Consecutive successes: ${consecutiveSuccesses4}/10`);
-
-                            // Update counter display
-                            const counterEl = document.getElementById('successCounter4');
-                            if (counterEl) {
-                                counterEl.textContent = `⭐ ${consecutiveSuccesses4}/10`;
-                                counterEl.style.display = 'block';
-                            }
-
-                            // Make letter explode/pop
-                            const letterEl = document.getElementById('targetLetterGame4');
-                            letterEl.style.transition = 'all 0.2s ease-out';
-                            letterEl.style.transform = 'translateX(-50%) scale(2)';
-                            letterEl.style.opacity = '0';
-
-                            // Check if Level 1 is completed (10 consecutive successes)
-                            if (consecutiveSuccesses4 >= 10) {
-                                setTimeout(() => {
-                                    // Show celebration modal
-                                    showGame4LevelComplete();
-                                    consecutiveSuccesses4 = 0;
-                                    if (counterEl) counterEl.textContent = `⭐ 0/10`;
-                                }, 300);
-                            }
-
-                            // Immediately spawn next letter
-                            setTimeout(() => {
-                                letterEl.style.transition = 'none';
-                                letterEl.style.transform = 'translateX(-50%) scale(1)';
-                                letterEl.style.opacity = '1';
-                                setNextTargetGame4();
-                            }, 300);
-                        } else {
-                            // Other levels: delay before next letter
-                            setTimeout(() => {
-                                setNextTargetGame4();
-                            }, 1000);
-                        }
-                    }
-                }
-            }
-        }
-
-        function celebrateMatchGame4() {
-            const targetEl = document.getElementById('targetLetterGame4');
-
-            if (audioContext && activeOscillators4 < 2) {
-                activeOscillators4++;
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-
-                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
-                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
-                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
-
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-
-                const startTime = audioContext.currentTime;
-                oscillator.start(startTime);
-                oscillator.stop(startTime + 0.4);
-
-                oscillator.onended = () => {
-                    try {
-                        oscillator.disconnect();
-                        gainNode.disconnect();
-                        activeOscillators4--;
-                        console.log(`🔊 Game 4 Oscillator cleaned up. Active: ${activeOscillators4}`);
-                    } catch (e) {
-                        console.warn('Game 4 Oscillator cleanup error:', e);
-                    }
-                };
-            }
-
-            targetEl.style.transition = 'all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-            targetEl.style.transform = 'scale(1.5) rotate(5deg)';
-            targetEl.style.color = '#FDD835';
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.3) rotate(-5deg)';
-                targetEl.style.color = '#7CB342';
-            }, 150);
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.6) rotate(0deg)';
-                targetEl.style.color = '#00BCD4';
-            }, 300);
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.2)';
-                targetEl.style.color = '#FF5722';
-            }, 450);
-
-            setTimeout(() => {
-                targetEl.style.transform = 'scale(1.4)';
-                targetEl.style.color = '#9C27B0';
-            }, 600);
-
-            setTimeout(() => {
-                targetEl.style.transition = 'all 0.3s ease-out';
-                targetEl.style.transform = 'scale(1)';
-                targetEl.style.color = '#FDD835';
-            }, 800);
-
-            if (activeConfetti4 < MAX_CONFETTI4) {
-                activeConfetti4++;
-                createConfetti(targetEl);
-                setTimeout(() => {
-                    activeConfetti4--;
-                }, 1000);
             }
         }
 
@@ -4991,7 +3559,7 @@
 
         function playCalibrationRecording() {
             if (!currentTarget) {
-                alert('No letter selected. Start the tuner first!');
+                alert('No letter selected. Start the game first!');
                 return;
             }
 
@@ -5001,6 +3569,10 @@
                 alert(`No recording found for ${currentTarget}. Please calibrate this letter first.`);
                 return;
             }
+
+            // Track LISTEN button click for adaptive learning
+            listenClickedThisRound = true;
+            console.log(`🔊 LISTEN clicked for ${currentTarget}`);
 
             isPlayingRecording = true;
             const audio = new Audio(calibration.audioUrl);
@@ -5045,24 +3617,12 @@
 
             // ===== STOP ALL RUNNING GAMES/ANIMATIONS BEFORE SWITCHING =====
 
-            // Stop Tuner tab if running
-            if (isRunning && gameAnimationFrame) {
-                console.log('🛑 Stopping Tuner...');
+            // Stop Play tab if running
+            if (isRunning) {
+                console.log('🛑 Stopping Play...');
                 isRunning = false;
-                cancelAnimationFrame(gameAnimationFrame);
-                gameAnimationFrame = null;
                 const tunerBtn = document.getElementById('tunerBtn');
-                if (tunerBtn) tunerBtn.textContent = '▶ Start';
-            }
-
-            // Stop Game tab if running
-            if (isRunningGame && gameAnimationFrameGame) {
-                console.log('🛑 Stopping Game...');
-                isRunningGame = false;
-                cancelAnimationFrame(gameAnimationFrameGame);
-                gameAnimationFrameGame = null;
-                const gameBtn = document.getElementById('tunerBtnGame');
-                if (gameBtn) gameBtn.textContent = '▶ Start Game';
+                if (tunerBtn) tunerBtn.textContent = '▶ Start Game';
             }
 
             // Stop Progressive Game (falling letters) if running
@@ -5079,16 +3639,6 @@
                 }
                 const progressBtn = document.getElementById('progressGameBtn');
                 if (progressBtn) progressBtn.textContent = '▶ Start Game';
-            }
-
-            // Stop Game 3 tab if running
-            if (isRunningGame3 && gameAnimationFrame3) {
-                console.log('🛑 Stopping Game 3...');
-                isRunningGame3 = false;
-                cancelAnimationFrame(gameAnimationFrame3);
-                gameAnimationFrame3 = null;
-                const game3Btn = document.getElementById('tunerBtnGame3');
-                if (game3Btn) game3Btn.textContent = '▶ Start Game';
             }
 
             console.log('✓ All games stopped');
@@ -5114,523 +3664,91 @@
                 tabContent.classList.add('active');
                 console.log(`✓ Added 'active' class to #${tabName}`);
                 console.log(`📊 Element display after:`, window.getComputedStyle(tabContent).display);
+
+                // Update stats display when switching to Stats tab
+                if (tabName === 'stats') {
+                    // Load session if not already loaded
+                    if (!currentSession && currentProfileId) {
+                        initializeSession(currentProfileId);
+                    }
+                    updateAdaptiveStatsDisplay();
+                }
             } else {
                 console.error(`❌ Could not find element with id="${tabName}"`);
             }
         }
 
-        // ========== STATISTICS & EXPORT ==========
+        // ========== ADAPTIVE STATS DISPLAY ==========
 
-        function viewStats() {
-            if (experimentResults.length === 0) {
-                alert('No trials recorded yet. Run some tests first!');
+        async function updateAdaptiveStatsDisplay() {
+            if (!currentSession) {
+                document.getElementById('statsPhase').textContent = 'Not Started';
+                document.getElementById('statsAttempts').textContent = '0';
+                document.getElementById('statsMastered').textContent = '0';
+                document.getElementById('statsKnown').textContent = '0';
+                document.getElementById('statsSometimes').textContent = '0';
+                document.getElementById('statsUnknown').textContent = '0';
+                document.getElementById('statsNewLetters').textContent = 'None';
+                document.getElementById('statsGraduated').textContent = 'None';
+                document.getElementById('statsStreak').textContent = '0';
                 return;
             }
 
-            // Calculate accuracy per strategy
-            const strategyStats = {};
-
-            experimentResults.forEach(trial => {
-                trial.strategies.forEach(result => {
-                    if (!strategyStats[result.strategy]) {
-                        strategyStats[result.strategy] = { correct: 0, total: 0 };
-                    }
-                    strategyStats[result.strategy].total++;
-                    if (result.predictedLetter === trial.target) {
-                        strategyStats[result.strategy].correct++;
-                    }
-                });
-            });
-
-            // Format stats display
-            let statsText = `📊 EXPERIMENT STATISTICS (${experimentResults.length} trials):\n\n`;
-
-            // Sort strategies by accuracy
-            const sortedStrategies = Object.entries(strategyStats)
-                .map(([name, stats]) => ({
-                    name,
-                    accuracy: (stats.correct / stats.total) * 100,
-                    correct: stats.correct,
-                    total: stats.total
-                }))
-                .sort((a, b) => b.accuracy - a.accuracy);
-
-            sortedStrategies.forEach(s => {
-                const bar = '█'.repeat(Math.floor(s.accuracy / 10));
-                statsText += `${s.name.padEnd(12)} ${Math.round(s.accuracy).toString().padStart(3)}% ${bar} (${s.correct}/${s.total})\n`;
-            });
-
-            statsText += `\n\nTarget letter breakdown:\n`;
-            const targetCounts = {};
-            experimentResults.forEach(t => {
-                targetCounts[t.target] = (targetCounts[t.target] || 0) + 1;
-            });
-            Object.entries(targetCounts).forEach(([letter, count]) => {
-                statsText += `  ${letter}: ${count} trials\n`;
-            });
-
-            document.getElementById('status').textContent = statsText;
-        }
-
-        function exportResults() {
-            if (experimentResults.length === 0) {
-                alert('No trials recorded yet. Run some tests first!');
-                return;
-            }
-
-            const dataStr = JSON.stringify(experimentResults, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `plosive-experiment-${Date.now()}.json`;
-            a.click();
-
-            alert(`Exported ${experimentResults.length} trials`);
-        }
-
-        // ========== GAME MODE ==========
-
-        let gameCanvas;
-        let gameCtx;
-        let gameSpectrumCanvas;
-        let gameSpectrumCtx;
-        let gameRunning = false;
-        let gameScore = 0;
-        let gameLives = 3;
-        let gameSpeed = 1;
-        let fallingLetters = [];
-        let gamePatternBuffer = [];
-        let lastSpawnTime = 0;
-        // gameAnimationFrame already declared above in Game tab functions
-
-        class FallingLetter {
-            constructor(letter, lane, speed) {
-                this.letter = letter;
-                this.lane = lane;
-                this.y = 0;
-                this.speed = speed;
-                this.width = 100;
-                this.height = 120;
-            }
-
-            update(deltaSpeed) {
-                this.y += this.speed * deltaSpeed;
-            }
-
-            isAtBottom(canvasHeight) {
-                return this.y + this.height >= canvasHeight;
-            }
-
-            getDistance(canvasHeight) {
-                return canvasHeight - (this.y + this.height);
-            }
-        }
-
-        function initGame() {
-            gameCanvas = document.getElementById('gameCanvas');
-            gameCtx = gameCanvas.getContext('2d');
-            gameCanvas.width = 400;
-            gameCanvas.height = 700;
-
-            gameSpectrumCanvas = document.getElementById('gameSpectrumCanvas');
-            gameSpectrumCtx = gameSpectrumCanvas.getContext('2d');
-            gameSpectrumCanvas.width = 800;
-            gameSpectrumCanvas.height = 100;
-        }
-
-        async function toggleGame() {
-            const btn = document.getElementById('gameBtn');
-
-            if (gameRunning) {
-                stopGame();
-            } else {
-                if (Object.keys(calibrationData).length === 0) {
-                    alert('Please calibrate at least one phoneme first!');
-                    return;
-                }
-                if (!audioContext) {
-                    await setupAudio();
-                }
-                startGame();
-            }
-        }
-
-        function startGame() {
-            gameRunning = true;
-            gameScore = 0;
-            gameLives = 3;
-            gameSpeed = 1;
-            fallingLetters = [];
-            gamePatternBuffer = [];
-            lastSpawnTime = 0;
-
-            document.getElementById('gameBtn').textContent = '⏸ Pause';
-            updateGameUI();
-
-            if (!gameCanvas) initGame();
-
-            gameLoop();
-            analyzeGameAudio();
-        }
-
-        function stopGame() {
-            gameRunning = false;
-            document.getElementById('gameBtn').textContent = '▶ Start Game';
-            if (gameAnimationFrame) {
-                cancelAnimationFrame(gameAnimationFrame);
-            }
-        }
-
-        function restartGame() {
-            stopGame();
-            setTimeout(() => {
-                if (audioContext) {
-                    startGame();
-                }
-            }, 100);
-        }
-
-        function updateGameUI() {
-            document.getElementById('gameScore').textContent = gameScore;
-            document.getElementById('gameLives').textContent = gameLives;
-            document.getElementById('gameSpeed').textContent = gameSpeed.toFixed(1) + 'x';
-        }
-
-        function spawnLetter() {
-            const calibratedLetters = Object.keys(calibrationData);
-            if (calibratedLetters.length === 0) return;
-
-            if (fallingLetters.length >= 3) return;
-
-            const usedLanes = fallingLetters.map(l => l.lane);
-            const availableLanes = [0, 1, 2].filter(lane => !usedLanes.includes(lane));
-            if (availableLanes.length === 0) return;
-
-            const lane = availableLanes[Math.floor(Math.random() * availableLanes.length)];
-            const letter = calibratedLetters[Math.floor(Math.random() * calibratedLetters.length)];
-            const speed = 1 * gameSpeed;
-
-            fallingLetters.push(new FallingLetter(letter, lane, speed));
-        }
-
-        function gameLoop() {
-            if (!gameRunning) return;
-
-            const now = Date.now();
-            if (now - lastSpawnTime > 2000 && fallingLetters.length < 3) {
-                spawnLetter();
-                lastSpawnTime = now;
-            }
-
-            gameCtx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-            gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
-
-            let closestLetter = null;
-            let minDistance = Infinity;
-
-            fallingLetters.forEach(letter => {
-                letter.update(1);
-
-                const distance = letter.getDistance(gameCanvas.height);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestLetter = letter;
-                }
-            });
-
-            fallingLetters.forEach(letter => {
-                const x = (letter.lane * (gameCanvas.width / 3)) + (gameCanvas.width / 6) - (letter.width / 2);
-                const isClosest = letter === closestLetter;
-
-                if (isClosest) {
-                    gameCtx.fillStyle = '#F44336';
-                    gameCtx.shadowBlur = 20;
-                    gameCtx.shadowColor = '#F44336';
+            // Determine current phase
+            const attemptCount = currentSession.attempts.length;
+            let phase = 'Not Started';
+            if (attemptCount > 0) {
+                if (attemptCount < SESSION_CONFIG.WARMUP_COUNT) {
+                    phase = `Warmup (${attemptCount}/${SESSION_CONFIG.WARMUP_COUNT})`;
                 } else {
-                    gameCtx.fillStyle = '#FDD835';
-                    gameCtx.shadowBlur = 0;
-                }
-
-                gameCtx.font = 'bold 80px Arial';
-                gameCtx.textAlign = 'center';
-                gameCtx.textBaseline = 'middle';
-                gameCtx.fillText(letter.letter, x + letter.width / 2, letter.y + letter.height / 2);
-
-                gameCtx.shadowBlur = 0;
-            });
-
-            const lettersThatHitBottom = fallingLetters.filter(l => l.isAtBottom(gameCanvas.height));
-            if (lettersThatHitBottom.length > 0) {
-                gameLives -= lettersThatHitBottom.length;
-                fallingLetters = fallingLetters.filter(l => !l.isAtBottom(gameCanvas.height));
-                updateGameUI();
-
-                if (gameLives <= 0) {
-                    endGame();
-                    return;
-                }
-            }
-
-            if (closestLetter) {
-                document.getElementById('gameStatus').textContent = `Say: ${closestLetter.letter}`;
-            } else {
-                document.getElementById('gameStatus').textContent = 'Get ready...';
-            }
-
-            gameAnimationFrame = requestAnimationFrame(gameLoop);
-        }
-
-        function analyzeGameAudio() {
-            if (!gameRunning) return;
-            requestAnimationFrame(analyzeGameAudio);
-
-            analyser.getByteFrequencyData(dataArray);
-
-            const pattern = downsampleFrequencies(dataArray, PATTERN_BINS);
-            gamePatternBuffer.push(pattern);
-
-            if (gamePatternBuffer.length > PATTERN_LENGTH) {
-                gamePatternBuffer.shift();
-            }
-
-            let sum = 0;
-            for (let i = 0; i < dataArray.length; i++) {
-                sum += dataArray[i];
-            }
-            const volume = (sum / dataArray.length / 128) * 100;
-
-            document.getElementById('gameVolume').textContent = Math.round(volume) + '%';
-            document.getElementById('gameVolumeFill').style.width = volume + '%';
-
-            drawGameSpectrum();
-
-            const peakEnergy = Math.max(...pattern);
-            const avgEnergy = pattern.reduce((a, b) => a + b, 0) / pattern.length;
-            const energyConcentration = avgEnergy > 0 ? peakEnergy / avgEnergy : 0;
-
-            // Skip detection if playing back a recording
-            if (isPlayingRecording) {
-                return;
-            }
-
-            if (gamePatternBuffer.length === PATTERN_LENGTH) {
-                const closestLetter = getClosestLetter();
-                if (!closestLetter) return;
-
-                const NASALS = ['M', 'N'];
-                const FRICATIVES = ['F', 'S', 'V', 'Z', 'H'];
-                const LIQUIDS = ['L', 'R'];
-                const isNasal = NASALS.includes(closestLetter.letter);
-                const isFricative = FRICATIVES.includes(closestLetter.letter);
-                const isLiquid = LIQUIDS.includes(closestLetter.letter);
-
-                let volumeThreshold = 15;
-                let concentrationThreshold = 2.0;
-
-                if (isNasal || isLiquid) {
-                    volumeThreshold = 8;
-                    concentrationThreshold = 1.3;
-                } else if (isFricative) {
-                    volumeThreshold = 10;
-                    concentrationThreshold = 1.8;
-                }
-
-                if (volume > volumeThreshold && energyConcentration > concentrationThreshold) {
-                    const results = testAllPlosiveStrategies(gamePatternBuffer, closestLetter.letter);
-                    const result = results[0];
-                    const score = Math.max(0, Math.min(100, result.score || 0));
-                    const prediction = result.predictedLetter || '?';
-                    const isCorrect = prediction === closestLetter.letter;
-
-                    if (isCorrect && score > 80) {
-                        handleCorrectMatch(closestLetter);
-                    }
-                }
-            }
-        }
-
-        function drawGameSpectrum() {
-            if (!gameSpectrumCanvas) return;
-
-            const width = gameSpectrumCanvas.width;
-            const height = gameSpectrumCanvas.height;
-
-            gameSpectrumCtx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-            gameSpectrumCtx.fillRect(0, 0, width, height);
-
-            const barWidth = width / dataArray.length * 2.5;
-            let x = 0;
-
-            for (let i = 0; i < dataArray.length; i++) {
-                const barHeight = (dataArray[i] / 255) * height;
-                const hue = (i / dataArray.length) * 120 + 100;
-                gameSpectrumCtx.fillStyle = `hsl(${hue}, 70%, 50%)`;
-                gameSpectrumCtx.fillRect(x, height - barHeight, barWidth, barHeight);
-                x += barWidth + 1;
-            }
-        }
-
-        function getClosestLetter() {
-            if (fallingLetters.length === 0) return null;
-
-            let closest = fallingLetters[0];
-            let minDistance = closest.getDistance(gameCanvas.height);
-
-            fallingLetters.forEach(letter => {
-                const distance = letter.getDistance(gameCanvas.height);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closest = letter;
-                }
-            });
-
-            return closest;
-        }
-
-        function handleCorrectMatch(letter) {
-            fallingLetters = fallingLetters.filter(l => l !== letter);
-            gameScore++;
-            gamePatternBuffer = [];
-
-            if (gameScore % 10 === 0) {
-                gameSpeed += 0.2;
-            }
-
-            updateGameUI();
-            document.getElementById('gameStatus').textContent = `✓ Got ${letter.letter}! +1`;
-
-            setTimeout(() => {
-                const closest = getClosestLetter();
-                if (closest) {
-                    document.getElementById('gameStatus').textContent = `Say: ${closest.letter}`;
-                }
-            }, 500);
-        }
-
-        function endGame() {
-            gameRunning = false;
-            document.getElementById('gameBtn').textContent = '▶ Start Game';
-            document.getElementById('gameStatus').textContent = `GAME OVER! Final Score: ${gameScore}`;
-
-            gameCtx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-            gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
-
-            gameCtx.fillStyle = '#F44336';
-            gameCtx.font = 'bold 60px Arial';
-            gameCtx.textAlign = 'center';
-            gameCtx.fillText('GAME OVER', gameCanvas.width / 2, gameCanvas.height / 2 - 40);
-
-            gameCtx.fillStyle = '#FDD835';
-            gameCtx.font = 'bold 40px Arial';
-            gameCtx.fillText(`Score: ${gameScore}`, gameCanvas.width / 2, gameCanvas.height / 2 + 20);
-        }
-
-
-        // Initialize
-        (async () => {
-            // Set up auth state listener
-            handleAuthStateChange();
-
-            // Check if user is authenticated
-            const { data: { session } } = await supabase.auth.getSession();
-
-            if (session?.user) {
-                // Authenticated user - load their profiles
-                console.log('✅ Authenticated user:', session.user.email);
-                await loadUserProfiles(session.user.id);
-            } else {
-                // Guest user - check for named profile first, then guest profile
-                const savedProfileName = localStorage.getItem('currentProfile');
-
-                if (savedProfileName && savedProfileName !== 'Default') {
-                    // Has a saved named profile - load it
-                    console.log('📝 Loading named profile:', savedProfileName);
-                    currentProfile = savedProfileName;
-
-                    const profile = await getOrCreateProfile(savedProfileName);
-                    if (profile) {
-                        currentProfileId = profile.id;
-                        console.log(`✅ Loaded profile: ${savedProfileName} (${profile.id.substring(0, 8)}...)`);
-                    }
-                } else {
-                    // No named profile - use anonymous guest system
-                    console.log('📝 Guest mode - creating anonymous profile');
-
-                    // Check if we have a saved guest profile ID
-                    const savedGuestId = localStorage.getItem('guestProfileId');
-
-                    if (savedGuestId) {
-                        // Try to load existing guest profile
-                        console.log('🔍 Attempting to load saved guest profile:', savedGuestId);
-                        try {
-                            const { data: existingProfile, error } = await supabase
-                                .from('profiles')
-                                .select('*')
-                                .eq('id', savedGuestId)
-                                .is('user_id', null)
-                                .single();
-
-                            if (error) {
-                                console.error('❌ Error loading guest profile:', error);
-                                throw error;
-                            }
-
-                            if (existingProfile) {
-                                currentProfileId = existingProfile.id;
-                                guestProfileId = existingProfile.id;
-                                console.log('✅ Loaded existing guest profile:', existingProfile.id);
-                            } else {
-                                console.log('⚠️ Profile not found, creating new');
-                                await createAnonymousProfile();
-                            }
-                        } catch (error) {
-                            console.error('⚠️ Failed to load guest profile, creating new:', error.message);
-                            await createAnonymousProfile();
+                    // Check if in rapid reinforcement
+                    const lastAttempt = currentSession.attempts[currentSession.attempts.length - 1];
+                    if (lastAttempt?.clickedListen) {
+                        const stats = currentSession.letterStats.get(lastAttempt.letter);
+                        if (stats && stats.listen_clicks === 1 && stats.total_attempts <= SESSION_CONFIG.RAPID_REP_COUNT) {
+                            phase = `Rapid Rep (${stats.total_attempts}/${SESSION_CONFIG.RAPID_REP_COUNT})`;
+                        } else {
+                            phase = 'Mixed Practice';
                         }
                     } else {
-                        // No saved profile - create new anonymous profile
-                        console.log('🆕 No saved profile, creating new');
-                        await createAnonymousProfile();
+                        phase = 'Mixed Practice';
                     }
                 }
             }
 
-            // Load calibration data
-            await loadCalibration();
+            document.getElementById('statsPhase').textContent = phase;
+            document.getElementById('statsAttempts').textContent = attemptCount.toString();
 
-            // Load profile dropdown
-            loadProfiles();
+            // Load proficiency pools
+            const calibratedLetters = Object.keys(calibrationData);
+            const proficiencyMap = await loadProficiencyMap(currentProfileId);
+            const pools = groupLettersByProficiency(proficiencyMap, calibratedLetters);
 
-            // Create calibration grid
-            createCalibrationGrid();
-            updateCalibrationStats();
-        })();
+            document.getElementById('statsMastered').textContent = pools.mastered.length.toString();
+            document.getElementById('statsKnown').textContent = pools.known.length.toString();
+            document.getElementById('statsSometimes').textContent = pools.sometimes.length.toString();
+            document.getElementById('statsUnknown').textContent = pools.unknown.length.toString();
 
-        async function createAnonymousProfile() {
-            try {
-                const { data: newProfile, error } = await supabase
-                    .from('profiles')
-                    .insert([{
-                        name: `Guest_${Date.now()}`,
-                        user_id: null  // Explicitly anonymous
-                    }])
-                    .select()
-                    .single();
+            // Session info
+            const newLetters = currentSession.newLettersIntroduced.length > 0
+                ? currentSession.newLettersIntroduced.join(', ')
+                : 'None';
+            document.getElementById('statsNewLetters').textContent = newLetters;
 
-                if (error) throw error;
+            const graduated = currentSession.lettersGraduated.length > 0
+                ? currentSession.lettersGraduated.join(', ')
+                : 'None';
+            document.getElementById('statsGraduated').textContent = graduated;
 
-                currentProfileId = newProfile.id;
-                guestProfileId = newProfile.id;
-
-                // Save to localStorage
-                localStorage.setItem('guestProfileId', newProfile.id);
-
-                console.log('✅ Created anonymous profile:', newProfile.id);
-            } catch (error) {
-                console.error('❌ Error creating anonymous profile:', error);
-                alert('Failed to initialize app. Please refresh the page.');
+            // Calculate current streak
+            let streak = 0;
+            if (currentTarget) {
+                const stats = currentSession.letterStats.get(currentTarget);
+                if (stats) {
+                    streak = stats.consecutive_success_no_listen || 0;
+                }
             }
+            document.getElementById('statsStreak').textContent = streak.toString();
         }
 
         // ===================================
@@ -6697,106 +4815,112 @@
         loadProgressGameData();
 
         // ============================================
-        // DEV MODE: Keyboard Shortcuts for Testing
+        // MAIN INITIALIZATION
         // ============================================
-        document.addEventListener('keydown', function(e) {
-            // Only work on Game 3 tab
-            if (document.querySelector('.tab.active')?.textContent?.includes('Game 3')) {
+        (async () => {
+            // Set up auth state listener
+            handleAuthStateChange();
 
-                // Press '1-5' to jump to that level
-                if (e.key >= '1' && e.key <= '5') {
-                    const targetLevel = parseInt(e.key);
-                    gameLevel3 = targetLevel;
-                    localStorage.setItem('gameLevel3', gameLevel3);
-                    consecutiveSuccesses3 = 0; // Reset progress when jumping levels
-                    updateLevelIndicator();
-                    console.log(`🎮 DEV: Jumped to Level ${targetLevel}`);
+            // Check if user is authenticated
+            const { data: { session } } = await supabase.auth.getSession();
 
-                    // Update counter display
-                    const counterEl = document.getElementById('successCounter3');
-                    if (counterEl) {
-                        counterEl.textContent = `⭐ 0/10`;
-                        counterEl.style.display = 'block';
+            if (session?.user) {
+                // Authenticated user - load their profiles
+                console.log('✅ Authenticated user:', session.user.email);
+                await loadUserProfiles(session.user.id);
+            } else {
+                // Guest user - check for named profile first, then guest profile
+                const savedProfileName = localStorage.getItem('currentProfile');
+
+                if (savedProfileName && savedProfileName !== 'Default') {
+                    // Has a saved named profile - load it
+                    console.log('📝 Loading named profile:', savedProfileName);
+                    currentProfile = savedProfileName;
+
+                    const profile = await getOrCreateProfile(savedProfileName);
+                    if (profile) {
+                        currentProfileId = profile.id;
+                        console.log(`✅ Loaded profile: ${savedProfileName} (${profile.id.substring(0, 8)}...)`);
                     }
+                } else {
+                    // No named profile - use anonymous guest system
+                    console.log('📝 Guest mode - creating anonymous profile');
 
-                    // If game is running, update the current letter
-                    if (isRunningGame3) {
-                        setNextTargetGame3();
-                    } else {
-                        // If game is not running, start it
-                        const btn = document.getElementById('tunerBtnGame3');
-                        if (btn && btn.textContent === '▶ Start Game') {
-                            console.log('🎮 DEV: Auto-starting game...');
-                            toggleTunerGame3();
+                    // Check if we have a saved guest profile ID
+                    const savedGuestId = localStorage.getItem('guestProfileId');
+
+                    if (savedGuestId) {
+                        // Try to load existing guest profile
+                        console.log('🔍 Attempting to load saved guest profile:', savedGuestId);
+                        try {
+                            const { data: existingProfile, error } = await supabase
+                                .from('profiles')
+                                .select('*')
+                                .eq('id', savedGuestId)
+                                .is('user_id', null)
+                                .single();
+
+                            if (error) {
+                                console.error('❌ Error loading guest profile:', error);
+                                throw error;
+                            }
+
+                            if (existingProfile) {
+                                currentProfileId = existingProfile.id;
+                                guestProfileId = existingProfile.id;
+                                console.log('✅ Loaded existing guest profile:', existingProfile.id);
+                            } else {
+                                console.log('⚠️ Profile not found, creating new');
+                                await createAnonymousProfile();
+                            }
+                        } catch (error) {
+                            console.error('⚠️ Failed to load guest profile, creating new:', error.message);
+                            await createAnonymousProfile();
                         }
-                    }
-                }
-
-                // Press 'C' to show celebration modal
-                if (e.key.toLowerCase() === 'c') {
-                    console.log('🎉 DEV: Showing celebration modal');
-                    showLevel1CompleteModal();
-                }
-
-                // Press 'W' to instant win (set successes to 9, so next match completes)
-                if (e.key.toLowerCase() === 'w') {
-                    consecutiveSuccesses3 = 9;
-                    const counterEl = document.getElementById('successCounter3');
-                    if (counterEl) {
-                        counterEl.textContent = `⭐ 9/10`;
-                        counterEl.style.display = 'block';
-                    }
-                    console.log('⚡ DEV: Set successes to 9/10 - next match will complete level!');
-                }
-
-                // Press 'R' to reset progress (back to Level 1)
-                if (e.key.toLowerCase() === 'r') {
-                    gameLevel3 = 1;
-                    consecutiveSuccesses3 = 0;
-                    localStorage.setItem('gameLevel3', '1');
-                    updateLevelIndicator();
-                    const counterEl = document.getElementById('successCounter3');
-                    if (counterEl) {
-                        counterEl.textContent = `⭐ 0/10`;
-                        counterEl.style.display = 'block';
-                    }
-                    console.log('🔄 DEV: Reset to Level 1');
-
-                    if (isRunningGame3) {
-                        setNextTargetGame3();
                     } else {
-                        // If game is not running, start it
-                        const btn = document.getElementById('tunerBtnGame3');
-                        if (btn && btn.textContent === '▶ Start Game') {
-                            console.log('🎮 DEV: Auto-starting game...');
-                            toggleTunerGame3();
-                        }
+                        // No saved profile - create new anonymous profile
+                        console.log('🆕 No saved profile, creating new');
+                        await createAnonymousProfile();
                     }
-                }
-
-                // Press 'S' to open settings
-                if (e.key.toLowerCase() === 's') {
-                    console.log('⚙️ DEV: Opening settings');
-                    openGame3Settings();
-                }
-
-                // Press 'H' to show help
-                if (e.key.toLowerCase() === 'h') {
-                    console.log(`
-🎮 DEV MODE KEYBOARD SHORTCUTS:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1-5  → Jump to Level 1-5
-C    → Show celebration modal
-W    → Instant win (9/10 successes)
-R    → Reset to Level 1
-S    → Open settings
-H    → Show this help
-                    `);
                 }
             }
-        });
 
-        console.log('🎮 DEV MODE enabled! Press H for keyboard shortcuts.');
+            // Load calibration data
+            await loadCalibration();
+
+            // Load profile dropdown
+            loadProfiles();
+
+            // Create calibration grid
+            createCalibrationGrid();
+            updateCalibrationStats();
+        })();
+
+        async function createAnonymousProfile() {
+            try {
+                const { data: newProfile, error } = await supabase
+                    .from('profiles')
+                    .insert([{
+                        name: `Guest_${Date.now()}`,
+                        user_id: null  // Explicitly anonymous
+                    }])
+                    .select()
+                    .single();
+
+                if (error) throw error;
+
+                currentProfileId = newProfile.id;
+                guestProfileId = newProfile.id;
+
+                // Save to localStorage
+                localStorage.setItem('guestProfileId', newProfile.id);
+
+                console.log('✅ Created anonymous profile:', newProfile.id);
+            } catch (error) {
+                console.error('❌ Error creating anonymous profile:', error);
+            }
+        }
+
     </script>
 </body>
 </html>
