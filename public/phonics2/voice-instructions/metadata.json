@@ -1,0 +1,57 @@
+{
+  "Hello 1.mp3": {
+    "text": "hi there, lets learn how to read english together. If you just play with me 5 minutes per day, you'll read your first words by the end of the week",
+    "voice": "nova",
+    "speed": "1"
+  },
+  "Hello 1_v2.mp3": {
+    "text": "Hi, lets learn how to read english together! Click the button below to get started",
+    "voice": "shimmer",
+    "speed": "1"
+  },
+  "Fable Intro 1.mp3": {
+    "text": "Hi there. Let's learn how to read English together. Press the BIG green button below to start!",
+    "voice": "fable",
+    "speed": "0.9"
+  },
+  "Nova Intro 1.mp3": {
+    "text": "Hi there. Let's learn how to read English together. Press the BIG green button below to start!",
+    "voice": "nova",
+    "speed": "0.9"
+  },
+  "Nova Intro 1_v2.mp3": {
+    "text": "Hi there. Let's learn how to read English together. Press the BIG green button below to start!",
+    "voice": "nova",
+    "speed": "1",
+    "favorite": false
+  },
+  "hi 1.mp3": {
+    "text": "Hi! Click me to get started!",
+    "voice": "nova",
+    "speed": "1",
+    "favorite": false
+  },
+  "game play 1.mp3": {
+    "text": "Listen to the letter sound. then speak the sound to pop the letter.",
+    "voice": "nova",
+    "speed": "1"
+  },
+  "A success B start.mp3": {
+    "text": "AMAZING!! You've learned your first letter! Now lets learn the next letter.",
+    "voice": "nova",
+    "speed": "1",
+    "favorite": true
+  },
+  "game play 1_v2.mp3": {
+    "text": "Listen to the letter sound. then speak the sound to pop the letter. Click the yellow button to start!",
+    "voice": "nova",
+    "speed": "1",
+    "favorite": true
+  },
+  "Congratulation level 1.mp3": {
+    "text": "AMAZING!! You've learned your first letter! Now we'll show you the letter WITHOUT sound. Say the letter sound as soon as you see it! This will POP the letter. You'll get points for every letter you pop :)",
+    "voice": "nova",
+    "speed": "1",
+    "favorite": true
+  }
+}
