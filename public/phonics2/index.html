@@ -5379,10 +5379,11 @@
 
                     // Check if we have a saved guest profile ID
                     const savedGuestId = localStorage.getItem('guestProfileId');
+                    console.log('🔍 Checking localStorage for guestProfileId:', savedGuestId);
 
                     if (savedGuestId) {
                         // Try to load existing guest profile
-                        console.log('🔍 Attempting to load saved guest profile:', savedGuestId);
+                        console.log('✓ Found saved guest profile, attempting to load:', savedGuestId);
                         try {
                             const { data: existingProfile, error } = await supabase
                                 .from('profiles')
