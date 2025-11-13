@@ -325,6 +325,37 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Blog Preview Section */}
+      <section style={{padding: '80px 20px', background: 'linear-gradient(135deg, #BED7AF 0%, #DCEBE1 100%)'}}>
+        <div style={{maxWidth: '1200px', margin: '0 auto', textAlign: 'center'}}>
+          <h2 style={{fontSize: '2.5rem', fontWeight: 800, marginBottom: '20px', color: '#2c3e2c'}}>Latest from Our Blog</h2>
+          <p style={{fontSize: '1.1rem', color: '#5a6a5a', marginBottom: '50px'}}>Research-backed insights on nature education and child development</p>
+
+          <div style={{background: 'white', borderRadius: '20px', overflow: 'hidden', textAlign: 'left', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', maxWidth: '800px', margin: '0 auto'}}>
+            <div style={{padding: '40px'}}>
+              <div style={{marginBottom: '15px'}}>
+                <span style={{background: '#f0f7e8', color: '#7a9a3b', padding: '6px 14px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600}}>
+                  immunity
+                </span>
+              </div>
+              <h3 style={{fontSize: '2rem', fontWeight: 700, color: '#2c3e2c', marginBottom: '20px', lineHeight: 1.3}}>
+                How Forest Play Transforms Children's Immune Systems
+              </h3>
+              <p style={{fontSize: '1.1rem', color: '#666', lineHeight: 1.7, marginBottom: '30px'}}>
+                Finnish researchers discovered that just 28 days of forest play completely transformed children's immune systems. Here's what this groundbreaking study means for your child...
+              </p>
+              <Link href="/blog/forest-play-immunity-boost" style={{display: 'inline-block', padding: '15px 35px', background: '#7a9a3b', color: 'white', textDecoration: 'none', borderRadius: '50px', fontSize: '1.1rem', fontWeight: 700, transition: 'transform 0.2s'}}>
+                Read Full Article →
+              </Link>
+            </div>
+          </div>
+
+          <Link href="/blog" style={{display: 'inline-block', marginTop: '40px', color: '#7a9a3b', textDecoration: 'none', fontSize: '1.1rem', fontWeight: 600}}>
+            View All Articles →
+          </Link>
+        </div>
+      </section>
+
       {/* Register/Contact Section */}
       <section id="register" style={{padding: '100px 20px', backgroundImage: 'url(/backgrounds/D64442BA-F797-41FF-87AD-A5E0DDBC289B.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', textAlign: 'center'}}>
         <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.90)'}}></div>
