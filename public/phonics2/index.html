@@ -1188,6 +1188,45 @@
                 <div class="confidence-fill" id="confidenceFill"></div>
             </div>
 
+            <!-- Threshold Meter -->
+            <div id="thresholdMeter" style="margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 10px; display: none;">
+                <div style="color: #aaa; font-size: 12px; margin-bottom: 12px; font-weight: bold;">🎤 Voice Detection Thresholds</div>
+
+                <!-- Volume Meter -->
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <span style="color: #ddd; font-size: 11px;">Volume</span>
+                        <span style="color: #ddd; font-size: 11px;">
+                            <span id="volumeMeterValue">0</span> / <span id="volumeMeterThreshold">15</span>
+                        </span>
+                    </div>
+                    <div style="position: relative; width: 100%; height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
+                        <div id="volumeMeterFill" style="height: 100%; width: 0%; background: #f44336; border-radius: 10px; transition: width 0.1s, background 0.3s;"></div>
+                        <!-- Threshold marker -->
+                        <div id="volumeThresholdMarker" style="position: absolute; top: 0; height: 100%; width: 2px; background: #FDD835; box-shadow: 0 0 4px #FDD835;"></div>
+                    </div>
+                </div>
+
+                <!-- Energy Concentration Meter -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <span style="color: #ddd; font-size: 11px;">Energy Focus</span>
+                        <span style="color: #ddd; font-size: 11px;">
+                            <span id="concentrationMeterValue">0.0</span> / <span id="concentrationMeterThreshold">2.0</span>
+                        </span>
+                    </div>
+                    <div style="position: relative; width: 100%; height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
+                        <div id="concentrationMeterFill" style="height: 100%; width: 0%; background: #f44336; border-radius: 10px; transition: width 0.1s, background 0.3s;"></div>
+                        <!-- Threshold marker -->
+                        <div id="concentrationThresholdMarker" style="position: absolute; top: 0; height: 100%; width: 2px; background: #FDD835; box-shadow: 0 0 4px #FDD835;"></div>
+                    </div>
+                </div>
+
+                <div style="color: #999; font-size: 10px; margin-top: 10px; text-align: center;">
+                    Both bars must reach the yellow line for voice detection
+                </div>
+            </div>
+
             <div class="stats">
                 <div class="stat-item">
                     <div>Match Score</div>
@@ -3682,6 +3721,7 @@
                 document.getElementById('status').textContent = 'Stopped';
                 document.getElementById('targetLetter').textContent = '?';
                 document.getElementById('sensitivityBtn').style.display = 'none'; // Hide settings button
+                document.getElementById('thresholdMeter').style.display = 'none'; // Hide threshold meter
             } else {
                 if (Object.keys(calibrationData).length === 0) {
                     alert('Please calibrate at least one phoneme first!');
@@ -3702,12 +3742,73 @@
                 await setNextTarget(); // Changed to await since it's now async
                 updateLetterProgressTracker();
                 document.getElementById('sensitivityBtn').style.display = 'inline-block'; // Show settings button
+                document.getElementById('thresholdMeter').style.display = 'block'; // Show threshold meter
                 analyzeTuner();
             }
         }
 
         let analyzerRunning = false;
         let analyzerHeartbeat = 0;
+
+        function updateThresholdMeter(volume, volumeThreshold, concentration, concentrationThreshold) {
+            // Update volume meter
+            const volumeMeterValue = document.getElementById('volumeMeterValue');
+            const volumeMeterThreshold = document.getElementById('volumeMeterThreshold');
+            const volumeMeterFill = document.getElementById('volumeMeterFill');
+            const volumeThresholdMarker = document.getElementById('volumeThresholdMarker');
+
+            if (volumeMeterValue && volumeMeterFill) {
+                volumeMeterValue.textContent = Math.round(volume);
+                volumeMeterThreshold.textContent = volumeThreshold;
+
+                // Calculate fill percentage (max out at 150% of threshold for visualization)
+                const maxVolume = volumeThreshold * 1.5;
+                const volumePercent = Math.min(100, (volume / maxVolume) * 100);
+                volumeMeterFill.style.width = volumePercent + '%';
+
+                // Color coding: red below, yellow near, green above threshold
+                if (volume >= volumeThreshold) {
+                    volumeMeterFill.style.background = '#4CAF50'; // Green
+                } else if (volume >= volumeThreshold * 0.8) {
+                    volumeMeterFill.style.background = '#FDD835'; // Yellow
+                } else {
+                    volumeMeterFill.style.background = '#f44336'; // Red
+                }
+
+                // Position threshold marker
+                const thresholdPercent = (volumeThreshold / maxVolume) * 100;
+                volumeThresholdMarker.style.left = thresholdPercent + '%';
+            }
+
+            // Update energy concentration meter
+            const concentrationMeterValue = document.getElementById('concentrationMeterValue');
+            const concentrationMeterThreshold = document.getElementById('concentrationMeterThreshold');
+            const concentrationMeterFill = document.getElementById('concentrationMeterFill');
+            const concentrationThresholdMarker = document.getElementById('concentrationThresholdMarker');
+
+            if (concentrationMeterValue && concentrationMeterFill) {
+                concentrationMeterValue.textContent = concentration.toFixed(1);
+                concentrationMeterThreshold.textContent = concentrationThreshold.toFixed(1);
+
+                // Calculate fill percentage (max out at 150% of threshold for visualization)
+                const maxConcentration = concentrationThreshold * 1.5;
+                const concentrationPercent = Math.min(100, (concentration / maxConcentration) * 100);
+                concentrationMeterFill.style.width = concentrationPercent + '%';
+
+                // Color coding: red below, yellow near, green above threshold
+                if (concentration >= concentrationThreshold) {
+                    concentrationMeterFill.style.background = '#4CAF50'; // Green
+                } else if (concentration >= concentrationThreshold * 0.8) {
+                    concentrationMeterFill.style.background = '#FDD835'; // Yellow
+                } else {
+                    concentrationMeterFill.style.background = '#f44336'; // Red
+                }
+
+                // Position threshold marker
+                const thresholdPercent = (concentrationThreshold / maxConcentration) * 100;
+                concentrationThresholdMarker.style.left = thresholdPercent + '%';
+            }
+        }
 
         function analyzeTuner() {
             if (!isRunning) {
@@ -3787,6 +3888,9 @@
                 volumeThreshold = 10;
                 concentrationThreshold = 1.8;
             }
+
+            // Update threshold meter in real-time
+            updateThresholdMeter(volume, volumeThreshold, energyConcentration, concentrationThreshold);
 
             // Try to match against TARGET letter only
             // Debug: Log when detection conditions aren't met
