@@ -1089,6 +1089,36 @@
         </div>
     </div>
 
+    <!-- Manual Recording Modal -->
+    <div id="manualRecordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: #2c3e50; padding: 30px; border-radius: 10px; max-width: 500px; text-align: center; position: relative;">
+            <button onclick="closeManualRecordModal()" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #aaa; font-size: 24px; cursor: pointer; padding: 5px 10px;">✕</button>
+
+            <div style="font-size: 48px; margin-bottom: 10px;" id="manualRecordLetter">a</div>
+            <h3 style="color: #fff; margin-bottom: 10px;">Add Correct Example</h3>
+            <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">Record the correct sound to add as a positive example</p>
+
+            <div id="manualRecordStatus" style="margin: 20px 0; font-size: 16px; color: #FDD835; min-height: 30px;">
+                Ready to record
+            </div>
+
+            <!-- Waveform visualization -->
+            <canvas id="manualRecordCanvas" style="width: 100%; height: 80px; background: rgba(0,0,0,0.3); border-radius: 5px; margin: 20px 0;"></canvas>
+
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                <button id="manualRecordStartBtn" onclick="startManualRecord()" class="btn" style="background: #4CAF50;">
+                    🎤 Start Recording
+                </button>
+                <button id="manualRecordRedoBtn" onclick="redoManualRecord()" class="btn" style="background: #f44336; display: none;">
+                    🔄 Redo
+                </button>
+                <button id="manualRecordAcceptBtn" onclick="acceptManualRecord()" class="btn" style="background: #1976D2; display: none;">
+                    ✓ Accept
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="tabs">
             <button class="tab active" onclick="switchTab('calibrate')">📊 Calibrate</button>
@@ -1139,6 +1169,14 @@
                 <button class="btn" onclick="openSensitivityModal()" style="background: #666; display: none;" id="sensitivityBtn"><i data-lucide="sliders" style="width: 18px; height: 18px;"></i></button>
             </div>
 
+            <!-- Manual Recording Button -->
+            <div style="text-align: center; margin-bottom: 15px;">
+                <button class="btn" onclick="openManualRecordModal()" style="background: #1976D2; font-size: 13px;" id="manualRecordBtn">
+                    🎤 Add Correct Example
+                </button>
+                <div style="color: #999; font-size: 10px; margin-top: 5px;">If it's correct but not recognized</div>
+            </div>
+
             <div style="text-align: center; margin-bottom: 20px; color: #ddd; font-size: 36px; font-weight: 600;">
                 Say this sound:
                 <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 44px; margin-left: 15px; display: inline-block; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Play my recording">🔊</span>
@@ -1168,11 +1206,31 @@
                 <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
                     <div style="color: #aaa; font-size: 11px; margin-bottom: 8px; text-align: center;">📦 Stored Calibration</div>
                     <canvas id="storedPatternCanvas" style="width: 100%; height: 80px; background: rgba(0,0,0,0.3); border-radius: 5px;"></canvas>
+                    <div style="color: #999; font-size: 10px; margin-top: 5px; text-align: center;">
+                        <span id="patternCount">-</span>
+                    </div>
                 </div>
                 <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
                     <div style="color: #aaa; font-size: 11px; margin-bottom: 8px; text-align: center;">🎤 Current Recording</div>
                     <canvas id="currentPatternCanvas" style="width: 100%; height: 80px; background: rgba(0,0,0,0.3); border-radius: 5px;"></canvas>
                 </div>
+            </div>
+
+            <!-- Training Correction Buttons -->
+            <div id="trainingButtons" style="display: none; margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; text-align: center;">
+                <div style="color: #ddd; font-size: 13px; margin-bottom: 10px;">Recognition issue? Train the system:</div>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button id="addPositiveBtn" class="btn" style="background: #4CAF50; display: none;">
+                        ✓ Add to '<span id="positiveTarget">?</span>'
+                    </button>
+                    <button id="addNegativeBtn" class="btn" style="background: #f44336; display: none;">
+                        ✗ Not '<span id="negativeTarget">?</span>'
+                    </button>
+                    <button id="addCorrectBtn" class="btn" style="background: #7CB342; display: none;">
+                        ✓ Was '<span id="correctTarget">?</span>'
+                    </button>
+                </div>
+                <div style="color: #999; font-size: 11px; margin-top: 8px;" id="trainingFeedback"></div>
             </div>
 
             <div id="status" style="font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.4;">Click Start to begin</div>
@@ -2105,11 +2163,30 @@
                 data.forEach(cal => {
                     // Force letter to lowercase (handles old uppercase calibrations)
                     const letter = cal.letter.toLowerCase();
+
+                    // New data structure: supports multiple patterns + negatives
+                    // pattern_data.pattern is already an array: [baseline]
+                    const patterns = cal.pattern_data.pattern ? cal.pattern_data.pattern : [cal.pattern_data];
+
                     calibrations[letter] = {
-                        pattern: cal.pattern_data.pattern || [cal.pattern_data],
+                        patterns: patterns,  // Array of positive example patterns
+                        negativePatterns: [], // Patterns to reject (trained locally)
                         timestamp: new Date(cal.created_at).getTime(),
                         audioUrl: cal.audio_url
                     };
+
+                    // Load any local additions from localStorage
+                    const localKey = `calibration_extras_${currentProfileId}_${letter}`;
+                    const localData = localStorage.getItem(localKey);
+                    if (localData) {
+                        try {
+                            const extras = JSON.parse(localData);
+                            if (extras.patterns) calibrations[letter].patterns.push(...extras.patterns);
+                            if (extras.negativePatterns) calibrations[letter].negativePatterns = extras.negativePatterns;
+                        } catch (e) {
+                            console.warn(`Failed to load local extras for ${letter}:`, e);
+                        }
+                    }
                 });
 
                 console.log(`✅ Loaded ${Object.keys(calibrations).length} calibrations from Supabase`);
@@ -2544,7 +2621,8 @@
 
             // Store as "pattern" (but it's just 1 peak snapshot, wrapped in array for compatibility)
             calibrationData[letter] = {
-                pattern: [baseline], // Wrap in array for compatibility with existing code
+                patterns: [baseline], // Array of positive examples
+                negativePatterns: [], // Patterns to reject
                 timestamp: Date.now()
             };
 
@@ -3045,6 +3123,8 @@
         // Elimination game mode
         let patternBuffer = [];
         let currentTarget = null;
+        let lastRecordedSnapshot = null; // Store snapshot for training buttons
+        let lastPrediction = null; // Store last prediction for training buttons
 
         function pickRandomLetter() {
             // Only pick from letters that are BOTH calibrated AND in current PHONEMES list
@@ -3067,8 +3147,176 @@
             document.getElementById('tryAgainBtn').style.display = 'none';
             document.getElementById('tunerBtn').textContent = '⏸ Stop Game';
             patternBuffer = [];
+            hideTrainingButtons(); // Hide training buttons when starting new attempt
             isRunning = true;
             analyzeTuner();
+        }
+
+        // Training correction functions
+        function saveCalibrationExtras(letter) {
+            if (!currentProfileId) {
+                console.error('No profile selected');
+                return;
+            }
+
+            const localKey = `calibration_extras_${currentProfileId}_${letter}`;
+            const calibration = calibrationData[letter];
+
+            // Filter out the original pattern from Supabase (index 0)
+            const addedPatterns = calibration.patterns.slice(1);
+            const negativePatterns = calibration.negativePatterns || [];
+
+            // Only save if there are additions
+            if (addedPatterns.length > 0 || negativePatterns.length > 0) {
+                const extras = {
+                    patterns: addedPatterns,
+                    negativePatterns: negativePatterns
+                };
+                localStorage.setItem(localKey, JSON.stringify(extras));
+                console.log(`💾 Saved ${addedPatterns.length} positive + ${negativePatterns.length} negative patterns for ${letter}`);
+            }
+        }
+
+        function addPositivePattern(letter) {
+            if (!lastRecordedSnapshot || !calibrationData[letter]) {
+                console.error('Cannot add positive pattern: no snapshot or no calibration');
+                return;
+            }
+
+            // Add snapshot to patterns array
+            calibrationData[letter].patterns.push(lastRecordedSnapshot);
+
+            // Save to localStorage
+            saveCalibrationExtras(letter);
+
+            // Update visualization
+            visualizeStoredPattern(letter);
+
+            // Show feedback
+            const feedback = document.getElementById('trainingFeedback');
+            feedback.textContent = `✓ Added positive example for '${letter}' (${calibrationData[letter].patterns.length} total)`;
+            feedback.style.color = '#4CAF50';
+
+            // Hide training buttons after action
+            hideTrainingButtons();
+
+            console.log(`✓ Added positive pattern to ${letter}:`, lastRecordedSnapshot);
+        }
+
+        function addNegativePattern(letter) {
+            if (!lastRecordedSnapshot || !calibrationData[letter]) {
+                console.error('Cannot add negative pattern: no snapshot or no calibration');
+                return;
+            }
+
+            // Add snapshot to negativePatterns array
+            if (!calibrationData[letter].negativePatterns) {
+                calibrationData[letter].negativePatterns = [];
+            }
+            calibrationData[letter].negativePatterns.push(lastRecordedSnapshot);
+
+            // Save to localStorage
+            saveCalibrationExtras(letter);
+
+            // Update visualization
+            visualizeStoredPattern(letter);
+
+            // Show feedback
+            const feedback = document.getElementById('trainingFeedback');
+            feedback.textContent = `✓ Added negative example for '${letter}' (${calibrationData[letter].negativePatterns.length} total)`;
+            feedback.style.color = '#f44336';
+
+            // Hide training buttons after action
+            hideTrainingButtons();
+
+            console.log(`✗ Added negative pattern to ${letter}:`, lastRecordedSnapshot);
+        }
+
+        let trainingButtonTimeout = null;
+
+        function showSuccessTrainingButton(prediction, targetLetter) {
+            // Show only RED button after successful match (to correct false positives)
+            // Hide all buttons first
+            document.getElementById('addPositiveBtn').style.display = 'none';
+            document.getElementById('addNegativeBtn').style.display = 'none';
+            document.getElementById('addCorrectBtn').style.display = 'none';
+
+            // Clear previous feedback
+            document.getElementById('trainingFeedback').textContent = '';
+
+            // Show only "Not 'X'" button (where X is the target letter that matched)
+            document.getElementById('negativeTarget').textContent = targetLetter;
+            document.getElementById('addNegativeBtn').style.display = 'inline-block';
+
+            // Show the container
+            document.getElementById('trainingButtons').style.display = 'block';
+
+            // Auto-hide after 5 seconds
+            if (trainingButtonTimeout) clearTimeout(trainingButtonTimeout);
+            trainingButtonTimeout = setTimeout(() => {
+                hideTrainingButtons();
+            }, 5000);
+        }
+
+        function showTrainingButtons(prediction, targetLetter) {
+            // Clear any pending auto-hide timeout
+            if (trainingButtonTimeout) {
+                clearTimeout(trainingButtonTimeout);
+                trainingButtonTimeout = null;
+            }
+
+            // Hide all buttons first
+            document.getElementById('addPositiveBtn').style.display = 'none';
+            document.getElementById('addNegativeBtn').style.display = 'none';
+            document.getElementById('addCorrectBtn').style.display = 'none';
+
+            // Clear previous feedback
+            document.getElementById('trainingFeedback').textContent = '';
+
+            // Scenario 1: Wrong prediction (predicted X but wanted Y)
+            if (prediction !== targetLetter) {
+                // Show "Not 'X'" button (add to negative patterns of predicted letter)
+                document.getElementById('negativeTarget').textContent = prediction;
+                document.getElementById('addNegativeBtn').style.display = 'inline-block';
+
+                // Show "Was 'Y'" button (add to positive patterns of target letter)
+                document.getElementById('correctTarget').textContent = targetLetter;
+                document.getElementById('addCorrectBtn').style.display = 'inline-block';
+            }
+            // Scenario 2: Correct prediction but low score
+            else {
+                // Show "Add to 'X'" button (add to positive patterns to improve recognition)
+                document.getElementById('positiveTarget').textContent = targetLetter;
+                document.getElementById('addPositiveBtn').style.display = 'inline-block';
+            }
+
+            // Show the container
+            document.getElementById('trainingButtons').style.display = 'block';
+        }
+
+        function hideTrainingButtons() {
+            document.getElementById('trainingButtons').style.display = 'none';
+            if (trainingButtonTimeout) {
+                clearTimeout(trainingButtonTimeout);
+                trainingButtonTimeout = null;
+            }
+        }
+
+        // Initialize button handlers
+        function initTrainingButtons() {
+            document.getElementById('addPositiveBtn').onclick = () => {
+                addPositivePattern(currentTarget);
+            };
+
+            document.getElementById('addNegativeBtn').onclick = () => {
+                if (lastPrediction) {
+                    addNegativePattern(lastPrediction);
+                }
+            };
+
+            document.getElementById('addCorrectBtn').onclick = () => {
+                addPositivePattern(currentTarget);
+            };
         }
 
         // Sensitivity modal functions
@@ -3146,6 +3394,152 @@
             }
         }
 
+        // Manual Recording Modal Functions
+        let manualRecordBuffer = [];
+        let manualRecordSnapshot = null;
+        let manualRecordCanvas = null;
+        let manualRecordCtx = null;
+        let isManualRecording = false;
+
+        function openManualRecordModal() {
+            if (!currentTarget) {
+                alert('Please start the game first to select a letter');
+                return;
+            }
+
+            const modal = document.getElementById('manualRecordModal');
+            const letterDisplay = document.getElementById('manualRecordLetter');
+
+            letterDisplay.textContent = currentTarget;
+            modal.style.display = 'flex';
+
+            // Initialize canvas
+            manualRecordCanvas = document.getElementById('manualRecordCanvas');
+            manualRecordCtx = manualRecordCanvas.getContext('2d');
+            manualRecordCanvas.width = manualRecordCanvas.offsetWidth || 400;
+            manualRecordCanvas.height = 80;
+
+            // Clear canvas
+            manualRecordCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            manualRecordCtx.fillRect(0, 0, manualRecordCanvas.width, manualRecordCanvas.height);
+
+            // Reset state
+            manualRecordBuffer = [];
+            manualRecordSnapshot = null;
+            document.getElementById('manualRecordStatus').textContent = 'Ready to record';
+            document.getElementById('manualRecordStartBtn').style.display = 'inline-block';
+            document.getElementById('manualRecordRedoBtn').style.display = 'none';
+            document.getElementById('manualRecordAcceptBtn').style.display = 'none';
+        }
+
+        function closeManualRecordModal() {
+            const modal = document.getElementById('manualRecordModal');
+            modal.style.display = 'none';
+            isManualRecording = false;
+            manualRecordBuffer = [];
+            manualRecordSnapshot = null;
+        }
+
+        function startManualRecord() {
+            // Start listening for audio
+            isManualRecording = true;
+            manualRecordBuffer = [];
+            document.getElementById('manualRecordStatus').textContent = '🎤 Recording... (say the sound now)';
+            document.getElementById('manualRecordStartBtn').style.display = 'none';
+
+            // Capture for 2 seconds
+            const captureFrames = [];
+            const captureInterval = setInterval(() => {
+                if (!isManualRecording) {
+                    clearInterval(captureInterval);
+                    return;
+                }
+
+                // Get current frequency data
+                analyser.getByteFrequencyData(dataArray);
+                const pattern = downsampleFrequencies(dataArray, PATTERN_BINS);
+                captureFrames.push(pattern);
+            }, 33); // ~30fps
+
+            setTimeout(() => {
+                clearInterval(captureInterval);
+                if (!isManualRecording) return;
+
+                isManualRecording = false;
+
+                if (captureFrames.length === 0) {
+                    document.getElementById('manualRecordStatus').textContent = '❌ No sound detected, try again';
+                    document.getElementById('manualRecordStartBtn').style.display = 'inline-block';
+                    return;
+                }
+
+                // Find peak moment
+                const energies = captureFrames.map(frame => frame.reduce((a, b) => a + b, 0));
+                const peakIdx = energies.indexOf(Math.max(...energies));
+                let snapshot = captureFrames[peakIdx];
+
+                // Normalize to 0-1 range
+                const maxVal = Math.max(...snapshot);
+                if (maxVal > 0) {
+                    snapshot = snapshot.map(v => v / maxVal);
+                }
+
+                manualRecordSnapshot = snapshot;
+
+                // Visualize the captured snapshot
+                drawDownsampledPattern(manualRecordCtx, manualRecordCanvas, snapshot);
+
+                document.getElementById('manualRecordStatus').textContent = '✓ Captured! Accept or redo?';
+                document.getElementById('manualRecordRedoBtn').style.display = 'inline-block';
+                document.getElementById('manualRecordAcceptBtn').style.display = 'inline-block';
+
+                console.log('✓ Manual snapshot captured:', snapshot);
+            }, 2000);
+        }
+
+        function redoManualRecord() {
+            // Reset and allow re-recording
+            manualRecordSnapshot = null;
+            document.getElementById('manualRecordStatus').textContent = 'Ready to record';
+            document.getElementById('manualRecordStartBtn').style.display = 'inline-block';
+            document.getElementById('manualRecordRedoBtn').style.display = 'none';
+            document.getElementById('manualRecordAcceptBtn').style.display = 'none';
+
+            // Clear canvas
+            manualRecordCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            manualRecordCtx.fillRect(0, 0, manualRecordCanvas.width, manualRecordCanvas.height);
+        }
+
+        function acceptManualRecord() {
+            if (!manualRecordSnapshot || !currentTarget) {
+                console.error('No snapshot or no target letter');
+                return;
+            }
+
+            // Add to positive patterns
+            if (!calibrationData[currentTarget]) {
+                alert('Letter not calibrated yet. Please calibrate first.');
+                closeManualRecordModal();
+                return;
+            }
+
+            calibrationData[currentTarget].patterns.push(manualRecordSnapshot);
+
+            // Save to localStorage
+            saveCalibrationExtras(currentTarget);
+
+            // Update visualization
+            visualizeStoredPattern(currentTarget);
+
+            console.log(`✓ Added manual recording to ${currentTarget}. Total patterns: ${calibrationData[currentTarget].patterns.length}`);
+
+            // Close modal with success message
+            document.getElementById('manualRecordStatus').textContent = '✅ Example added successfully!';
+            setTimeout(() => {
+                closeManualRecordModal();
+            }, 1500);
+        }
+
         // Continuous play mode
         let continuousPlayEnabled = localStorage.getItem('continuousPlayMode') === 'true';
 
@@ -3194,6 +3588,7 @@
                 document.getElementById('tryAgainBtn').style.display = 'none';
                 patternBuffer = [];
                 listenClickedThisRound = false; // Reset LISTEN tracking for this letter
+                hideTrainingButtons(); // Hide training buttons when starting new letter
 
                 // Visualize stored calibration pattern
                 visualizeStoredPattern(currentTarget);
@@ -3318,6 +3713,18 @@
                 const prediction = result.predictedLetter || '?';
                 const isCorrect = prediction === currentTarget;
 
+                // TRAINING: Capture current snapshot for training buttons
+                const energies = patternBuffer.map(frame => frame.reduce((a, b) => a + b, 0));
+                const peakIdx = energies.indexOf(Math.max(...energies));
+                let snapshot = patternBuffer[peakIdx];
+                // Normalize to 0-1 range
+                const maxVal = Math.max(...snapshot);
+                if (maxVal > 0) {
+                    snapshot = snapshot.map(v => v / maxVal);
+                }
+                lastRecordedSnapshot = snapshot;
+                lastPrediction = prediction;
+
                 // Show simplified status
                 const barCount = Math.max(0, Math.floor(score / 10));
                 const bar = '█'.repeat(barCount);
@@ -3339,6 +3746,10 @@
                         recordAttempt(currentTarget, true, listenClickedThisRound, score);
                     }
 
+                    // TRAINING: Show RED button for 5 seconds (to correct false positives)
+                    // Always show, even with continuous play (user has 5 seconds to click)
+                    showSuccessTrainingButton(prediction, currentTarget);
+
                     // Show success message
                     document.getElementById('status').textContent = `✓ MATCH! ${Math.round(score)}%\n\n` + statusText;
                     // Stop analyzing so results stay visible
@@ -3356,6 +3767,9 @@
                             analyzeTuner();
                         }, 1500); // 1.5 second delay to show success feedback
                     }
+                } else {
+                    // TRAINING: Show training buttons on failure (wrong prediction or low score)
+                    showTrainingButtons(prediction, currentTarget);
                 }
 
                 if (false) {
@@ -3681,23 +4095,56 @@
                 currentSnapshot = currentSnapshot.map(v => v / maxCurrent);
             }
 
-            // Get stored baseline snapshot (already averaged and normalized)
-            const storedSnapshot = calibrationData[target].pattern[0]; // It's a single snapshot now
+            // NEW: Test against ALL positive patterns, take best match
+            const patterns = calibrationData[target].patterns || [calibrationData[target].pattern?.[0]];
+            let bestPositiveScore = 0;
 
-            // Calculate simple distance (sum of absolute differences)
-            let totalDistance = 0;
-            const minLength = Math.min(currentSnapshot.length, storedSnapshot.length);
+            patterns.forEach(storedSnapshot => {
+                if (!storedSnapshot) return;
 
-            for (let i = 0; i < minLength; i++) {
-                totalDistance += Math.abs(currentSnapshot[i] - storedSnapshot[i]);
+                // Calculate simple distance (sum of absolute differences)
+                let totalDistance = 0;
+                const minLength = Math.min(currentSnapshot.length, storedSnapshot.length);
+
+                for (let i = 0; i < minLength; i++) {
+                    totalDistance += Math.abs(currentSnapshot[i] - storedSnapshot[i]);
+                }
+
+                // Convert distance to similarity score (0-100)
+                const avgDistance = totalDistance / minLength;
+                const similarity = Math.max(0, 100 - (avgDistance * 100));
+
+                if (similarity > bestPositiveScore) {
+                    bestPositiveScore = similarity;
+                }
+            });
+
+            // NEW: Check against negative patterns (patterns that should NOT match)
+            const negativePatterns = calibrationData[target].negativePatterns || [];
+            let maxNegativeMatch = 0;
+
+            negativePatterns.forEach(negSnapshot => {
+                let totalDistance = 0;
+                const minLength = Math.min(currentSnapshot.length, negSnapshot.length);
+
+                for (let i = 0; i < minLength; i++) {
+                    totalDistance += Math.abs(currentSnapshot[i] - negSnapshot[i]);
+                }
+
+                const avgDistance = totalDistance / minLength;
+                const similarity = Math.max(0, 100 - (avgDistance * 100));
+
+                if (similarity > maxNegativeMatch) {
+                    maxNegativeMatch = similarity;
+                }
+            });
+
+            // If negative match is strong (>70%), significantly reduce score
+            if (maxNegativeMatch > 70) {
+                bestPositiveScore = bestPositiveScore * (1 - (maxNegativeMatch / 100) * 0.8);
             }
 
-            // Convert distance to similarity score (0-100)
-            // Max possible avgDistance is 1.0 (completely different patterns)
-            const avgDistance = totalDistance / minLength;
-            const similarity = Math.max(0, 100 - (avgDistance * 100));
-
-            return similarity;
+            return bestPositiveScore;
         }
 
         function calculatePatternSimilarity(pattern1, pattern2) {
@@ -3780,18 +4227,31 @@
                 storedPatternCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
                 storedPatternCtx.fillRect(0, 0, storedPatternCanvas.width, storedPatternCanvas.height);
                 console.log(`⚠️ No calibration data for letter: ${letter}`);
+                document.getElementById('patternCount').textContent = '-';
                 return;
             }
 
-            // Get stored pattern (it's wrapped in array as [baseline])
-            const storedPattern = calibrationData[letter].pattern[0];
+            // Get stored patterns (first one for visualization)
+            const patterns = calibrationData[letter].patterns || [calibrationData[letter].pattern?.[0]];
+            const storedPattern = patterns[0];
+
+            if (!storedPattern) {
+                console.log(`⚠️ No valid pattern for letter: ${letter}`);
+                return;
+            }
 
             // Normalize pattern for visualization
             const max = Math.max(...storedPattern);
             const normalized = max > 0 ? storedPattern.map(v => v / max) : storedPattern;
 
             drawDownsampledPattern(storedPatternCtx, storedPatternCanvas, normalized);
-            console.log(`✅ Visualized stored pattern for ${letter}`);
+
+            // Update pattern count display
+            const negCount = (calibrationData[letter].negativePatterns || []).length;
+            const countText = `${patterns.length} positive${negCount > 0 ? `, ${negCount} negative` : ''}`;
+            document.getElementById('patternCount').textContent = countText;
+
+            console.log(`✅ Visualized stored pattern for ${letter} (${countText})`);
         }
 
         // Visualize current recording pattern
@@ -5142,10 +5602,11 @@
 
                     // Check if we have a saved guest profile ID
                     const savedGuestId = localStorage.getItem('guestProfileId');
+                    console.log('🔍 Checking localStorage for guestProfileId:', savedGuestId);
 
                     if (savedGuestId) {
                         // Try to load existing guest profile
-                        console.log('🔍 Attempting to load saved guest profile:', savedGuestId);
+                        console.log('✓ Found saved guest profile, attempting to load:', savedGuestId);
                         try {
                             const { data: existingProfile, error } = await supabase
                                 .from('profiles')
@@ -5188,6 +5649,9 @@
             // Create calibration grid
             createCalibrationGrid();
             updateCalibrationStats();
+
+            // Initialize training correction buttons
+            initTrainingButtons();
         })();
 
         async function createAnonymousProfile() {
