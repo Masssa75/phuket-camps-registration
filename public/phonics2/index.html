@@ -1640,7 +1640,7 @@
                     .select('proficiency')
                     .eq('profile_id', currentProfileId)
                     .eq('letter', letter)
-                    .single();
+                    .maybeSingle();
 
                 if (error || !data) return LetterProficiency.UNKNOWN;
                 return data.proficiency || LetterProficiency.UNKNOWN;
