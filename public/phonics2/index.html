@@ -1216,6 +1216,14 @@
                 </div>
             </div>
 
+            <!-- Additional Patterns Visualization -->
+            <div id="additionalPatternsContainer" style="margin-top: 15px; display: none;">
+                <div style="color: #aaa; font-size: 12px; margin-bottom: 10px; font-weight: bold;">Additional Training Patterns:</div>
+                <div id="additionalPatternsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+                    <!-- Pattern cards will be inserted here -->
+                </div>
+            </div>
+
             <!-- Training Correction Buttons -->
             <div id="trainingButtons" style="display: none; margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; text-align: center;">
                 <div style="color: #ddd; font-size: 13px; margin-bottom: 10px;">Recognition issue? Train the system:</div>
@@ -2750,13 +2758,61 @@
             updateCalibrationStats();
         }
 
-        function resetCalibration() {
-            if (confirm(`Reset all calibration data for ${currentProfile}?`)) {
+        async function resetCalibration() {
+            if (!confirm(`Reset all calibration data for ${currentProfile}?\n\nThis will delete all calibrations and audio recordings from the database. This cannot be undone.`)) {
+                return;
+            }
+
+            try {
+                console.log('🔄 Starting calibration reset...');
+
+                // Delete all calibrations from Supabase
+                if (currentProfileId) {
+                    const { error: deleteError } = await supabase
+                        .from('calibrations')
+                        .delete()
+                        .eq('profile_id', currentProfileId);
+
+                    if (deleteError) {
+                        console.error('❌ Error deleting calibrations:', deleteError);
+                        alert('Error deleting calibrations from database. Please try again.');
+                        return;
+                    }
+
+                    console.log('✅ Deleted calibrations from database');
+
+                    // Note: We don't delete audio files from storage because they're expensive to regenerate
+                    // and storage is cheap. They'll be orphaned but that's okay.
+
+                    // Clear all calibration extras from localStorage (training patterns)
+                    const keysToRemove = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key && key.startsWith(`calibration_extras_${currentProfileId}_`)) {
+                            keysToRemove.push(key);
+                        }
+                    }
+                    keysToRemove.forEach(key => localStorage.removeItem(key));
+                    console.log(`✅ Cleared ${keysToRemove.length} training pattern entries from localStorage`);
+                }
+
+                // Clear local calibration data
                 calibrationData = {};
+
+                // Clear old localStorage key (legacy)
                 const key = `phonicsPatterns_${currentProfile}`;
                 localStorage.removeItem(key);
+
+                // Refresh UI
                 createCalibrationGrid();
                 updateCalibrationStats();
+
+                console.log('✅ Calibration reset complete');
+                alert('All calibrations have been reset successfully!');
+
+            } catch (error) {
+                console.error('❌ Error during reset:', error);
+                alert('An error occurred while resetting calibrations. Please check the console for details.');
             }
         }
 
@@ -3737,6 +3793,17 @@
                 // Visualize current recording pattern
                 visualizeCurrentPattern(patternBuffer);
 
+                // Highlight matched pattern (if additional patterns exist)
+                if (window.lastMatchInfo && window.lastMatchInfo.target === currentTarget) {
+                    const matchInfo = window.lastMatchInfo;
+                    // Skip index 0 (main calibration pattern shown above)
+                    // Additional patterns start at index 1
+                    if (matchInfo.index > 0) {
+                        const additionalIndex = matchInfo.index - 1;
+                        highlightMatchedPattern(matchInfo.type, additionalIndex);
+                    }
+                }
+
                 // Success if S11 predicts correctly AND score > 80%
                 if (isCorrect && score > 80) {
                     celebrateMatch();
@@ -4098,8 +4165,9 @@
             // NEW: Test against ALL positive patterns, take best match
             const patterns = calibrationData[target].patterns || [calibrationData[target].pattern?.[0]];
             let bestPositiveScore = 0;
+            let bestPositiveIndex = -1;
 
-            patterns.forEach(storedSnapshot => {
+            patterns.forEach((storedSnapshot, index) => {
                 if (!storedSnapshot) return;
 
                 // Calculate simple distance (sum of absolute differences)
@@ -4116,14 +4184,24 @@
 
                 if (similarity > bestPositiveScore) {
                     bestPositiveScore = similarity;
+                    bestPositiveIndex = index;
                 }
             });
+
+            // Store match info globally for highlighting
+            window.lastMatchInfo = {
+                target: target,
+                type: 'positive',
+                index: bestPositiveIndex,
+                score: bestPositiveScore
+            };
 
             // NEW: Check against negative patterns (patterns that should NOT match)
             const negativePatterns = calibrationData[target].negativePatterns || [];
             let maxNegativeMatch = 0;
+            let bestNegativeIndex = -1;
 
-            negativePatterns.forEach(negSnapshot => {
+            negativePatterns.forEach((negSnapshot, index) => {
                 let totalDistance = 0;
                 const minLength = Math.min(currentSnapshot.length, negSnapshot.length);
 
@@ -4136,8 +4214,19 @@
 
                 if (similarity > maxNegativeMatch) {
                     maxNegativeMatch = similarity;
+                    bestNegativeIndex = index;
                 }
             });
+
+            // If negative match was stronger, update match info
+            if (maxNegativeMatch > bestPositiveScore) {
+                window.lastMatchInfo = {
+                    target: target,
+                    type: 'negative',
+                    index: bestNegativeIndex,
+                    score: maxNegativeMatch
+                };
+            }
 
             // If negative match is strong (>70%), significantly reduce score
             if (maxNegativeMatch > 70) {
@@ -4252,6 +4341,9 @@
             document.getElementById('patternCount').textContent = countText;
 
             console.log(`✅ Visualized stored pattern for ${letter} (${countText})`);
+
+            // Also visualize additional training patterns
+            visualizeAdditionalPatterns(letter);
         }
 
         // Visualize current recording pattern
@@ -4275,6 +4367,141 @@
             const normalized = max > 0 ? currentPattern.map(v => v / max) : currentPattern;
 
             drawDownsampledPattern(currentPatternCtx, currentPatternCanvas, normalized);
+        }
+
+        // Visualize additional training patterns (positive and negative)
+        let lastMatchedPatternIndex = null;
+        let lastMatchedPatternType = null;
+
+        function visualizeAdditionalPatterns(letter) {
+            try {
+                const container = document.getElementById('additionalPatternsContainer');
+                const grid = document.getElementById('additionalPatternsGrid');
+
+                if (!container || !grid) {
+                    console.log('⚠️ Additional patterns container/grid not found');
+                    return;
+                }
+
+                // Load additional patterns from localStorage
+                const extrasKey = `calibration_extras_${currentProfileId}_${letter}`;
+                const extrasJSON = localStorage.getItem(extrasKey);
+
+                if (!extrasJSON) {
+                    console.log(`No additional patterns for ${letter}`);
+                    container.style.display = 'none';
+                    return;
+                }
+
+                const extras = JSON.parse(extrasJSON);
+                const positivePatterns = extras.patterns || [];
+                const negativePatterns = extras.negativePatterns || [];
+
+                console.log(`📊 Additional patterns for ${letter}: ${positivePatterns.length} positive, ${negativePatterns.length} negative`);
+
+                // If no additional patterns, hide container
+                if (positivePatterns.length === 0 && negativePatterns.length === 0) {
+                    container.style.display = 'none';
+                    return;
+                }
+
+                // Show container and clear grid
+                container.style.display = 'block';
+                grid.innerHTML = '';
+
+                // Add positive patterns
+                positivePatterns.forEach((pattern, index) => {
+                    try {
+                        const card = createPatternCard(pattern, 'positive', index, letter);
+                        grid.appendChild(card);
+                        console.log(`✅ Added positive pattern #${index + 1}`);
+                    } catch (e) {
+                        console.error(`❌ Error creating positive pattern #${index + 1}:`, e);
+                    }
+                });
+
+                // Add negative patterns
+                negativePatterns.forEach((pattern, index) => {
+                    try {
+                        const card = createPatternCard(pattern, 'negative', index, letter);
+                        grid.appendChild(card);
+                        console.log(`✅ Added negative pattern #${index + 1}`);
+                    } catch (e) {
+                        console.error(`❌ Error creating negative pattern #${index + 1}:`, e);
+                    }
+                });
+
+                console.log(`✅ Visualized ${positivePatterns.length + negativePatterns.length} additional patterns`);
+            } catch (error) {
+                console.error('❌ Error in visualizeAdditionalPatterns:', error);
+            }
+        }
+
+        function createPatternCard(pattern, type, index, letter) {
+            const card = document.createElement('div');
+            const bgColor = type === 'positive' ? 'rgba(76,175,80,0.1)' : 'rgba(244,67,54,0.1)';
+            const borderColor = type === 'positive' ? '#4CAF50' : '#f44336';
+            const icon = type === 'positive' ? '✓' : '✗';
+
+            card.id = `pattern-${type}-${index}`;
+            card.style.cssText = `
+                background: ${bgColor};
+                padding: 10px;
+                border-radius: 8px;
+                border: 2px solid ${borderColor};
+                transition: all 0.3s ease;
+            `;
+
+            const label = document.createElement('div');
+            label.style.cssText = `
+                color: ${borderColor};
+                font-size: 10px;
+                margin-bottom: 5px;
+                text-align: center;
+                font-weight: bold;
+            `;
+            label.textContent = `${icon} ${type.toUpperCase()} #${index + 1}`;
+
+            const canvas = document.createElement('canvas');
+            canvas.style.cssText = 'width: 100%; height: 50px; background: rgba(0,0,0,0.3); border-radius: 5px;';
+            canvas.width = 200;
+            canvas.height = 50;
+
+            card.appendChild(label);
+            card.appendChild(canvas);
+
+            // Draw pattern on canvas
+            const ctx = canvas.getContext('2d');
+            const max = Math.max(...pattern);
+            const normalized = max > 0 ? pattern.map(v => v / max) : pattern;
+            drawDownsampledPattern(ctx, canvas, normalized);
+
+            return card;
+        }
+
+        function highlightMatchedPattern(type, index) {
+            // Remove previous highlight
+            if (lastMatchedPatternIndex !== null && lastMatchedPatternType !== null) {
+                const prevCard = document.getElementById(`pattern-${lastMatchedPatternType}-${lastMatchedPatternIndex}`);
+                if (prevCard) {
+                    const borderColor = lastMatchedPatternType === 'positive' ? '#4CAF50' : '#f44336';
+                    prevCard.style.border = `2px solid ${borderColor}`;
+                    prevCard.style.boxShadow = 'none';
+                    prevCard.style.transform = 'scale(1)';
+                }
+            }
+
+            // Add new highlight
+            const card = document.getElementById(`pattern-${type}-${index}`);
+            if (card) {
+                const glowColor = type === 'positive' ? '#4CAF50' : '#f44336';
+                card.style.border = `3px solid ${glowColor}`;
+                card.style.boxShadow = `0 0 20px ${glowColor}`;
+                card.style.transform = 'scale(1.05)';
+
+                lastMatchedPatternIndex = index;
+                lastMatchedPatternType = type;
+            }
         }
 
         // DEPRECATED: Audio is now stored in Supabase Storage
@@ -4435,13 +4662,20 @@
         // ========== ADAPTIVE STATS DISPLAY ==========
 
         async function updateAdaptiveStatsDisplay() {
+            // Always load proficiency pools (permanent data, not session-specific)
+            const calibratedLetters = Object.keys(calibrationData);
+            const proficiencyMap = await loadProficiencyMap(currentProfileId);
+            const pools = groupLettersByProficiency(proficiencyMap, calibratedLetters);
+
+            document.getElementById('statsMastered').textContent = pools.mastered.length.toString();
+            document.getElementById('statsKnown').textContent = pools.known.length.toString();
+            document.getElementById('statsSometimes').textContent = pools.sometimes.length.toString();
+            document.getElementById('statsUnknown').textContent = pools.unknown.length.toString();
+
+            // Session-specific stats (only show if session is active)
             if (!currentSession) {
                 document.getElementById('statsPhase').textContent = 'Not Started';
                 document.getElementById('statsAttempts').textContent = '0';
-                document.getElementById('statsMastered').textContent = '0';
-                document.getElementById('statsKnown').textContent = '0';
-                document.getElementById('statsSometimes').textContent = '0';
-                document.getElementById('statsUnknown').textContent = '0';
                 document.getElementById('statsNewLetters').textContent = 'None';
                 document.getElementById('statsGraduated').textContent = 'None';
                 document.getElementById('statsStreak').textContent = '0';
@@ -4472,16 +4706,6 @@
 
             document.getElementById('statsPhase').textContent = phase;
             document.getElementById('statsAttempts').textContent = attemptCount.toString();
-
-            // Load proficiency pools
-            const calibratedLetters = Object.keys(calibrationData);
-            const proficiencyMap = await loadProficiencyMap(currentProfileId);
-            const pools = groupLettersByProficiency(proficiencyMap, calibratedLetters);
-
-            document.getElementById('statsMastered').textContent = pools.mastered.length.toString();
-            document.getElementById('statsKnown').textContent = pools.known.length.toString();
-            document.getElementById('statsSometimes').textContent = pools.sometimes.length.toString();
-            document.getElementById('statsUnknown').textContent = pools.unknown.length.toString();
 
             // Session info
             const newLetters = currentSession.newLettersIntroduced.length > 0
