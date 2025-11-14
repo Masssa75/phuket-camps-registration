@@ -3244,8 +3244,8 @@
             // Clear previous feedback
             document.getElementById('trainingFeedback').textContent = '';
 
-            // Show only "Not 'X'" button (where X is the target letter that matched)
-            document.getElementById('negativeTarget').textContent = targetLetter;
+            // Show only "Not 'X'" button (where X is the letter that was detected/matched)
+            document.getElementById('negativeTarget').textContent = prediction;
             document.getElementById('addNegativeBtn').style.display = 'inline-block';
 
             // Show the container
