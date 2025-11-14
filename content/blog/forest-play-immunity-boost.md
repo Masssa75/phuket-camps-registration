@@ -1,6 +1,6 @@
 ---
-title: "Why Your Child's Immune System Needs Forest Play (Not Hand Sanitizer)"
-excerpt: "Finnish scientists proved it: 28 days of playing in forest soil transformed children's immune systems. Here's what happened—and why our Christmas camp gives your child the same breakthrough benefits in just 2 weeks."
+title: "2 Weeks in Forest Soil Transforms Your Child's Immune System"
+excerpt: "Finnish scientists discovered playing in forest soil builds powerful immunity and fights autoimmune diseases. Just 28 days showed dramatic results. Our Christmas camp delivers the same breakthrough in 2 weeks."
 date: "2025-11-13"
 author: "Bamboo Valley Team"
 featuredImage: "/blog/forest-immunity-hero.jpg"
@@ -9,13 +9,13 @@ camps: ["christmas", "winter", "universal"]
 language: "en"
 ---
 
-## "Won't My Child Get Sick From All That Dirt?"
+## Forest Soil Builds Immunity Faster Than You Think
 
-Every parent asks this when they see children at Bamboo Valley—hands deep in soil, caring for animals, playing under palm trees for hours.
+Finnish scientists just discovered something extraordinary: **Playing in forest soil dramatically strengthens children's immune systems—and fights autoimmune diseases—in just 28 days.**
 
-**Here's what actually happens:**
+The results weren't subtle. They were measurable in blood tests.
 
-Finnish researchers just proved the opposite. Children playing in forest environments don't get sicker. **They get dramatically healthier.**
+**At our Christmas camp, your child gets the same transformation in just 2 weeks.**
 
 [IMAGE PLACEHOLDER: Hero image - Child with joyful expression playing in garden/nature, hands dirty, completely engaged. Warm natural lighting. Should feel free and happy, not cautious.]
 

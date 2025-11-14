@@ -334,17 +334,20 @@ export default function Home() {
           <div style={{background: 'white', borderRadius: '20px', overflow: 'hidden', textAlign: 'left', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', maxWidth: '800px', margin: '0 auto'}}>
             <div style={{padding: '40px'}}>
               <div style={{marginBottom: '15px'}}>
+                <span style={{background: '#f0f7e8', color: '#7a9a3b', padding: '6px 14px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600, marginRight: '8px'}}>
+                  screen time
+                </span>
                 <span style={{background: '#f0f7e8', color: '#7a9a3b', padding: '6px 14px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600}}>
-                  immunity
+                  science
                 </span>
               </div>
               <h3 style={{fontSize: '2rem', fontWeight: 700, color: '#2c3e2c', marginBottom: '20px', lineHeight: 1.3}}>
-                How Forest Play Transforms Children's Immune Systems
+                Soil vs. Screen: 7 Childhood Wins You Can Actually Measure
               </h3>
               <p style={{fontSize: '1.1rem', color: '#666', lineHeight: 1.7, marginBottom: '30px'}}>
-                Finnish researchers discovered that just 28 days of forest play completely transformed children's immune systems. Here's what this groundbreaking study means for your child...
+                The average 4-year-old spends 2h 19min on screens daily. Finnish forest-children spend the same time with dirt under their nails—and just outscored peers in immunity, sleep, and self-regulation...
               </p>
-              <Link href="/blog/forest-play-immunity-boost" style={{display: 'inline-block', padding: '15px 35px', background: '#7a9a3b', color: 'white', textDecoration: 'none', borderRadius: '50px', fontSize: '1.1rem', fontWeight: 700, transition: 'transform 0.2s'}}>
+              <Link href="/blog/soil-vs-screen-christmas" style={{display: 'inline-block', padding: '15px 35px', background: '#7a9a3b', color: 'white', textDecoration: 'none', borderRadius: '50px', fontSize: '1.1rem', fontWeight: 700, transition: 'transform 0.2s'}}>
                 Read Full Article →
               </Link>
             </div>
