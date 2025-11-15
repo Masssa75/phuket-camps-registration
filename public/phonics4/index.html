@@ -2200,50 +2200,108 @@
 
             try {
                 const loadStart = Date.now();
-                console.log('⏳ Loading calibrations from Supabase...');
+                console.log('⏳ Loading calibrations from ALL profiles (cross-profile pooling)...');
 
-                const { data, error } = await supabase
+                // LOAD FROM ALL PROFILES (not just current one)
+                const { data, error} = await supabase
                     .from('calibrations')
-                    .select('*')
-                    .eq('profile_id', currentProfileId);
+                    .select('*');
 
                 const loadTime = Date.now() - loadStart;
                 console.log(`⏱️ Supabase query took: ${loadTime}ms`);
 
                 if (error) throw error;
 
-                // Convert to the format expected by the app
+                // Convert to the NEW snapshot-based format
                 const calibrations = {};
+                let totalSnapshots = 0;
+
                 data.forEach(cal => {
                     // Force letter to lowercase (handles old uppercase calibrations)
                     const letter = cal.letter.toLowerCase();
 
-                    // New data structure: supports multiple patterns + negatives
-                    // pattern_data.pattern is already an array: [baseline]
-                    const patterns = cal.pattern_data.pattern ? cal.pattern_data.pattern : [cal.pattern_data];
+                    // Initialize letter if not exists
+                    if (!calibrations[letter]) {
+                        calibrations[letter] = {
+                            snapshots: [],
+                            audioUrl: null
+                        };
+                    }
 
-                    calibrations[letter] = {
-                        patterns: patterns,  // Array of positive example patterns
-                        negativePatterns: [], // Patterns to reject (trained locally)
-                        timestamp: new Date(cal.created_at).getTime(),
-                        audioUrl: cal.audio_url
-                    };
+                    // BACKWARD COMPATIBILITY: Handle old format
+                    let snapshots = [];
+                    if (cal.pattern_data.snapshots) {
+                        // NEW FORMAT: Already has snapshots array
+                        snapshots = cal.pattern_data.snapshots;
+                    } else if (cal.pattern_data.pattern) {
+                        // OLD FORMAT: { pattern: [[...], [...]] }
+                        snapshots = cal.pattern_data.pattern.map(data => ({
+                            data: data,
+                            score: 0,
+                            isNegative: false,
+                            profileId: cal.profile_id,
+                            createdAt: cal.created_at
+                        }));
+                    } else {
+                        // VERY OLD FORMAT: pattern_data is just the array
+                        snapshots = [{
+                            data: cal.pattern_data,
+                            score: 0,
+                            isNegative: false,
+                            profileId: cal.profile_id,
+                            createdAt: cal.created_at
+                        }];
+                    }
 
-                    // Load any local additions from localStorage
-                    const localKey = `calibration_extras_${currentProfileId}_${letter}`;
-                    const localData = localStorage.getItem(localKey);
-                    if (localData) {
-                        try {
-                            const extras = JSON.parse(localData);
-                            if (extras.patterns) calibrations[letter].patterns.push(...extras.patterns);
-                            if (extras.negativePatterns) calibrations[letter].negativePatterns = extras.negativePatterns;
-                        } catch (e) {
-                            console.warn(`Failed to load local extras for ${letter}:`, e);
+                    // Add all snapshots from this calibration to the pool
+                    calibrations[letter].snapshots.push(...snapshots);
+                    totalSnapshots += snapshots.length;
+
+                    // Keep the most recent audio URL
+                    if (cal.audio_url && !calibrations[letter].audioUrl) {
+                        calibrations[letter].audioUrl = cal.audio_url;
+                    }
+
+                    // Load any local additions from localStorage (for current profile)
+                    if (cal.profile_id === currentProfileId) {
+                        const localKey = `calibration_extras_${currentProfileId}_${letter}`;
+                        const localData = localStorage.getItem(localKey);
+                        if (localData) {
+                            try {
+                                const extras = JSON.parse(localData);
+                                // Convert old localStorage format to snapshot format
+                                if (extras.patterns) {
+                                    extras.patterns.forEach(data => {
+                                        calibrations[letter].snapshots.push({
+                                            data: data,
+                                            score: 0,
+                                            isNegative: false,
+                                            profileId: currentProfileId,
+                                            createdAt: new Date().toISOString()
+                                        });
+                                        totalSnapshots++;
+                                    });
+                                }
+                                if (extras.negativePatterns) {
+                                    extras.negativePatterns.forEach(data => {
+                                        calibrations[letter].snapshots.push({
+                                            data: data,
+                                            score: 0,
+                                            isNegative: true,
+                                            profileId: currentProfileId,
+                                            createdAt: new Date().toISOString()
+                                        });
+                                        totalSnapshots++;
+                                    });
+                                }
+                            } catch (e) {
+                                console.warn(`Failed to load local extras for ${letter}:`, e);
+                            }
                         }
                     }
                 });
 
-                console.log(`✅ Loaded ${Object.keys(calibrations).length} calibrations from Supabase`);
+                console.log(`✅ Loaded ${Object.keys(calibrations).length} letters with ${totalSnapshots} total snapshots from ${data.length} profiles`);
                 return calibrations;
             } catch (error) {
                 console.error('❌ Error loading calibrations:', error);
@@ -2265,6 +2323,92 @@
         // Pattern matching parameters
         const PATTERN_LENGTH = 30; // Number of frequency snapshots
         const PATTERN_BINS = 64;   // Number of frequency bins per snapshot
+
+        // ========== SNAPSHOT SCORING SYSTEM ==========
+        // Track which negative snapshots already got points this round (per letter display)
+        let currentScoringRound = {
+            letter: null,
+            negativeSnapshotsAwarded: new Set() // Set of snapshot objects that already got points
+        };
+
+        // Increment score for a snapshot (in memory)
+        function incrementSnapshotScore(letter, snapshot) {
+            if (!snapshot || !calibrationData[letter] || !calibrationData[letter].snapshots) return;
+
+            // Find the snapshot in calibrationData and increment its score
+            const snapshotIndex = calibrationData[letter].snapshots.indexOf(snapshot);
+            if (snapshotIndex !== -1) {
+                snapshot.score = (snapshot.score || 0) + 1;
+                console.log(`📊 Snapshot score incremented: ${letter} [${snapshot.isNegative ? 'NEG' : 'POS'}] → ${snapshot.score} (profile: ${snapshot.profileId?.substring(0, 8)}...)`);
+
+                // Persist to Supabase (debounced to avoid too many DB calls)
+                debounceSaveScores(letter, snapshot.profileId);
+            }
+        }
+
+        // Debounce score saves to avoid hammering the database
+        let saveScoreTimers = {};
+        function debounceSaveScores(letter, profileId) {
+            const key = `${letter}_${profileId}`;
+            if (saveScoreTimers[key]) {
+                clearTimeout(saveScoreTimers[key]);
+            }
+            saveScoreTimers[key] = setTimeout(() => {
+                saveSnapshotScoresToSupabase(letter, profileId);
+            }, 2000); // Save 2 seconds after last score change
+        }
+
+        // Save snapshot scores back to Supabase
+        async function saveSnapshotScoresToSupabase(letter, profileId) {
+            if (!calibrationData[letter] || !calibrationData[letter].snapshots) return;
+
+            try {
+                // Get all snapshots for this letter from this profile
+                const profileSnapshots = calibrationData[letter].snapshots.filter(s => s.profileId === profileId);
+                if (profileSnapshots.length === 0) return;
+
+                // Build the pattern_data object with updated scores
+                const patternData = {
+                    snapshots: profileSnapshots
+                };
+
+                // Update in Supabase
+                const { error } = await supabase
+                    .from('calibrations')
+                    .update({
+                        pattern_data: patternData,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('profile_id', profileId)
+                    .eq('letter', letter);
+
+                if (error) {
+                    console.error(`❌ Error saving scores for ${letter}:`, error);
+                } else {
+                    console.log(`💾 Saved snapshot scores to Supabase: ${letter} (${profileSnapshots.length} snapshots)`);
+                }
+            } catch (error) {
+                console.error(`❌ Error in saveSnapshotScoresToSupabase:`, error);
+            }
+        }
+
+        // Reset round tracking when letter changes
+        function startNewScoringRound(letter) {
+            currentScoringRound = {
+                letter: letter,
+                negativeSnapshotsAwarded: new Set()
+            };
+        }
+
+        // Check if negative snapshot can get a point this round
+        function canAwardNegativePoint(snapshot) {
+            return !currentScoringRound.negativeSnapshotsAwarded.has(snapshot);
+        }
+
+        // Mark negative snapshot as awarded for this round
+        function markNegativeSnapshotAwarded(snapshot) {
+            currentScoringRound.negativeSnapshotsAwarded.add(snapshot);
+        }
 
         // Profile management
         let currentProfile = 'Default';
@@ -3151,10 +3295,15 @@
             const clusterResult = findBestCluster(modalCapturedSnapshots);
             const baseline = averageSnapshots(clusterResult.cluster);
 
-            // Save in the correct format
+            // Save in the NEW snapshot format with scoring
             const patternData = {
-                pattern: [baseline],
-                timestamp: Date.now()
+                snapshots: [{
+                    data: baseline,
+                    score: 0,
+                    isNegative: false,
+                    profileId: currentProfileId,
+                    createdAt: new Date().toISOString()
+                }]
             };
 
             // Select the best audio clip from the cluster
@@ -3285,18 +3434,30 @@
                 return;
             }
 
-            // Add snapshot to patterns array
-            calibrationData[letter].patterns.push(lastRecordedSnapshot);
+            // Add snapshot in NEW format
+            const newSnapshot = {
+                data: lastRecordedSnapshot,
+                score: 0,
+                isNegative: false,
+                profileId: currentProfileId,
+                createdAt: new Date().toISOString()
+            };
 
-            // Save to localStorage
-            saveCalibrationExtras(letter);
+            if (!calibrationData[letter].snapshots) {
+                calibrationData[letter].snapshots = [];
+            }
+            calibrationData[letter].snapshots.push(newSnapshot);
+
+            // Save to Supabase
+            debounceSaveScores(letter, currentProfileId);
 
             // Update visualization
             visualizeStoredPattern(letter);
 
             // Show feedback
             const feedback = document.getElementById('trainingFeedback');
-            feedback.textContent = `✓ Added positive example for '${letter}' (${calibrationData[letter].patterns.length} total)`;
+            const positiveCount = calibrationData[letter].snapshots.filter(s => !s.isNegative).length;
+            feedback.textContent = `✓ Added positive example for '${letter}' (${positiveCount} total)`;
             feedback.style.color = '#4CAF50';
 
             // Hide training buttons after action
@@ -3311,17 +3472,26 @@
                 return;
             }
 
-            // Add snapshot to negativePatterns array
-            if (!calibrationData[letter].negativePatterns) {
-                calibrationData[letter].negativePatterns = [];
-            }
-            calibrationData[letter].negativePatterns.push(lastRecordedSnapshot);
+            // Add snapshot in NEW format
+            const newSnapshot = {
+                data: lastRecordedSnapshot,
+                score: 0,
+                isNegative: true,
+                profileId: currentProfileId,
+                createdAt: new Date().toISOString()
+            };
 
-            console.log(`✗ Added negative pattern to ${letter} (total: ${calibrationData[letter].negativePatterns.length})`);
+            if (!calibrationData[letter].snapshots) {
+                calibrationData[letter].snapshots = [];
+            }
+            calibrationData[letter].snapshots.push(newSnapshot);
+
+            const negativeCount = calibrationData[letter].snapshots.filter(s => s.isNegative).length;
+            console.log(`✗ Added negative pattern to ${letter} (total: ${negativeCount})`);
             console.log(`  Pattern preview:`, lastRecordedSnapshot.slice(0, 5));
 
-            // Save to localStorage
-            saveCalibrationExtras(letter);
+            // Save to Supabase
+            debounceSaveScores(letter, currentProfileId);
 
             // Update visualization
             console.log(`  Calling visualizeStoredPattern for ${letter}...`);
@@ -3329,7 +3499,7 @@
 
             // Show feedback
             const feedback = document.getElementById('trainingFeedback');
-            feedback.textContent = `✓ Added negative example for '${letter}' (${calibrationData[letter].negativePatterns.length} total)`;
+            feedback.textContent = `✓ Added negative example for '${letter}' (${negativeCount} total)`;
             feedback.style.color = '#f44336';
 
             // Hide training buttons after action
@@ -3694,6 +3864,9 @@
                 listenClickedThisRound = false; // Reset LISTEN tracking for this letter
                 hideTrainingButtons(); // Hide training buttons when starting new letter
 
+                // SCORING: Start new scoring round for negative snapshot tracking
+                startNewScoringRound(currentTarget);
+
                 // Visualize stored calibration pattern
                 visualizeStoredPattern(currentTarget);
             }
@@ -3978,6 +4151,11 @@
                 if (isCorrect && score > 80) {
                     console.log(`🎉 SUCCESS DETECTED! Letter: ${currentTarget}, Score: ${Math.round(score)}%`);
                     celebrateMatch();
+
+                    // SCORING: Increment score for winning positive snapshot
+                    if (window.lastMatchInfo && window.lastMatchInfo.positiveSnapshot && window.lastMatchInfo.matchType === 'accepted') {
+                        incrementSnapshotScore(currentTarget, window.lastMatchInfo.positiveSnapshot);
+                    }
 
                     // Record attempt in adaptive learning session
                     if (currentSession) {
@@ -4325,8 +4503,9 @@
         }
 
         // Strategy 11: Simple Snapshot Comparison (peak moment bar heights)
+        // UPDATED: Works with new cross-profile snapshot pooling system
         function strategy11_simpleSnapshot(buffer, target) {
-            if (!calibrationData[target]) return 0;
+            if (!calibrationData[target] || !calibrationData[target].snapshots) return 0;
 
             // Find peak moment in current buffer (highest energy frame)
             const energies = buffer.map(frame => frame.reduce((a, b) => a + b, 0));
@@ -4339,85 +4518,80 @@
                 currentSnapshot = currentSnapshot.map(v => v / maxCurrent);
             }
 
-            // NEW: Test against ALL positive patterns, take best match
-            const patterns = calibrationData[target].patterns || [calibrationData[target].pattern?.[0]];
+            const snapshots = calibrationData[target].snapshots;
             let bestPositiveScore = 0;
-            let bestPositiveIndex = -1;
+            let bestPositiveSnapshot = null;
+            let bestNegativeScore = 0;
+            let bestNegativeSnapshot = null;
 
-            patterns.forEach((storedSnapshot, index) => {
-                if (!storedSnapshot) return;
+            // Test against ALL snapshots (both positive and negative)
+            snapshots.forEach((snapshot) => {
+                if (!snapshot || !snapshot.data) return;
 
                 // Calculate simple distance (sum of absolute differences)
                 let totalDistance = 0;
-                const minLength = Math.min(currentSnapshot.length, storedSnapshot.length);
+                const minLength = Math.min(currentSnapshot.length, snapshot.data.length);
 
                 for (let i = 0; i < minLength; i++) {
-                    totalDistance += Math.abs(currentSnapshot[i] - storedSnapshot[i]);
+                    totalDistance += Math.abs(currentSnapshot[i] - snapshot.data[i]);
                 }
 
                 // Convert distance to similarity score (0-100)
                 const avgDistance = totalDistance / minLength;
                 const similarity = Math.max(0, 100 - (avgDistance * 100));
 
-                if (similarity > bestPositiveScore) {
-                    bestPositiveScore = similarity;
-                    bestPositiveIndex = index;
+                // Track best positive and negative separately
+                if (snapshot.isNegative) {
+                    if (similarity > bestNegativeScore) {
+                        bestNegativeScore = similarity;
+                        bestNegativeSnapshot = snapshot;
+                    }
+                } else {
+                    if (similarity > bestPositiveScore) {
+                        bestPositiveScore = similarity;
+                        bestPositiveSnapshot = snapshot;
+                    }
                 }
             });
 
-            // Store match info globally for highlighting
+            // Store match info globally for highlighting AND score tracking
             window.lastMatchInfo = {
                 target: target,
-                type: 'positive',
-                index: bestPositiveIndex,
-                score: bestPositiveScore
+                positiveSnapshot: bestPositiveSnapshot,
+                positiveScore: bestPositiveScore,
+                negativeSnapshot: bestNegativeSnapshot,
+                negativeScore: bestNegativeScore
             };
 
-            // NEW: Check against negative patterns (patterns that should NOT match)
-            const negativePatterns = calibrationData[target].negativePatterns || [];
-            let maxNegativeMatch = 0;
-            let bestNegativeIndex = -1;
-
-            negativePatterns.forEach((negSnapshot, index) => {
-                let totalDistance = 0;
-                const minLength = Math.min(currentSnapshot.length, negSnapshot.length);
-
-                for (let i = 0; i < minLength; i++) {
-                    totalDistance += Math.abs(currentSnapshot[i] - negSnapshot[i]);
-                }
-
-                const avgDistance = totalDistance / minLength;
-                const similarity = Math.max(0, 100 - (avgDistance * 100));
-
-                if (similarity > maxNegativeMatch) {
-                    maxNegativeMatch = similarity;
-                    bestNegativeIndex = index;
-                }
-            });
-
             // Reject only if negative is SIGNIFICANTLY stronger (5% margin)
-            // This prevents rejection when sounds are naturally similar
-            const NEGATIVE_MARGIN = 5; // Negative must be 5% stronger to reject
+            const NEGATIVE_MARGIN = 5;
 
-            if (maxNegativeMatch > bestPositiveScore + NEGATIVE_MARGIN) {
-                window.lastMatchInfo = {
-                    target: target,
-                    type: 'negative',
-                    index: bestNegativeIndex,
-                    score: maxNegativeMatch
-                };
-                const diff = maxNegativeMatch - bestPositiveScore;
-                console.log(`❌ REJECTED: Negative (${maxNegativeMatch.toFixed(1)}%) beats positive (${bestPositiveScore.toFixed(1)}%) by ${diff.toFixed(1)}%`);
+            if (bestNegativeScore > bestPositiveScore + NEGATIVE_MARGIN) {
+                const diff = bestNegativeScore - bestPositiveScore;
+                console.log(`❌ REJECTED: Negative (${bestNegativeScore.toFixed(1)}%) beats positive (${bestPositiveScore.toFixed(1)}%) by ${diff.toFixed(1)}%`);
+                window.lastMatchInfo.matchType = 'rejected';
+
+                // SCORING: Award point to negative snapshot (max 1 per round)
+                if (bestNegativeSnapshot && canAwardNegativePoint(bestNegativeSnapshot)) {
+                    // Only award if the positive match would have been strong enough (>80%) without the negative
+                    if (bestPositiveScore > 80) {
+                        incrementSnapshotScore(target, bestNegativeSnapshot);
+                        markNegativeSnapshotAwarded(bestNegativeSnapshot);
+                    }
+                }
+
                 return 0; // Reject completely
             }
 
-            // If we got here, positive match is strong enough (or no negative patterns)
-            if (maxNegativeMatch > 0) {
-                const diff = bestPositiveScore - maxNegativeMatch;
-                console.log(`✅ ACCEPTED: Positive (${bestPositiveScore.toFixed(1)}%) beats negative (${maxNegativeMatch.toFixed(1)}%) by ${diff.toFixed(1)}%`);
+            // ACCEPTED: Positive match wins
+            if (bestNegativeScore > 0) {
+                const diff = bestPositiveScore - bestNegativeScore;
+                console.log(`✅ ACCEPTED: Positive (${bestPositiveScore.toFixed(1)}%) beats negative (${bestNegativeScore.toFixed(1)}%) by ${diff.toFixed(1)}%`);
             } else {
                 console.log(`✅ ACCEPTED: Positive match (${bestPositiveScore.toFixed(1)}%), no negatives`);
             }
+
+            window.lastMatchInfo.matchType = 'accepted';
             return bestPositiveScore;
         }
 
