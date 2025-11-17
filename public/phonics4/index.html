@@ -2851,7 +2851,7 @@
             const volume = (sum / dataArray.length / 128) * 100;
 
             // SOLUTION 1: Dynamic volume threshold for nasals
-            const volumeThreshold = isNasal(letter) ? 8 : 15;
+            const volumeThreshold = isNasal(letter) ? 4 : 15;
 
             // Detect peak (loud moment after cooldown)
             const now = Date.now();
@@ -3340,7 +3340,7 @@
                     }
                     const volume = (sum / dataArray.length / 128) * 100;
 
-                    const volumeThreshold = isNasal(modalCurrentLetter) ? 8 : 15;
+                    const volumeThreshold = isNasal(modalCurrentLetter) ? 4 : 15;
 
                     // Detect peak (after 400ms delay)
                     const now = Date.now();
@@ -6211,7 +6211,7 @@
             let concentrationThreshold = 2.0;
 
             if (isCurrentNasal || isLiquid) {
-                volumeThreshold = 8;
+                volumeThreshold = 4;
                 concentrationThreshold = 1.5;
             } else if (isFricative) {
                 volumeThreshold = 10;
