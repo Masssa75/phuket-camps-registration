@@ -1138,14 +1138,6 @@
 
             <div class="actions">
                 <button class="btn" onclick="resetCalibration()">🔄 Reset All</button>
-                <button class="btn" onclick="exportCalibration()">💾 Export Calibration</button>
-                <button class="btn" onclick="migrateLocalStorageToSupabase()" style="background: #FF9800;">🔄 Migrate Old Data</button>
-            </div>
-
-            <!-- Migration Progress Indicator -->
-            <div id="migrationProgress" style="display: none; margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; font-family: monospace;">
-                <div id="migrationStatus" style="margin-bottom: 10px; font-weight: bold; font-size: 16px;"></div>
-                <div id="migrationDetails" style="font-size: 0.9em; color: rgba(255,255,255,0.8); white-space: pre-line;"></div>
             </div>
 
             <div id="calibrationStats" style="margin-top: 20px; text-align: center; color: #aaa;"></div>
@@ -2235,30 +2227,8 @@
                         };
                     }
 
-                    // BACKWARD COMPATIBILITY: Handle old format
-                    let snapshots = [];
-                    if (cal.pattern_data.snapshots) {
-                        // NEW FORMAT: Already has snapshots array
-                        snapshots = cal.pattern_data.snapshots;
-                    } else if (cal.pattern_data.pattern) {
-                        // OLD FORMAT: { pattern: [[...], [...]] }
-                        snapshots = cal.pattern_data.pattern.map(data => ({
-                            data: data,
-                            score: 0,
-                            isNegative: false,
-                            profileId: cal.profile_id,
-                            createdAt: cal.created_at
-                        }));
-                    } else {
-                        // VERY OLD FORMAT: pattern_data is just the array
-                        snapshots = [{
-                            data: cal.pattern_data,
-                            score: 0,
-                            isNegative: false,
-                            profileId: cal.profile_id,
-                            createdAt: cal.created_at
-                        }];
-                    }
+                    // Expect NEW FORMAT: snapshots array
+                    const snapshots = cal.pattern_data.snapshots || [];
 
                     // Add all snapshots from this calibration to the pool
                     calibrations[letter].snapshots.push(...snapshots);
@@ -2268,126 +2238,14 @@
                     if (cal.audio_url && !calibrations[letter].audioUrl) {
                         calibrations[letter].audioUrl = cal.audio_url;
                     }
-
-                    // Load any local additions from localStorage (for current profile)
-                    if (cal.profile_id === currentProfileId) {
-                        const localKey = `calibration_extras_${currentProfileId}_${letter}`;
-                        const localData = localStorage.getItem(localKey);
-                        if (localData) {
-                            try {
-                                const extras = JSON.parse(localData);
-                                // Convert old localStorage format to snapshot format
-                                if (extras.patterns) {
-                                    extras.patterns.forEach(data => {
-                                        calibrations[letter].snapshots.push({
-                                            data: data,
-                                            score: 0,
-                                            isNegative: false,
-                                            profileId: currentProfileId,
-                                            createdAt: new Date().toISOString()
-                                        });
-                                        totalSnapshots++;
-                                    });
-                                }
-                                if (extras.negativePatterns) {
-                                    extras.negativePatterns.forEach(data => {
-                                        calibrations[letter].snapshots.push({
-                                            data: data,
-                                            score: 0,
-                                            isNegative: true,
-                                            profileId: currentProfileId,
-                                            createdAt: new Date().toISOString()
-                                        });
-                                        totalSnapshots++;
-                                    });
-                                }
-                            } catch (e) {
-                                console.warn(`Failed to load local extras for ${letter}:`, e);
-                            }
-                        }
-                    }
                 });
 
                 console.log(`✅ Loaded ${Object.keys(calibrations).length} letters with ${totalSnapshots} total snapshots from ${data.length} profiles`);
-
-                // Auto-migrate old format calibrations to new format
-                await migrateOldCalibrationsToNewFormat(data);
 
                 return calibrations;
             } catch (error) {
                 console.error('❌ Error loading calibrations:', error);
                 return {};
-            }
-        }
-
-        // Migrate old format calibrations to new snapshot format
-        async function migrateOldCalibrationsToNewFormat(calibrationRecords) {
-            if (!calibrationRecords || calibrationRecords.length === 0) return;
-
-            let migratedCount = 0;
-            const migrations = [];
-
-            for (const cal of calibrationRecords) {
-                // Check if already in new format
-                if (cal.pattern_data.snapshots) {
-                    continue; // Already migrated
-                }
-
-                // Convert old format to new format
-                let snapshots = [];
-                if (cal.pattern_data.pattern) {
-                    // OLD FORMAT: { pattern: [[...], [...]] }
-                    snapshots = cal.pattern_data.pattern.map(data => ({
-                        data: data,
-                        score: 0,
-                        isNegative: false,
-                        profileId: cal.profile_id,
-                        createdAt: cal.created_at
-                    }));
-                } else {
-                    // VERY OLD FORMAT: pattern_data is just the array
-                    snapshots = [{
-                        data: cal.pattern_data,
-                        score: 0,
-                        isNegative: false,
-                        profileId: cal.profile_id,
-                        createdAt: cal.created_at
-                    }];
-                }
-
-                // Queue the migration update
-                migrations.push({
-                    profile_id: cal.profile_id,
-                    letter: cal.letter,
-                    pattern_data: { snapshots }
-                });
-
-                migratedCount++;
-            }
-
-            // Execute all migrations
-            if (migrations.length > 0) {
-                console.log(`🔄 Migrating ${migrations.length} calibrations to new snapshot format...`);
-
-                try {
-                    for (const migration of migrations) {
-                        const { error } = await supabase
-                            .from('calibrations')
-                            .update({
-                                pattern_data: migration.pattern_data,
-                                updated_at: new Date().toISOString()
-                            })
-                            .eq('profile_id', migration.profile_id)
-                            .eq('letter', migration.letter);
-
-                        if (error) {
-                            console.error(`❌ Error migrating ${migration.letter}:`, error);
-                        }
-                    }
-                    console.log(`✅ Successfully migrated ${migratedCount} calibrations to new format`);
-                } catch (error) {
-                    console.error('❌ Error during migration:', error);
-                }
             }
         }
 
@@ -2583,170 +2441,6 @@
         // Mark negative snapshot as awarded for this round
         function markNegativeSnapshotAwarded(snapshot) {
             currentScoringRound.negativeSnapshotsAwarded.add(snapshot);
-        }
-
-        // ========== LOCALSTORAGE TO SUPABASE MIGRATION ==========
-        async function migrateLocalStorageToSupabase() {
-            const progressDiv = document.getElementById('migrationProgress');
-            const statusDiv = document.getElementById('migrationStatus');
-            const detailsDiv = document.getElementById('migrationDetails');
-
-            // Show progress UI
-            progressDiv.style.display = 'block';
-            statusDiv.textContent = '🔍 Scanning for old data...';
-            detailsDiv.textContent = '';
-
-            try {
-                // Get all profiles from Supabase
-                const { data: profiles, error: profilesError } = await supabase
-                    .from('profiles')
-                    .select('id, name');
-
-                if (profilesError) throw profilesError;
-
-                if (!profiles || profiles.length === 0) {
-                    statusDiv.textContent = '❌ No profiles found';
-                    detailsDiv.textContent = 'Please create a profile and calibrate at least one letter first.';
-                    return;
-                }
-
-                statusDiv.textContent = `📊 Found ${profiles.length} profile(s)`;
-                detailsDiv.textContent = `Checking: ${profiles.map(p => p.name).join(', ')}`;
-
-                await new Promise(resolve => setTimeout(resolve, 500)); // Brief pause
-
-                let totalMigrated = 0;
-                let totalSnapshots = 0;
-                const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
-                const migrationLog = [];
-
-                // For each profile, check localStorage for extras
-                for (const profile of profiles) {
-                    statusDiv.textContent = `🔄 Migrating profile: ${profile.name}...`;
-
-                    for (const letter of letters) {
-                        const localKey = `calibration_extras_${profile.id}_${letter}`;
-                        const localData = localStorage.getItem(localKey);
-
-                        if (!localData) continue;
-
-                        try {
-                            const extras = JSON.parse(localData);
-                            const snapshots = [];
-
-                            // Convert positive patterns
-                            if (extras.patterns && extras.patterns.length > 0) {
-                                extras.patterns.forEach(data => {
-                                    snapshots.push({
-                                        data: data,
-                                        score: 0,
-                                        isNegative: false,
-                                        profileId: profile.id,
-                                        createdAt: new Date().toISOString()
-                                    });
-                                });
-                            }
-
-                            // Convert negative patterns
-                            if (extras.negativePatterns && extras.negativePatterns.length > 0) {
-                                extras.negativePatterns.forEach(data => {
-                                    snapshots.push({
-                                        data: data,
-                                        score: 0,
-                                        isNegative: true,
-                                        profileId: profile.id,
-                                        createdAt: new Date().toISOString()
-                                    });
-                                });
-                            }
-
-                            if (snapshots.length === 0) continue;
-
-                            // Load existing calibration from Supabase
-                            const { data: existingCal, error: fetchError } = await supabase
-                                .from('calibrations')
-                                .select('*')
-                                .eq('profile_id', profile.id)
-                                .eq('letter', letter)
-                                .single();
-
-                            if (fetchError && fetchError.code !== 'PGRST116') {
-                                // PGRST116 = not found, which is ok
-                                throw fetchError;
-                            }
-
-                            // Merge with existing snapshots
-                            let allSnapshots = [...snapshots];
-                            if (existingCal && existingCal.pattern_data) {
-                                if (existingCal.pattern_data.snapshots) {
-                                    // New format - merge
-                                    allSnapshots = [...existingCal.pattern_data.snapshots, ...snapshots];
-                                } else if (existingCal.pattern_data.pattern) {
-                                    // Old format - convert and merge
-                                    const oldSnapshots = existingCal.pattern_data.pattern.map(data => ({
-                                        data: data,
-                                        score: 0,
-                                        isNegative: false,
-                                        profileId: profile.id,
-                                        createdAt: existingCal.created_at
-                                    }));
-                                    allSnapshots = [...oldSnapshots, ...snapshots];
-                                }
-                            }
-
-                            // Save to Supabase in new format
-                            const patternData = { snapshots: allSnapshots };
-                            const { error: saveError } = await supabase
-                                .from('calibrations')
-                                .upsert({
-                                    profile_id: profile.id,
-                                    letter: letter,
-                                    pattern_data: patternData,
-                                    audio_url: existingCal?.audio_url || null,
-                                    updated_at: new Date().toISOString()
-                                }, {
-                                    onConflict: 'profile_id,letter'
-                                });
-
-                            if (saveError) throw saveError;
-
-                            totalMigrated++;
-                            totalSnapshots += snapshots.length;
-                            migrationLog.push(`✓ ${profile.name}/${letter.toUpperCase()}: ${snapshots.length} snapshot(s)`);
-
-                            detailsDiv.textContent = migrationLog.slice(-5).join('\n'); // Show last 5
-
-                        } catch (e) {
-                            console.error(`Error migrating ${profile.name}/${letter}:`, e);
-                            migrationLog.push(`✗ ${profile.name}/${letter.toUpperCase()}: ${e.message}`);
-                        }
-                    }
-                }
-
-                // Migration complete
-                if (totalMigrated === 0) {
-                    statusDiv.textContent = '✅ No old data found to migrate';
-                    detailsDiv.textContent = 'All data is already in the database. You\'re good to go!';
-                } else {
-                    statusDiv.textContent = `✅ Migration Complete!`;
-                    detailsDiv.textContent = `Migrated ${totalSnapshots} snapshot(s) across ${totalMigrated} letter(s)\n\n` +
-                        migrationLog.slice(-10).join('\n') +
-                        `\n\n🎉 Old data is now in the database and will sync across devices!`;
-
-                    // Reload calibrations to show the migrated data
-                    setTimeout(async () => {
-                        statusDiv.textContent = '🔄 Reloading calibrations...';
-                        calibrationData = await loadCalibrationsFromSupabase();
-                        updateCalibrationUI();
-                        statusDiv.textContent = `✅ Done! ${totalSnapshots} snapshots migrated.`;
-                    }, 2000);
-                }
-
-            } catch (error) {
-                statusDiv.textContent = '❌ Migration failed';
-                detailsDiv.textContent = `Error: ${error.message}\n\nCheck browser console for details.`;
-                console.error('Migration error:', error);
-            }
         }
 
         // Profile management
@@ -3343,16 +3037,6 @@
                 console.error('❌ Error during reset:', error);
                 alert('An error occurred while resetting calibrations. Please check the console for details.');
             }
-        }
-
-        function exportCalibration() {
-            const dataStr = JSON.stringify(calibrationData, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `phonics-patterns-${currentProfile}.json`;
-            a.click();
         }
 
         // ========== CALIBRATION MODAL ==========
