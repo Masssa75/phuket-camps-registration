@@ -4610,6 +4610,8 @@
                 currentPhonemeAudio.currentTime = 0;
             }
 
+            currentPhonemeAudio = new Audio(phoneme.audioUrl);
+
             currentPhonemeAudio.play().catch(err => {
                 console.error('Audio playback failed:', err);
             });
