@@ -1137,6 +1137,7 @@
                 <button class="btn" id="tunerBtn" onclick="toggleTuner()">▶ Start Game</button>
                 <button class="btn" onclick="tryAgain()" style="background: #7CB342; display: none;" id="tryAgainBtn">🔄 Try Again</button>
                 <button class="btn" onclick="skipLetter()" style="background: #999;">Skip</button>
+                <button class="btn" onclick="openSensitivityModal()" style="background: #666; display: none;" id="sensitivityBtn"><i data-lucide="sliders" style="width: 18px; height: 18px;"></i></button>
             </div>
 
             <!-- Manual Recording Button -->
@@ -2037,7 +2038,7 @@
                 // Save calibration data to database
                 console.log('💾 Saving to database...');
                 const dbStart = Date.now();
-                const { data, error } = await supabase
+                const { data, error} = await supabase
                     .from('calibrations')
                     .upsert({
                         profile_id: currentProfileId,
@@ -2055,7 +2056,7 @@
 
                 const totalTime = Date.now() - startTime;
                 console.log(`✅ Saved calibration for letter ${letter} (total: ${totalTime}ms)`);
-                return true; // Return the audio URL so it can be stored locally
+                return true; // Return success
             } catch (error) {
                 console.error('❌ Error saving calibration:', error);
                 alert(`Failed to save calibration: ${error.message}`);
@@ -2107,6 +2108,8 @@
                     totalSnapshots += snapshots.length;
 
                     // Keep the most recent audio URL
+                    if (cal.audio_url && !calibrations[letter].audioUrl) {
+                        calibrations[letter].audioUrl = cal.audio_url;
                     }
                 });
 
@@ -2466,6 +2469,7 @@
                 card.innerHTML = `
                     <div class="phoneme-letter" style="${letterStyle}">${phoneme.letter}</div>
                     <div class="phoneme-hint">${phoneme.hint}</div>
+                    ${phoneme.audioUrl ? `<div style="font-size: 30px; cursor: pointer; margin: 5px 0;" onclick="event.stopPropagation(); playPhonemeSound('${phoneme.letter}')" title="Listen to sound">🔊</div>` : ''}
                     <div class="snapshots-container" id="snapshots-${phoneme.letter}"></div>
                     <div class="phoneme-status">${isCalibrated ? '✓ Calibrated' : 'Click to record'}</div>
                     <div class="sensitivity-control" id="sensitivity-${phoneme.letter}" style="margin-top: 10px; display: none;">
@@ -2921,6 +2925,7 @@
         function openCalibrationModal(letter) {
             modalCurrentLetter = letter;
             modalCapturedSnapshots = [];
+            modalAudioClips = []; // Reset audio clips array
             modalIsListening = false;
             modalListeningForIndex = -1;
             modalCurrentRecordingIndex = -1;
@@ -2974,6 +2979,8 @@
                 modalAnimationFrame = null;
             }
             // Stop audio recording if still active
+            if (modalMediaRecorder && modalMediaRecorder.state === 'recording') {
+                modalMediaRecorder.stop();
             }
             document.getElementById('clickArrow').classList.remove('active');
             document.getElementById('modalNextButton').classList.remove('active');
@@ -3013,10 +3020,15 @@
                 document.getElementById('modalStatus').textContent = `Recording ${index + 1}/5... Say "${modalCurrentLetter}" NOW!`;
 
                 // Start individual audio recording for this snapshot
+                modalAudioChunks = [];
                 if (microphone && microphone.stream) {
+                    modalMediaRecorder = new MediaRecorder(microphone.stream);
+                    modalMediaRecorder.ondataavailable = (event) => {
                         if (event.data.size > 0) {
+                            modalAudioChunks.push(event.data);
                         }
                     };
+                    modalMediaRecorder.start();
                     console.log(`🎙️ Started recording clip ${index + 1}/5`);
                 }
             }, 400);
@@ -3097,7 +3109,13 @@
 
                         // Continue recording for 700ms after peak to capture the full sound
                         setTimeout(() => {
+                            if (modalMediaRecorder && modalMediaRecorder.state === 'recording') {
+                                modalMediaRecorder.stop();
+                                modalMediaRecorder.addEventListener('stop', () => {
+                                    const audioBlob = new Blob(modalAudioChunks, { type: 'audio/webm' });
+                                    modalAudioClips.push(audioBlob);
                                     const sizeKB = (audioBlob.size / 1024).toFixed(2);
+                                    console.log(`🎙️ Saved audio clip ${modalAudioClips.length}/5 (${sizeKB} KB)`);
                                 }, { once: true });
                             }
                         }, 700); // Continue recording for 700ms after peak detected
@@ -3183,13 +3201,17 @@
             // Select the best audio clip from the cluster
             // Strategy: Use the FIRST clip from the cluster (usually the most representative)
             let bestAudioBlob = null;
+            if (modalAudioClips.length > 0 && clusterResult.indices.length > 0) {
                 const bestIndex = clusterResult.indices[0]; // First snapshot in best cluster
+                if (bestIndex < modalAudioClips.length) {
+                    bestAudioBlob = modalAudioClips[bestIndex];
                     const sizeKB = (bestAudioBlob.size / 1024).toFixed(2);
                     console.log(`🎯 Selected best audio clip: snapshot ${bestIndex + 1} (${sizeKB} KB)`);
                 }
             }
 
             // Save to Supabase (with ONLY the best audio clip)
+            const audioUrl = await saveCalibrationToSupabase(modalCurrentLetter, patternData, bestAudioBlob);
 
             // Update local calibrationData with audioUrl for immediate playback
             calibrationData[modalCurrentLetter] = {
@@ -3464,6 +3486,7 @@
         }
 
         // Sensitivity modal functions
+
         // Manual Recording Modal Functions
         let manualRecordBuffer = [];
         let manualRecordSnapshot = null;
@@ -3708,6 +3731,7 @@
                 btn.textContent = '▶ Start Game';
                 document.getElementById('status').textContent = 'Stopped';
                 document.getElementById('targetLetter').textContent = '?';
+                document.getElementById('sensitivityBtn').style.display = 'none'; // Hide settings button
                 document.getElementById('thresholdMeter').style.display = 'none'; // Hide threshold meter
                 document.getElementById('muteBtn').style.display = 'none'; // Hide mute button
                 isMuted = false; // Reset mute state
@@ -3730,6 +3754,7 @@
                 btn.textContent = '⏸ Stop Game';
                 await setNextTarget(); // Changed to await since it's now async
                 updateLetterProgressTracker();
+                document.getElementById('sensitivityBtn').style.display = 'inline-block'; // Show settings button
                 document.getElementById('thresholdMeter').style.display = 'block'; // Show threshold meter
                 document.getElementById('muteBtn').style.display = 'inline-block'; // Show mute button
                 document.getElementById('muteBtn').textContent = '🎤 Mute'; // Reset button text
@@ -4603,6 +4628,7 @@
 
         function playPhonemeSound(letter) {
             const phoneme = PHONEMES.find(p => p.letter === letter);
+            if (!phoneme || !phoneme.audioUrl) return;
 
             if (currentPhonemeAudio) {
                 currentPhonemeAudio.pause();
@@ -4610,12 +4636,10 @@
             }
 
             currentPhonemeAudio = new Audio(phoneme.audioUrl);
-
             currentPhonemeAudio.play().catch(err => {
                 console.error('Audio playback failed:', err);
             });
         }
-
 
         function playCalibrationRecording() {
             if (!currentTarget) {
