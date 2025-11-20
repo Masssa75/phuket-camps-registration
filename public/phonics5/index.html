@@ -1123,7 +1123,6 @@
         <div class="tabs">
             <button class="tab active" onclick="switchTab('calibrate')">📊 Calibrate</button>
             <button class="tab" onclick="switchTab('tuner')">▶ Play</button>
-            <button class="tab" onclick="switchTab('stats')">📈 Stats</button>
         </div>
 
         <!-- Calibration Tab -->
@@ -1281,69 +1280,6 @@
             </div>
 
             <div id="status" style="font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.4;">Click Start to begin</div>
-        </div>
-
-        <!-- Stats Tab (Adaptive Learning) -->
-        <div id="stats" class="tab-content">
-            <div class="info-box" style="margin-bottom: 20px;">
-                <strong>📈 Adaptive Learning Statistics</strong>
-                <p style="margin-top: 10px; color: #ddd;">Track your progress across sessions. The system adapts letter selection based on your proficiency.</p>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
-                    <div style="color: #999; font-size: 14px; margin-bottom: 8px;">Session Phase</div>
-                    <div id="statsPhase" style="color: #FDD835; font-size: 24px; font-weight: bold;">Not Started</div>
-                </div>
-                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
-                    <div style="color: #999; font-size: 14px; margin-bottom: 8px;">Total Attempts</div>
-                    <div id="statsAttempts" style="color: #4CAF50; font-size: 24px; font-weight: bold;">0</div>
-                </div>
-            </div>
-
-            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                <h3 style="color: #FDD835; margin-top: 0; margin-bottom: 15px;">Letter Proficiency Pools</h3>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center;">
-                    <div style="background: rgba(255,215,0,0.1); padding: 15px; border-radius: 10px; border: 2px solid #FFD700;">
-                        <div style="color: #FFD700; font-size: 36px; font-weight: bold;" id="statsMastered">0</div>
-                        <div style="color: #FFD700; font-size: 14px; font-weight: bold; margin-top: 5px;">MASTERED</div>
-                        <div style="color: #999; font-size: 11px; margin-top: 5px;">Long-term memory</div>
-                    </div>
-                    <div style="background: rgba(76,175,80,0.1); padding: 15px; border-radius: 10px; border: 2px solid #4CAF50;">
-                        <div style="color: #4CAF50; font-size: 36px; font-weight: bold;" id="statsKnown">0</div>
-                        <div style="color: #4CAF50; font-size: 14px; font-weight: bold; margin-top: 5px;">KNOWN</div>
-                        <div style="color: #999; font-size: 11px; margin-top: 5px;">Recent mastery</div>
-                    </div>
-                    <div style="background: rgba(253,216,53,0.1); padding: 15px; border-radius: 10px; border: 2px solid #FDD835;">
-                        <div style="color: #FDD835; font-size: 36px; font-weight: bold;" id="statsSometimes">0</div>
-                        <div style="color: #FDD835; font-size: 14px; font-weight: bold; margin-top: 5px;">SOMETIMES</div>
-                        <div style="color: #999; font-size: 11px; margin-top: 5px;">Inconsistent</div>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; border: 2px solid #666;">
-                        <div style="color: #999; font-size: 36px; font-weight: bold;" id="statsUnknown">0</div>
-                        <div style="color: #999; font-size: 14px; font-weight: bold; margin-top: 5px;">UNKNOWN</div>
-                        <div style="color: #999; font-size: 11px; margin-top: 5px;">Not learned</div>
-                    </div>
-                </div>
-            </div>
-
-            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px;">
-                <h3 style="color: #FDD835; margin-top: 0; margin-bottom: 15px;">Current Session</h3>
-                <div style="color: #ddd; font-size: 16px;">
-                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <span><strong>🆕 New Letters Introduced:</strong></span>
-                        <span id="statsNewLetters" style="color: #FDD835;">None</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <span><strong>🎓 Graduated to KNOWN:</strong></span>
-                        <span id="statsGraduated" style="color: #4CAF50;">None</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
-                        <span><strong>🔥 Current Streak:</strong></span>
-                        <span id="statsStreak" style="color: #FF5722; font-size: 20px; font-weight: bold;">0</span>
-                    </div>
-                </div>
-            </div>
         </div>
 
     </div>
@@ -1609,10 +1545,6 @@
             updateLetterProgressTracker();
 
             // Update stats display if Stats tab is active
-            const statsTab = document.getElementById('stats');
-            if (statsTab && statsTab.classList.contains('active')) {
-                updateAdaptiveStatsDisplay();
-            }
         }
 
         async function endSession(session = currentSession) {
@@ -4952,89 +4884,12 @@
                 if (tabName === 'tuner') {
                     initializePatternCanvases();
                 }
-
-                // Update stats display when switching to Stats tab
-                if (tabName === 'stats') {
-                    // Load session if not already loaded
-                    if (!currentSession && currentProfileId) {
-                        initializeSession(currentProfileId);
-                    }
-                    updateAdaptiveStatsDisplay();
-                }
             } else {
                 console.error(`❌ Could not find element with id="${tabName}"`);
             }
         }
 
         // ========== ADAPTIVE STATS DISPLAY ==========
-
-        async function updateAdaptiveStatsDisplay() {
-            // Always load proficiency pools (permanent data, not session-specific)
-            const calibratedLetters = Object.keys(calibrationData);
-            const proficiencyMap = await loadProficiencyMap(currentProfileId);
-            const pools = groupLettersByProficiency(proficiencyMap, calibratedLetters);
-
-            document.getElementById('statsMastered').textContent = pools.mastered.length.toString();
-            document.getElementById('statsKnown').textContent = pools.known.length.toString();
-            document.getElementById('statsSometimes').textContent = pools.sometimes.length.toString();
-            document.getElementById('statsUnknown').textContent = pools.unknown.length.toString();
-
-            // Session-specific stats (only show if session is active)
-            if (!currentSession) {
-                document.getElementById('statsPhase').textContent = 'Not Started';
-                document.getElementById('statsAttempts').textContent = '0';
-                document.getElementById('statsNewLetters').textContent = 'None';
-                document.getElementById('statsGraduated').textContent = 'None';
-                document.getElementById('statsStreak').textContent = '0';
-                return;
-            }
-
-            // Determine current phase
-            const attemptCount = currentSession.attempts.length;
-            let phase = 'Not Started';
-            if (attemptCount > 0) {
-                if (attemptCount < SESSION_CONFIG.WARMUP_COUNT) {
-                    phase = `Warmup (${attemptCount}/${SESSION_CONFIG.WARMUP_COUNT})`;
-                } else {
-                    // Check if in rapid reinforcement
-                    const lastAttempt = currentSession.attempts[currentSession.attempts.length - 1];
-                    if (lastAttempt?.clickedListen) {
-                        const stats = currentSession.letterStats.get(lastAttempt.letter);
-                        if (stats && stats.listen_clicks === 1 && stats.total_attempts <= SESSION_CONFIG.RAPID_REP_COUNT) {
-                            phase = `Rapid Rep (${stats.total_attempts}/${SESSION_CONFIG.RAPID_REP_COUNT})`;
-                        } else {
-                            phase = 'Mixed Practice';
-                        }
-                    } else {
-                        phase = 'Mixed Practice';
-                    }
-                }
-            }
-
-            document.getElementById('statsPhase').textContent = phase;
-            document.getElementById('statsAttempts').textContent = attemptCount.toString();
-
-            // Session info
-            const newLetters = currentSession.newLettersIntroduced.length > 0
-                ? currentSession.newLettersIntroduced.join(', ')
-                : 'None';
-            document.getElementById('statsNewLetters').textContent = newLetters;
-
-            const graduated = currentSession.lettersGraduated.length > 0
-                ? currentSession.lettersGraduated.join(', ')
-                : 'None';
-            document.getElementById('statsGraduated').textContent = graduated;
-
-            // Calculate current streak
-            let streak = 0;
-            if (currentTarget) {
-                const stats = currentSession.letterStats.get(currentTarget);
-                if (stats) {
-                    streak = stats.consecutive_success_no_listen || 0;
-                }
-            }
-            document.getElementById('statsStreak').textContent = streak.toString();
-        }
 
 
         // ============================================
