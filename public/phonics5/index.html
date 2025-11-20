@@ -1061,34 +1061,6 @@
         </div>
     </div>
 
-    <!-- Sensitivity Modal -->
-    <div id="sensitivityModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: #2c3e50; padding: 30px; border-radius: 10px; max-width: 400px; text-align: center; position: relative;">
-            <button onclick="closeSensitivityModal()" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #aaa; font-size: 24px; cursor: pointer; padding: 5px 10px;">✕</button>
-
-            <div style="font-size: 48px; margin-bottom: 10px;" id="sensitivityLetter">a</div>
-            <h3 style="color: #fff; margin-bottom: 20px;">Adjust Sensitivity</h3>
-
-            <div style="margin: 30px 0;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; color: #ddd; font-size: 14px;">
-                    <span>Easy (70%)</span>
-                    <span id="sensitivityValue">85%</span>
-                    <span>Strict (95%)</span>
-                </div>
-                <input type="range" id="sensitivitySlider" min="70" max="95" value="85"
-                       style="width: 100%; height: 8px; border-radius: 5px; background: #555; outline: none; -webkit-appearance: none;"
-                       oninput="updateSensitivityDisplay(this.value)">
-            </div>
-
-            <div style="margin-top: 20px; color: #aaa; font-size: 14px;">
-                Lower = easier to match<br>
-                Higher = more accurate required
-            </div>
-
-            <button onclick="saveSensitivity()" class="btn" style="margin-top: 20px; width: 100%;">Save</button>
-        </div>
-    </div>
-
     <!-- Manual Recording Modal -->
     <div id="manualRecordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
         <div style="background: #2c3e50; padding: 30px; border-radius: 10px; max-width: 500px; text-align: center; position: relative;">
@@ -1195,7 +1167,7 @@
 
             <div style="text-align: center; margin-bottom: 20px; color: #ddd; font-size: 36px; font-weight: 600;">
                 Say this sound:
-                <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 44px; margin-left: 15px; display: inline-block; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Play my recording">🔊</span>
+                <span onclick="playCalibrationRecording()" style="cursor: pointer; font-size: 44px; margin-left: 15px; display: inline-block; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Listen to letter sound">🔊</span>
             </div>
 
             <div id="targetLetter" style="text-align: center; font-size: 180px; font-weight: bold; color: #FDD835; margin: 20px 0; text-shadow: 0 10px 30px rgba(253, 216, 53, 0.5); transition: all 0.3s;">?</div>
@@ -2062,36 +2034,6 @@
 
             try {
                 const startTime = Date.now();
-                let audioUrl = null;
-
-                // Upload audio to Supabase Storage if provided
-                if (audioBlob) {
-                    const blobSizeKB = (audioBlob.size / 1024).toFixed(2);
-                    console.log(`📤 Uploading audio: ${blobSizeKB} KB`);
-
-                    const audioFileName = `${currentProfileId}/${letter}_${Date.now()}.webm`;
-
-                    const uploadStart = Date.now();
-                    const { data: uploadData, error: uploadError } = await supabase.storage
-                        .from('calibration-audio')
-                        .upload(audioFileName, audioBlob, {
-                            contentType: 'audio/webm'
-                        });
-                    const uploadTime = Date.now() - uploadStart;
-                    console.log(`⏱️ Upload took: ${uploadTime}ms`);
-
-                    if (uploadError) {
-                        console.error('❌ Audio upload error:', uploadError);
-                        // Continue without audio if upload fails
-                    } else {
-                        // Get public URL
-                        const { data: { publicUrl } } = supabase.storage
-                            .from('calibration-audio')
-                            .getPublicUrl(audioFileName);
-                        audioUrl = publicUrl;
-                        console.log('✅ Audio uploaded:', audioUrl);
-                    }
-                }
 
                 // Save calibration data to database
                 console.log('💾 Saving to database...');
@@ -2102,7 +2044,6 @@
                         profile_id: currentProfileId,
                         letter: letter,
                         pattern_data: patternData,
-                        audio_url: audioUrl,
                         updated_at: new Date().toISOString()
                     }, {
                         onConflict: 'profile_id,letter'
@@ -2115,7 +2056,7 @@
 
                 const totalTime = Date.now() - startTime;
                 console.log(`✅ Saved calibration for letter ${letter} (total: ${totalTime}ms)`);
-                return audioUrl; // Return the audio URL so it can be stored locally
+                return true; // Return success
             } catch (error) {
                 console.error('❌ Error saving calibration:', error);
                 alert(`Failed to save calibration: ${error.message}`);
@@ -2134,7 +2075,7 @@
                 console.log('⏳ Loading calibrations from ALL profiles (cross-profile pooling)...');
 
                 // LOAD FROM ALL PROFILES (not just current one)
-                const { data, error} = await supabase
+                const { data, error } = await supabase
                     .from('calibrations')
                     .select('*');
 
@@ -2980,10 +2921,6 @@
         let modalCapturedSnapshots = [];
         let modalIsListening = false;
         let modalListeningForIndex = -1;
-        let modalMediaRecorder = null;
-        let modalAudioChunks = [];
-        let modalAudioClips = []; // Individual audio clips per snapshot
-        let modalCurrentRecordingIndex = -1;
 
         function openCalibrationModal(letter) {
             modalCurrentLetter = letter;
@@ -3549,79 +3486,6 @@
         }
 
         // Sensitivity modal functions
-        function openSensitivityModal() {
-            if (!currentTarget) return;
-
-            const modal = document.getElementById('sensitivityModal');
-            const letterDisplay = document.getElementById('sensitivityLetter');
-            const slider = document.getElementById('sensitivitySlider');
-
-            // Get current sensitivity for this letter
-            const currentSensitivity = calibrationData[currentTarget]?.sensitivity || 85;
-
-            letterDisplay.textContent = currentTarget;
-            slider.value = currentSensitivity;
-            updateSensitivityDisplay(currentSensitivity);
-
-            modal.style.display = 'flex';
-        }
-
-        function closeSensitivityModal() {
-            document.getElementById('sensitivityModal').style.display = 'none';
-        }
-
-        function updateSensitivityDisplay(value) {
-            document.getElementById('sensitivityValue').textContent = value + '%';
-        }
-
-        async function saveSensitivity() {
-            if (!currentTarget) {
-                console.error('No current target');
-                return;
-            }
-
-            const slider = document.getElementById('sensitivitySlider');
-            const newSensitivity = parseInt(slider.value);
-
-            // Update local calibration data
-            if (calibrationData[currentTarget]) {
-                const calibrationId = calibrationData[currentTarget].id;
-
-                if (!calibrationId) {
-                    console.error('No calibration ID found for letter:', currentTarget);
-                    alert('Failed to save sensitivity - calibration not found');
-                    return;
-                }
-
-                calibrationData[currentTarget].sensitivity = newSensitivity;
-
-                // Update in Supabase using the calibration ID
-                try {
-                    console.log(`Updating sensitivity for ${currentTarget} (ID: ${calibrationId}) to ${newSensitivity}%`);
-
-                    const { data, error } = await supabase
-                        .from('calibrations')
-                        .update({ sensitivity: newSensitivity })
-                        .eq('id', calibrationId)
-                        .select();
-
-                    if (error) {
-                        console.error('Supabase error:', error);
-                        alert(`Failed to save sensitivity: ${error.message}`);
-                        return;
-                    }
-
-                    console.log(`✅ Updated sensitivity for ${currentTarget} to ${newSensitivity}%`, data);
-                    closeSensitivityModal();
-                } catch (err) {
-                    console.error('Unexpected error:', err);
-                    alert(`Failed to save sensitivity: ${err.message}`);
-                }
-            } else {
-                console.error('Letter not calibrated:', currentTarget);
-                alert('Letter not calibrated yet');
-            }
-        }
 
         // Manual Recording Modal Functions
         let manualRecordBuffer = [];
@@ -4783,30 +4647,12 @@
                 return;
             }
 
-            // Get audio URL from Supabase calibration data
-            const calibration = calibrationData[currentTarget];
-            if (!calibration || !calibration.audioUrl) {
-                alert(`No recording found for ${currentTarget}. Please calibrate this letter first.`);
-                return;
-            }
-
             // Track LISTEN button click for adaptive learning
             listenClickedThisRound = true;
             console.log(`🔊 LISTEN clicked for ${currentTarget}`);
 
-            isPlayingRecording = true;
-            const audio = new Audio(calibration.audioUrl);
-
-            audio.onended = () => {
-                isPlayingRecording = false;
-            };
-
-            audio.onerror = () => {
-                isPlayingRecording = false;
-                alert('Error playing audio from Supabase Storage');
-            };
-
-            audio.play();
+            // Play the official phoneme sound
+            playPhonemeSound(currentTarget);
         }
 
         async function setupAudio() {
