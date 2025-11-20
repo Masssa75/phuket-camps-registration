@@ -4398,156 +4398,36 @@
             }
         }
 
-        // ========== EXPERIMENTAL PLOSIVE DETECTION STRATEGIES ==========
+        // ========== VOICE DETECTION ==========
 
+        // Test pattern against all calibrated letters to find best match
         function testAllPlosiveStrategies(patternBuffer, targetLetter) {
             if (!calibrationData[targetLetter]) return [{ strategy: 'none', score: 0, predictedLetter: '?' }];
 
-            const results = [];
-            const strategyFunctions = [
-                { name: 'S11-Snapshot', fn: strategy11_simpleSnapshot }
-            ];
+            let bestLetter = null;
+            let bestScore = 0;
+            let targetScore = 0;
 
-            // For each strategy, test against ALL calibrated letters
-            strategyFunctions.forEach(({ name, fn }) => {
-                let bestLetter = null;
-                let bestScore = 0;
-                let targetScore = 0;
-
-                // Test this strategy against all calibrated letters
-                Object.keys(calibrationData).forEach(letter => {
-                    const score = fn(patternBuffer, letter);
-                    if (score > bestScore) {
-                        bestScore = score;
-                        bestLetter = letter;
-                    }
-                    if (letter === targetLetter) {
-                        targetScore = score;
-                    }
-                });
-
-                results.push({
-                    strategy: name,
-                    score: bestScore,
-                    targetScore: targetScore,
-                    predictedLetter: bestLetter || '?'
-                });
+            // Test against all calibrated letters
+            Object.keys(calibrationData).forEach(letter => {
+                const score = strategy11_simpleSnapshot(patternBuffer, letter);
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestLetter = letter;
+                }
+                if (letter === targetLetter) {
+                    targetScore = score;
+                }
             });
 
-            // Sort by score (highest first)
-            results.sort((a, b) => b.score - a.score);
-
-            return results;
+            return [{
+                strategy: 'S11-Snapshot',
+                score: bestScore,
+                targetScore: targetScore,
+                predictedLetter: bestLetter || '?'
+            }];
         }
 
-        // Strategy 1: Focus on frames around peak energy
-        function strategy1_burstWindow(buffer, target) {
-            const energies = buffer.map(frame => frame.reduce((a, b) => a + b, 0));
-            const peakIdx = energies.indexOf(Math.max(...energies));
-
-            const burstWindow = buffer.slice(Math.max(0, peakIdx - 5), peakIdx + 5);
-            return matchTargetPattern(burstWindow, target);
-        }
-
-        // Strategy 2: Use only first 10 frames
-        function strategy2_shortWindow(buffer, target) {
-            const shortBuffer = buffer.slice(0, 10);
-            return matchTargetPattern(shortBuffer, target);
-        }
-
-        // Strategy 3: Compare peak frequency and amplitude
-        function strategy3_peakEnergy(buffer, target) {
-            const currentPeak = Math.max(...buffer.flat());
-            const currentPeakFreq = buffer[0].indexOf(Math.max(...buffer[0]));
-
-            const calibPattern = calibrationData[target].pattern;
-            const calibPeak = Math.max(...calibPattern.flat());
-            const calibPeakFreq = calibPattern[0].indexOf(Math.max(...calibPattern[0]));
-
-            const peakSimilarity = 1 - Math.abs(currentPeak - calibPeak);
-            const freqSimilarity = 1 - Math.abs(currentPeakFreq - calibPeakFreq) / PATTERN_BINS;
-
-            return ((peakSimilarity + freqSimilarity) / 2) * 100;
-        }
-
-        // Strategy 4: Compare attack speed (volume rise rate)
-        function strategy4_attackSpeed(buffer, target) {
-            const energies = buffer.map(frame => frame.reduce((a, b) => a + b, 0));
-
-            let maxRise = 0;
-            for (let i = 1; i < energies.length; i++) {
-                const rise = energies[i] - energies[i - 1];
-                if (rise > maxRise) maxRise = rise;
-            }
-
-            // Compare with calibration (would need to store this)
-            // For now, just use pattern matching on energy envelope
-            const normalized = normalizePattern(buffer);
-            const stored = calibrationData[target].pattern;
-            return calculatePatternSimilarity(normalized, stored) * 100;
-        }
-
-        // Strategy 5: Match derivatives (rate of change)
-        function strategy5_derivative(buffer, target) {
-            const derivatives = [];
-            for (let i = 1; i < buffer.length; i++) {
-                const diff = buffer[i].map((val, idx) => val - buffer[i - 1][idx]);
-                derivatives.push(diff);
-            }
-
-            return matchTargetPattern(derivatives, target);
-        }
-
-        // Strategy 6: Simple burst detection + frequency check
-        function strategy6_dualThreshold(buffer, target) {
-            const energies = buffer.map(frame => frame.reduce((a, b) => a + b, 0));
-            const maxEnergy = Math.max(...energies);
-            const avgEnergy = energies.reduce((a, b) => a + b, 0) / energies.length;
-
-            const isBurst = maxEnergy > avgEnergy * 2;
-
-            if (!isBurst) return 0;
-
-            return matchTargetPattern(buffer, target);
-        }
-
-        // Strategy 7: Average multiple high-energy frames
-        function strategy7_multipleFrames(buffer, target) {
-            const energies = buffer.map(frame => frame.reduce((a, b) => a + b, 0));
-            const threshold = Math.max(...energies) * 0.7;
-
-            const highEnergyFrames = buffer.filter((frame, idx) => energies[idx] > threshold);
-
-            if (highEnergyFrames.length === 0) return 0;
-
-            return matchTargetPattern(highEnergyFrames, target);
-        }
-
-        // Strategy 8: Measure quiet-to-loud ratio
-        function strategy8_silenceRatio(buffer, target) {
-            const energies = buffer.map(frame => frame.reduce((a, b) => a + b, 0));
-            const avgEnergy = energies.reduce((a, b) => a + b, 0) / energies.length;
-
-            const quietFrames = energies.filter(e => e < avgEnergy * 0.5).length;
-            const silenceRatio = quietFrames / energies.length;
-
-            // Plosives should have high silence ratio
-            const expectedRatio = 0.6; // 60% quiet
-            const ratioScore = 1 - Math.abs(silenceRatio - expectedRatio);
-
-            const patternScore = matchTargetPattern(buffer, target) / 100;
-
-            return ((ratioScore + patternScore) / 2) * 100;
-        }
-
-        // Strategy 10: Only match first 5 frames (immediate burst)
-        function strategy10_firstFrames(buffer, target) {
-            const firstFrames = buffer.slice(0, 5);
-            return matchTargetPattern(firstFrames, target);
-        }
-
-        // Strategy 11: Simple Snapshot Comparison (peak moment bar heights)
-        // UPDATED: Works with new cross-profile snapshot pooling system
         function strategy11_simpleSnapshot(buffer, target) {
             if (!calibrationData[target] || !calibrationData[target].snapshots) return 0;
 
