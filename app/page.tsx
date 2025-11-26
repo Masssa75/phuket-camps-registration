@@ -5,9 +5,9 @@ import type { Metadata } from 'next'
 import HeroVideo from '@/components/HeroVideo'
 
 export const metadata: Metadata = {
-  title: 'Phuket Nature Camp - Christmas & Winter Camps 2025-2026 | Bamboo Valley',
-  description: 'Science-backed outdoor camp in Phuket building immunity, confidence, and life skills through nature. Christmas camps Dec 15-26, Winter camps Jan-Mar. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga. Licensed English teachers.',
-  keywords: 'phuket camp, nature camp phuket, christmas camp thailand, winter camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, summer camp thailand, phuket kids camp, waldorf phuket',
+  title: 'Phuket Nature Camp - Christmas, Winter, Songkran & Summer Camps 2025-2026 | Bamboo Valley',
+  description: 'Science-backed outdoor camp in Phuket building immunity, confidence, and life skills through nature. Christmas Dec 15-26, Winter Jan-Mar, Songkran Apr 6-10, Summer Jun-Aug. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
+  keywords: 'phuket camp, nature camp phuket, christmas camp thailand, winter camp phuket, songkran camp phuket, summer camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket',
   openGraph: {
     title: 'Phuket Nature Camp - Nature Skills for Life',
     description: 'Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-10. Licensed English teachers. Christmas & Winter programs available.',
@@ -100,6 +100,44 @@ export default function Home() {
                 "availability": "https://schema.org/InStock",
                 "validFrom": "2026-01-19",
                 "validThrough": "2026-03-06"
+              },
+              {
+                "@type": "Offer",
+                "name": "Songkran Nature Camp - Mini Camp (Ages 3-6)",
+                "price": "11000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2026-04-06",
+                "validThrough": "2026-04-10",
+                "description": "Full day camp 8AM-5PM during Songkran festival"
+              },
+              {
+                "@type": "Offer",
+                "name": "Songkran Nature Camp - Maxi Camp (Ages 6-10)",
+                "price": "13000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2026-04-06",
+                "validThrough": "2026-04-10"
+              },
+              {
+                "@type": "Offer",
+                "name": "Summer Nature Camp - Mini Camp (Ages 3-6)",
+                "price": "11000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2026-06-29",
+                "validThrough": "2026-08-14",
+                "description": "7-week summer program with organic meals and nature activities"
+              },
+              {
+                "@type": "Offer",
+                "name": "Summer Nature Camp - Maxi Camp (Ages 6-10)",
+                "price": "13000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2026-06-29",
+                "validThrough": "2026-08-14"
               }
             ],
             "image": "https://phuketcamp.com/images/Confidence.jpeg",
@@ -183,6 +221,32 @@ export default function Home() {
                 </div>
               </div>
               <Link href="/register?camp=winter-2026" className="cta-button" style={{display: 'inline-block'}}>Register</Link>
+            </div>
+
+            <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)'}}>
+              <div className="cute-emoji">💦</div>
+              <div className="cute-content">
+                <h3 style={{color: '#e67e22'}}>Songkran Nature Camp</h3>
+                <div className="cute-meta" style={{color: '#e67e22'}}>
+                  Apr 6-10, 2026<br/>
+                  Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>
+                  <span style={{fontSize: '0.85em', opacity: 0.8}}>Early bird pricing (first price) available until Mar 9</span>
+                </div>
+              </div>
+              <Link href="/register?camp=songkran-2026" className="cta-button" style={{display: 'inline-block'}}>Register</Link>
+            </div>
+
+            <div className="cute-item" style={{background: 'linear-gradient(135deg, #e8fff0 0%, #d0ffe8 100%)'}}>
+              <div className="cute-emoji">☀️</div>
+              <div className="cute-content">
+                <h3 style={{color: '#27ae60'}}>Summer Nature Camp</h3>
+                <div className="cute-meta" style={{color: '#27ae60'}}>
+                  Jun 29 - Aug 14, 2026<br/>
+                  Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>
+                  <span style={{fontSize: '0.85em', opacity: 0.8}}>Early bird pricing (first price) available until May 25</span>
+                </div>
+              </div>
+              <Link href="/register?camp=summer-2026" className="cta-button" style={{display: 'inline-block'}}>Register</Link>
             </div>
           </div>
         </div>
