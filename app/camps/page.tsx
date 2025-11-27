@@ -61,7 +61,7 @@ export default function CampsPage() {
             <div style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
               <div style={{fontSize: '3rem'}}>💦</div>
               <div style={{flex: 1, minWidth: '200px'}}>
-                <h3 style={{color: '#e67e22', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Songkran Nature Camp</h3>
+                <h3 style={{color: '#e67e22', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Easter/Songkran Nature Camp</h3>
                 <div style={{color: '#e67e22', fontSize: '0.95rem', lineHeight: 1.6}}>
                   Apr 6-10, 2026<br/>
                   Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>

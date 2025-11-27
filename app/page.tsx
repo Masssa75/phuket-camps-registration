@@ -7,7 +7,7 @@ import HeroVideo from '@/components/HeroVideo'
 export const metadata: Metadata = {
   title: 'Phuket Nature Camp - Christmas, Winter, Songkran & Summer Camps 2025-2026 | Bamboo Valley',
   description: 'Science-backed outdoor camp in Phuket building immunity, confidence, and life skills through nature. Christmas Dec 15-26, Winter Jan-Mar, Songkran Apr 6-10, Summer Jun-Aug. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
-  keywords: 'phuket camp, nature camp phuket, christmas camp thailand, winter camp phuket, songkran camp phuket, summer camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket',
+  keywords: 'phuket camp, nature camp phuket, christmas camp thailand, winter camp phuket, easter camp phuket, songkran camp phuket, summer camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket',
   openGraph: {
     title: 'Phuket Nature Camp - Nature Skills for Life',
     description: 'Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-10. Licensed English teachers. Christmas & Winter programs available.',
@@ -103,7 +103,7 @@ export default function Home() {
               },
               {
                 "@type": "Offer",
-                "name": "Songkran Nature Camp - Mini Camp (Ages 3-6)",
+                "name": "Easter/Songkran Nature Camp - Mini Camp (Ages 3-6)",
                 "price": "11000",
                 "priceCurrency": "THB",
                 "availability": "https://schema.org/InStock",
@@ -113,7 +113,7 @@ export default function Home() {
               },
               {
                 "@type": "Offer",
-                "name": "Songkran Nature Camp - Maxi Camp (Ages 6-10)",
+                "name": "Easter/Songkran Nature Camp - Maxi Camp (Ages 6-10)",
                 "price": "13000",
                 "priceCurrency": "THB",
                 "availability": "https://schema.org/InStock",
@@ -226,7 +226,7 @@ export default function Home() {
             <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)'}}>
               <div className="cute-emoji">💦</div>
               <div className="cute-content">
-                <h3 style={{color: '#e67e22'}}>Songkran Nature Camp</h3>
+                <h3 style={{color: '#e67e22'}}>Easter/Songkran Nature Camp</h3>
                 <div className="cute-meta" style={{color: '#e67e22'}}>
                   Apr 6-10, 2026<br/>
                   Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>
