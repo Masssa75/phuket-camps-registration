@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Photography Shot List - Phuket Camp</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .priorities {
+            background: #fff9e6;
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px;
+        }
+
+        .priorities h3 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+            color: #ff6f00;
+            font-weight: 700;
+        }
+
+        .priorities ul {
+            margin: 0;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .priorities li {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .priorities li::before {
+            content: "⭐ ";
+            margin-right: 6px;
+        }
+
+        .priorities .warning {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 10px 12px;
+            margin-top: 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #c62828;
+        }
+
+        .privacy-section {
+            margin-top: 16px;
+        }
+
+        .privacy-no {
+            background: #ffebee;
+            border: 2px solid #f44336;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .privacy-no h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #c62828;
+            font-weight: 700;
+        }
+
+        .privacy-ok {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .privacy-ok h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #2e7d32;
+            font-weight: 700;
+        }
+
+        .privacy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 8px;
+        }
+
+        .privacy-grid img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .privacy-no .privacy-grid img {
+            border-color: #f44336;
+        }
+
+        .privacy-ok .privacy-grid img {
+            border-color: #4caf50;
+        }
+
+        .shots-list {
+            padding: 16px;
+        }
+
+        .shot-item {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .shot-item.completed {
+            background: #f0f7ff;
+            border-color: #4caf50;
+        }
+
+        .shot-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .checkbox-wrapper {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .shot-types {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .shot-type {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 44px;
+        }
+
+        .shot-type input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #4caf50;
+        }
+
+        .shot-type-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            accent-color: #4caf50;
+        }
+
+        .shot-content {
+            flex: 1;
+        }
+
+        .shot-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .priority-high {
+            background: #ff4444;
+            color: white;
+        }
+
+        .priority-medium {
+            background: #ffa726;
+            color: white;
+        }
+
+        .shot-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .shot-focus {
+            color: #667eea;
+            font-size: 13px;
+            font-weight: 500;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .shot-tips {
+            background: #f8f9fa;
+            border-left: 3px solid #667eea;
+            padding: 12px 14px;
+            margin: 10px 0;
+            border-radius: 6px;
+        }
+
+        .shot-tips-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .shot-tips-list {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #444;
+            white-space: pre-line;
+        }
+
+        .reference-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
+        }
+
+        .reference-preview {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .carousel-arrow:active {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .carousel-arrow.left {
+            left: 10px;
+        }
+
+        .carousel-arrow.right {
+            right: 10px;
+        }
+
+        .carousel-counter {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .examples-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+            min-height: 44px;
+        }
+
+        .examples-btn:active {
+            background: #5568d3;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            overflow: auto;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .gallery-image {
+            max-width: 100%;
+            max-height: calc(100vh - 180px);
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 32px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-nav:active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .gallery-nav.prev {
+            left: 16px;
+        }
+
+        .gallery-nav.next {
+            right: 16px;
+        }
+
+        .gallery-counter {
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📸 Marketing Shot List</h1>
+            <p>Bamboo Valley School - Outdoor Activities</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="completedCount">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="totalCount">7</div>
+                <div class="stat-label">Total Shots</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="progressPercent">0%</div>
+                <div class="stat-label">Progress</div>
+            </div>
+        </div>
+
+        <div class="priorities">
+            <h3>📋 Photography Priorities</h3>
+            <ul>
+                <li><strong>TOP PRIORITY:</strong> Animal Care, Nature Exploration, Kids in Action</li>
+                <li><strong>Candid over perfect</strong> - Get variety across activities, not perfection in each</li>
+                <li><strong>Show values:</strong> Healthy, confident outdoor children - teamwork, deep focus/concentration, hands-on skills</li>
+                <li><strong>Highlight greenness</strong> - Find angles showing lush natural environment</li>
+                <li><strong>Goal:</strong> Parents see "my child is developing real skills" not "pretty place"</li>
+            </ul>
+            <div class="privacy-section">
+                <div class="privacy-no">
+                    <h4>🚫 DO NOT PHOTOGRAPH THESE KIDS</h4>
+                    <div class="privacy-grid">
+                        <img src="shot-references/Privacy-no-1.jpg" alt="Do not photograph">
+                    </div>
+                </div>
+                <div class="privacy-ok">
+                    <h4>✅ OK TO PHOTOGRAPH</h4>
+                    <div class="privacy-grid">
+                        <img src="shot-references/Privacy-ok-1.png" alt="OK to photograph">
+                        <img src="shot-references/Privacy-ok-2.png" alt="OK to photograph">
+                        <img src="shot-references/Privacy-ok-3.png" alt="OK to photograph">
+                        <img src="shot-references/Privacy-ok-4.png" alt="OK to photograph">
+                        <img src="shot-references/Privacy-ok-5.png" alt="OK to photograph">
+                        <img src="shot-references/Privacy-ok-6.png" alt="OK to photograph">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="shotsList" class="shots-list">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading shot list...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="galleryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Reference Images</div>
+                <button class="close-btn" onclick="closeGallery()">&times;</button>
+            </div>
+            <div class="gallery-container">
+                <button class="gallery-nav prev" onclick="prevImage()">‹</button>
+                <img id="galleryImage" class="gallery-image" src="" alt="Reference">
+                <button class="gallery-nav next" onclick="nextImage()">›</button>
+            </div>
+            <div class="gallery-counter">
+                <span id="galleryCounter">1 / 7</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://xunccqdrybxpwcvafvag.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1bmNjcWRyeWJ4cHdjdmFmdmFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzNDY5MDMsImV4cCI6MjA2NjkyMjkwM30.rRAs7qWQpQ8rV_LIY5x6FeSaBk6etotb_9IHbYHPXf8';
+
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let shots = [];
+        let currentGallery = [];
+        let currentImageIndex = 0;
+
+        const referenceImages = {
+            'Animal Care with Goats': [
+                'shot-references/Animal care 2.png',
+                'shot-references/Animal care 3.png',
+                'shot-references/Animal care 7.png',
+                'shot-references/Animal care 1.png',
+                'shot-references/Animal care 4.png',
+                'shot-references/Animal care 5.png',
+                'shot-references/Animal care 6.png'
+            ],
+            'Nature Play / Mud Play': [
+                'shot-references/Mud play 1.png',
+                'shot-references/Mud play 2.jpg',
+                'shot-references/Mud play 3.jpg',
+                'shot-references/Mud play 4.jpg'
+            ],
+            'Outdoor Yoga': [
+                'shot-references/Yoga 8.png',
+                'shot-references/Yoga 5.png',
+                'shot-references/Yoga 1.png',
+                'shot-references/Yoga 2.png',
+                'shot-references/Yoga 3.png',
+                'shot-references/Yoga 4.png',
+                'shot-references/Yoga 6.png',
+                'shot-references/Yoga 7.png',
+                'shot-references/Yoga 9.png'
+            ],
+            'Sound Healing': [
+                'shot-references/Sound healing 5.png',
+                'shot-references/Sound healing 1.png',
+                'shot-references/Sound healing 2.png',
+                'shot-references/Sound healing 3.png',
+                'shot-references/Sound healing 4.png',
+                'shot-references/Sound healing 6.png',
+                'shot-references/Sound healing 7.png',
+                'shot-references/Sound healing 8.png',
+                'shot-references/Sound healing 9.png',
+                'shot-references/Sound healing 10.png',
+                'shot-references/Sound healing 11.png',
+                'shot-references/Sound healing 12.png'
+            ],
+            'Outdoor Arts & Crafts': [
+                'shot-references/Arts crafts 7.png',
+                'shot-references/Arts crafts 6.png',
+                'shot-references/Arts crafts 2.png',
+                'shot-references/Arts crafts 1.png',
+                'shot-references/Arts crafts 3.png',
+                'shot-references/Arts crafts 4.png',
+                'shot-references/Arts crafts 5.png',
+                'shot-references/Arts crafts 8.png'
+            ],
+            'Nature Exploration': [
+                'shot-references/Nature exploration 1.png',
+                'shot-references/Nature exploration 2.png',
+                'shot-references/Nature exploration 3.png',
+                'shot-references/Nature exploration 4.png',
+                'shot-references/Nature exploration 5.png',
+                'shot-references/Nature exploration 6.png',
+                'shot-references/Nature exploration 7.png',
+                'shot-references/Nature exploration 8.png'
+            ],
+            'Kids in Action': [
+                'shot-references/Kids in action 1.png',
+                'shot-references/Kids in action 2.png',
+                'shot-references/Kids in action 3.png',
+                'shot-references/Kids in action 4.png',
+                'shot-references/Kids in action 5.png',
+                'shot-references/Kids in action 6.png',
+                'shot-references/Kids in action 7.png',
+                'shot-references/Kids in action 8.png',
+                'shot-references/Kids in action 9.png',
+                'shot-references/Kids in action 10.png',
+                'shot-references/Kids in action 11.png',
+                'shot-references/Kids in action 12.png',
+                'shot-references/Kids in action 13.png',
+                'shot-references/Kids in action 14.png',
+                'shot-references/Kids in action 15.png',
+                'shot-references/Kids in action 16.png',
+                'shot-references/Kids in action 17.png'
+            ]
+        };
+
+        async function loadShots() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('photo_shot_list')
+                    .select('*')
+                    .order('sort_order');
+
+                if (error) throw error;
+
+                shots = data;
+                renderShots();
+                updateStats();
+            } catch (error) {
+                console.error('Error loading shots:', error);
+                document.getElementById('shotsList').innerHTML = `
+                    <div class="error">
+                        <strong>Error loading shot list</strong><br>
+                        ${error.message}<br>
+                        <small>Please make sure the database table is set up correctly.</small>
+                    </div>
+                `;
+            }
+        }
+
+        function renderShots() {
+            const container = document.getElementById('shotsList');
+
+            if (shots.length === 0) {
+                container.innerHTML = '<div class="loading"><p>No shots found in the list.</p></div>';
+                return;
+            }
+
+            const sortedShots = [...shots].sort((a, b) => {
+                const aAllCompleted = a.wide_shot_completed && a.closeup_completed && a.atmospheric_completed;
+                const bAllCompleted = b.wide_shot_completed && b.closeup_completed && b.atmospheric_completed;
+                if (aAllCompleted === bAllCompleted) {
+                    return a.sort_order - b.sort_order;
+                }
+                return aAllCompleted ? 1 : -1;
+            });
+
+            container.innerHTML = sortedShots.map(shot => {
+                const hasExamples = referenceImages[shot.activity_name];
+                const allCompleted = shot.wide_shot_completed && shot.closeup_completed && shot.atmospheric_completed;
+                return `
+                    <div class="shot-item ${allCompleted ? 'completed' : ''}" data-id="${shot.id}">
+                        <div class="shot-content" style="width: 100%;">
+                            <div class="shot-title">
+                                <span>${shot.activity_name}</span>
+                            </div>
+
+                            ${hasExamples ? `
+                                <div class="reference-container" id="container-${shot.id}">
+                                    <img
+                                        src="${referenceImages[shot.activity_name][0]}"
+                                        class="reference-preview"
+                                        id="preview-${shot.id}"
+                                        alt="Reference example"
+                                    >
+                                    ${referenceImages[shot.activity_name].length > 1 ? `
+                                        <button class="carousel-arrow left" onclick="navigateInline(${shot.id}, -1)">‹</button>
+                                        <button class="carousel-arrow right" onclick="navigateInline(${shot.id}, 1)">›</button>
+                                        <div class="carousel-counter" id="counter-${shot.id}">1 / ${referenceImages[shot.activity_name].length}</div>
+                                    ` : ''}
+                                </div>
+                            ` : ''}
+
+                            <div class="shot-types">
+                                <label class="shot-type">
+                                    <input
+                                        type="checkbox"
+                                        ${shot.wide_shot_completed ? 'checked' : ''}
+                                        onchange="toggleShotType(${shot.id}, 'wide_shot_completed', this.checked)"
+                                    >
+                                    <span class="shot-type-label">📐 Wide Shot</span>
+                                </label>
+                                <label class="shot-type">
+                                    <input
+                                        type="checkbox"
+                                        ${shot.closeup_completed ? 'checked' : ''}
+                                        onchange="toggleShotType(${shot.id}, 'closeup_completed', this.checked)"
+                                    >
+                                    <span class="shot-type-label">👁️ Close-up</span>
+                                </label>
+                                <label class="shot-type">
+                                    <input
+                                        type="checkbox"
+                                        ${shot.atmospheric_completed ? 'checked' : ''}
+                                        onchange="toggleShotType(${shot.id}, 'atmospheric_completed', this.checked)"
+                                    >
+                                    <span class="shot-type-label">✨ Atmospheric</span>
+                                </label>
+                            </div>
+
+                            ${shot.description ? `<div class="shot-description">${shot.description}</div>` : ''}
+                            ${shot.message_focus ? `<div class="shot-focus">Focus: ${shot.message_focus}</div>` : ''}
+                                ${shot.photography_tips ? `
+                                    <div class="shot-tips">
+                                        <div class="shot-tips-title">📸 Key Elements</div>
+                                        <div class="shot-tips-list">${shot.photography_tips}</div>
+                                    </div>
+                                ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            preloadImages();
+        }
+
+        async function preloadImages() {
+            const activityOrder = [
+                'Animal Care with Goats',
+                'Nature Play / Mud Play',
+                'Outdoor Yoga',
+                'Sound Healing',
+                'Outdoor Arts & Crafts',
+                'Nature Exploration',
+                'Kids in Action'
+            ];
+
+            // First: Load all preview images (first image of each activity) in order
+            for (const activity of activityOrder) {
+                if (referenceImages[activity] && referenceImages[activity][0]) {
+                    const img = new Image();
+                    img.src = referenceImages[activity][0];
+                    await new Promise(resolve => {
+                        img.onload = resolve;
+                        img.onerror = resolve;
+                    });
+                }
+            }
+
+            // Then: Load remaining images in background
+            setTimeout(() => {
+                activityOrder.forEach(activity => {
+                    if (referenceImages[activity]) {
+                        referenceImages[activity].slice(1).forEach(src => {
+                            const img = new Image();
+                            img.src = src;
+                        });
+                    }
+                });
+            }, 500);
+        }
+
+        const carouselState = {};
+
+        function navigateInline(shotId, direction) {
+            const shot = shots.find(s => s.id === shotId);
+            if (!shot) return;
+
+            const images = referenceImages[shot.activity_name];
+            if (!images || images.length <= 1) return;
+
+            if (!carouselState[shotId]) {
+                carouselState[shotId] = { currentIndex: 0 };
+            }
+
+            carouselState[shotId].currentIndex += direction;
+
+            if (carouselState[shotId].currentIndex < 0) {
+                carouselState[shotId].currentIndex = images.length - 1;
+            } else if (carouselState[shotId].currentIndex >= images.length) {
+                carouselState[shotId].currentIndex = 0;
+            }
+
+            const imgElement = document.getElementById(`preview-${shotId}`);
+            const counterElement = document.getElementById(`counter-${shotId}`);
+
+            imgElement.src = images[carouselState[shotId].currentIndex];
+            counterElement.textContent = `${carouselState[shotId].currentIndex + 1} / ${images.length}`;
+        }
+
+        // Add swipe gesture support
+        document.addEventListener('DOMContentLoaded', function() {
+            let touchStartX = 0;
+            let touchEndX = 0;
+            let currentContainer = null;
+
+            document.addEventListener('touchstart', function(e) {
+                const container = e.target.closest('.reference-container');
+                if (container) {
+                    currentContainer = container;
+                    touchStartX = e.changedTouches[0].screenX;
+                }
+            }, false);
+
+            document.addEventListener('touchend', function(e) {
+                if (currentContainer) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                    currentContainer = null;
+                }
+            }, false);
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = touchStartX - touchEndX;
+
+                if (Math.abs(diff) > swipeThreshold) {
+                    const shotId = parseInt(currentContainer.id.replace('container-', ''));
+                    if (diff > 0) {
+                        // Swipe left - next image
+                        navigateInline(shotId, 1);
+                    } else {
+                        // Swipe right - previous image
+                        navigateInline(shotId, -1);
+                    }
+                }
+            }
+        });
+
+        async function toggleShotType(id, shotType, isCompleted) {
+            try {
+                const updateData = { [shotType]: isCompleted };
+
+                const { error } = await supabaseClient
+                    .from('photo_shot_list')
+                    .update(updateData)
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                const shot = shots.find(s => s.id === id);
+                if (shot) {
+                    shot[shotType] = isCompleted;
+                }
+
+                renderShots();
+                updateStats();
+            } catch (error) {
+                console.error('Error updating shot:', error);
+                alert('Failed to update shot. Please try again.');
+                renderShots();
+            }
+        }
+
+        function updateStats() {
+            let completedCount = 0;
+            shots.forEach(shot => {
+                if (shot.wide_shot_completed) completedCount++;
+                if (shot.closeup_completed) completedCount++;
+                if (shot.atmospheric_completed) completedCount++;
+            });
+
+            const totalShots = shots.length * 3;
+            const percent = totalShots > 0 ? Math.round((completedCount / totalShots) * 100) : 0;
+
+            document.getElementById('completedCount').textContent = completedCount;
+            document.getElementById('totalCount').textContent = totalShots;
+            document.getElementById('progressPercent').textContent = percent + '%';
+        }
+
+        function openGallery(activityName) {
+            currentGallery = referenceImages[activityName] || [];
+            if (currentGallery.length === 0) return;
+
+            currentImageIndex = 0;
+            document.getElementById('modalTitle').textContent = activityName + ' - Reference Images';
+            showCurrentImage();
+            document.getElementById('galleryModal').classList.add('active');
+        }
+
+        function closeGallery() {
+            document.getElementById('galleryModal').classList.remove('active');
+        }
+
+        function showCurrentImage() {
+            const img = document.getElementById('galleryImage');
+            img.src = currentGallery[currentImageIndex];
+            document.getElementById('galleryCounter').textContent =
+                `${currentImageIndex + 1} / ${currentGallery.length}`;
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % currentGallery.length;
+            showCurrentImage();
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + currentGallery.length) % currentGallery.length;
+            showCurrentImage();
+        }
+
+        // Swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.getElementById('galleryModal').addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        document.getElementById('galleryModal').addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                nextImage();
+            }
+            if (touchEndX > touchStartX + 50) {
+                prevImage();
+            }
+        }
+
+        // Close modal on background click
+        document.getElementById('galleryModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('galleryModal')) {
+                closeGallery();
+            }
+        });
+
+        // Load shots on page load
+        loadShots();
+    </script>
+</body>
+</html>
