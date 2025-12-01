@@ -84,6 +84,25 @@ export default function CampsPage() {
               </div>
               <Link href="/register?camp=summer-2026" style={{background: '#7a9a3b', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
             </div>
+
+            {/* Toddler Class - Separator */}
+            <div style={{textAlign: 'center', margin: '20px 0 10px', color: '#666', fontSize: '0.9rem'}}>
+              ─── Weekly Classes ───
+            </div>
+
+            {/* Parent & Toddler Class */}
+            <div style={{background: 'linear-gradient(135deg, #f5e6ff 0%, #ead6ff 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
+              <div style={{fontSize: '3rem'}}>👶</div>
+              <div style={{flex: 1, minWidth: '200px'}}>
+                <h3 style={{color: '#8b5cf6', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Parent & Toddler Class</h3>
+                <div style={{color: '#8b5cf6', fontSize: '0.95rem', lineHeight: 1.6}}>
+                  Every Tuesday & Thursday, 10-11 AM<br/>
+                  Ages 1-3 years (parent attends with child)<br/>
+                  <span style={{fontSize: '0.85em', opacity: 0.8}}>500฿ per session • 5,000฿ for 10+2 bundle</span>
+                </div>
+              </div>
+              <Link href="/register/toddler" style={{background: '#8b5cf6', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
+            </div>
           </div>
 
           {/* Contact info */}
