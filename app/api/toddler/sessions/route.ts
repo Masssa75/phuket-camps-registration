@@ -21,7 +21,7 @@ export async function GET() {
       .gte('session_date', today)
       .eq('status', 'open')
       .order('session_date', { ascending: true })
-      .limit(20)
+      .limit(8)
 
     if (error) {
       console.error('Error fetching sessions:', error)
