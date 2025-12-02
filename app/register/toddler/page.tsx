@@ -32,8 +32,10 @@ export default function ToddlerRegistrationPage() {
   const [email, setEmail] = useState('')
   const [isReturning, setIsReturning] = useState(false)
   const [howDidYouFind, setHowDidYouFind] = useState('')
-  const [packageType, setPackageType] = useState<'single' | 'bundle'>('single')
+  const [packageType, setPackageType] = useState<'single' | 'bundle' | 'already_paid'>('single')
   const [selectedSessions, setSelectedSessions] = useState<string[]>([])
+  const [everyTuesday, setEveryTuesday] = useState(false)
+  const [everyThursday, setEveryThursday] = useState(false)
   const [photoPermission, setPhotoPermission] = useState(false)
   const [termsAcknowledged, setTermsAcknowledged] = useState(false)
 
@@ -103,6 +105,33 @@ export default function ToddlerRegistrationPage() {
     }
   }
 
+  // Get day of week from session
+  const getDayOfWeek = (dateStr: string) => {
+    return new Date(dateStr).getDay() // 2 = Tuesday, 4 = Thursday
+  }
+
+  // Toggle all Tuesdays
+  const toggleEveryTuesday = (checked: boolean) => {
+    setEveryTuesday(checked)
+    const tuesdaySessions = sessions.filter(s => getDayOfWeek(s.session_date) === 2).map(s => s.id)
+    if (checked) {
+      setSelectedSessions(prev => [...new Set([...prev, ...tuesdaySessions])])
+    } else {
+      setSelectedSessions(prev => prev.filter(id => !tuesdaySessions.includes(id)))
+    }
+  }
+
+  // Toggle all Thursdays
+  const toggleEveryThursday = (checked: boolean) => {
+    setEveryThursday(checked)
+    const thursdaySessions = sessions.filter(s => getDayOfWeek(s.session_date) === 4).map(s => s.id)
+    if (checked) {
+      setSelectedSessions(prev => [...new Set([...prev, ...thursdaySessions])])
+    } else {
+      setSelectedSessions(prev => prev.filter(id => !thursdaySessions.includes(id)))
+    }
+  }
+
   // Format date for display
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr)
@@ -116,6 +145,7 @@ export default function ToddlerRegistrationPage() {
 
   // Calculate price
   const getPrice = () => {
+    if (packageType === 'already_paid') return 0
     if (packageType === 'bundle') return 5000
     return selectedSessions.length * 500
   }
@@ -194,11 +224,17 @@ export default function ToddlerRegistrationPage() {
           <div className={styles.successIcon}>✓</div>
           <h1>Registration Complete!</h1>
           <p>Thank you for registering for our Parent & Toddler Class.</p>
-          <p>We will contact you shortly with payment details.</p>
-          <div className={styles.priceBox}>
-            <span>Amount Due:</span>
-            <strong>฿{getPrice().toLocaleString()}</strong>
-          </div>
+          {packageType === 'already_paid' ? (
+            <p>Your sessions have been booked. See you soon!</p>
+          ) : (
+            <>
+              <p>We will contact you shortly with payment details.</p>
+              <div className={styles.priceBox}>
+                <span>Amount Due:</span>
+                <strong>฿{getPrice().toLocaleString()}</strong>
+              </div>
+            </>
+          )}
           <Link href="/camps" className={styles.backLink}>← Back to Camps</Link>
         </div>
       </div>
@@ -355,29 +391,51 @@ export default function ToddlerRegistrationPage() {
           ) : sessions.length === 0 ? (
             <p>No sessions available at the moment.</p>
           ) : (
-            <div className={styles.sessionsGrid}>
-              {sessions.map(session => {
-                const { day, date } = formatDate(session.session_date)
-                const spotsLeft = session.capacity - session.current_bookings
-                const isSelected = selectedSessions.includes(session.id)
+            <>
+              {/* Quick select options */}
+              <div className={styles.quickSelect}>
+                <label className={`${styles.quickSelectOption} ${everyTuesday ? styles.selected : ''}`}>
+                  <input
+                    type="checkbox"
+                    checked={everyTuesday}
+                    onChange={e => toggleEveryTuesday(e.target.checked)}
+                  />
+                  Every Tuesday
+                </label>
+                <label className={`${styles.quickSelectOption} ${everyThursday ? styles.selected : ''}`}>
+                  <input
+                    type="checkbox"
+                    checked={everyThursday}
+                    onChange={e => toggleEveryThursday(e.target.checked)}
+                  />
+                  Every Thursday
+                </label>
+              </div>
 
-                return (
-                  <label
-                    key={session.id}
-                    className={`${styles.sessionOption} ${isSelected ? styles.selected : ''}`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isSelected}
-                      onChange={() => toggleSession(session.id)}
-                    />
-                    <div className={styles.sessionDay}>{day}</div>
-                    <div className={styles.sessionDate}>{date}</div>
-                    <div className={styles.sessionSpots}>{spotsLeft} spots left</div>
-                  </label>
-                )
-              })}
-            </div>
+              <div className={styles.sessionsGrid}>
+                {sessions.map(session => {
+                  const { day, date } = formatDate(session.session_date)
+                  const spotsLeft = session.capacity - session.current_bookings
+                  const isSelected = selectedSessions.includes(session.id)
+
+                  return (
+                    <label
+                      key={session.id}
+                      className={`${styles.sessionOption} ${isSelected ? styles.selected : ''}`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => toggleSession(session.id)}
+                      />
+                      <div className={styles.sessionDay}>{day}</div>
+                      <div className={styles.sessionDate}>{date}</div>
+                      <div className={styles.sessionSpots}>{spotsLeft} spots left</div>
+                    </label>
+                  )
+                })}
+              </div>
+            </>
           )}
         </div>
 
@@ -408,6 +466,17 @@ export default function ToddlerRegistrationPage() {
                 10 Session Bundle <span className={styles.packageBadge}>+2 FREE</span>
               </div>
               <div className={styles.packagePrice}>฿5,000 <span>save ฿1,000</span></div>
+            </label>
+
+            <label className={`${styles.packageOption} ${styles.alreadyPaidOption} ${packageType === 'already_paid' ? styles.selected : ''}`}>
+              <input
+                type="radio"
+                name="package"
+                checked={packageType === 'already_paid'}
+                onChange={() => setPackageType('already_paid')}
+              />
+              <div className={styles.packageName}>Already Paid</div>
+              <div className={styles.packagePrice}><span>I have sessions remaining from a previous purchase</span></div>
             </label>
           </div>
         </div>
@@ -471,7 +540,7 @@ export default function ToddlerRegistrationPage() {
           className={styles.submitBtn}
           disabled={submitting}
         >
-          {submitting ? 'Registering...' : `Register Now - ฿${getPrice().toLocaleString()}`}
+          {submitting ? 'Registering...' : packageType === 'already_paid' ? 'Book Sessions' : `Register Now - ฿${getPrice().toLocaleString()}`}
         </button>
       </form>
 

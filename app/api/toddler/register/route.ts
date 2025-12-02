@@ -21,7 +21,7 @@ interface RegistrationData {
   email: string
   isReturning: boolean
   howDidYouFind?: string
-  packageType: 'single' | 'bundle'
+  packageType: 'single' | 'bundle' | 'already_paid'
   children: Child[]
   sessionIds: string[]
   photoPermission: boolean
@@ -66,8 +66,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate package details
-    const sessionsPurchased = data.packageType === 'bundle' ? 12 : data.sessionIds.length
-    const paymentAmount = data.packageType === 'bundle' ? 5000 : data.sessionIds.length * 500
+    const sessionsPurchased = data.packageType === 'bundle' ? 12 : data.packageType === 'already_paid' ? 0 : data.sessionIds.length
+    const paymentAmount = data.packageType === 'bundle' ? 5000 : data.packageType === 'already_paid' ? 0 : data.sessionIds.length * 500
+    const paymentStatus = data.packageType === 'already_paid' ? 'paid' : 'pending'
 
     // 1. Create the registration
     const { data: registration, error: regError } = await supabase
@@ -81,7 +82,7 @@ export async function POST(request: NextRequest) {
         package_type: data.packageType,
         sessions_purchased: sessionsPurchased,
         sessions_remaining: sessionsPurchased,
-        payment_status: 'pending',
+        payment_status: paymentStatus,
         payment_amount: paymentAmount,
         photo_permission: data.photoPermission,
         terms_acknowledged: data.termsAcknowledged

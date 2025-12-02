@@ -225,6 +225,44 @@
   border-color: #2d5a47;
 }
 
+.quickSelect {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.quickSelectOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #f0f7f4;
+  border: 2px solid #BED7AF;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+  color: #2d5a47;
+}
+
+.quickSelectOption input {
+  display: none;
+}
+
+.quickSelectOption.selected {
+  background: #2d5a47;
+  border-color: #2d5a47;
+  color: white;
+}
+
+.quickSelectOption:hover {
+  background: #e0ebe4;
+}
+
+.quickSelectOption.selected:hover {
+  background: #3d6a57;
+}
+
 .sessionsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -336,6 +374,16 @@
   padding: 3px 8px;
   border-radius: 4px;
   margin-left: 8px;
+}
+
+.alreadyPaidOption {
+  border-style: dashed;
+  background: #fafafa;
+}
+
+.alreadyPaidOption.selected {
+  background: #f0f7f4;
+  border-style: solid;
 }
 
 .consentOption {
