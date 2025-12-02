@@ -508,9 +508,9 @@ export default function ToddlerRegistrationPage() {
                   onChange={() => setPackageType('bundle')}
                 />
                 <div className={styles.packageName}>
-                  10 Session Bundle <span className={styles.packageBadge}>+2 FREE</span>
+                  12 Session Bundle <span className={styles.packageBadge}>2 FREE</span>
                 </div>
-                <div className={styles.packagePrice}>฿5,000 <span>save ฿1,000</span></div>
+                <div className={styles.packagePrice}>฿5,000 <span>pay for 10, get 12</span></div>
               </label>
             </div>
           )}
