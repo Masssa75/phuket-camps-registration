@@ -53,6 +53,14 @@ export default function ToddlerRegistrationPage() {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
 
+  // Returning family lookup
+  const [lookupEmail, setLookupEmail] = useState('')
+  const [lookingUp, setLookingUp] = useState(false)
+  const [foundChildren, setFoundChildren] = useState<Child[]>([])
+  const [selectedChildIds, setSelectedChildIds] = useState<string[]>([])
+  const [lookupDone, setLookupDone] = useState(false)
+  const [sessionsRemaining, setSessionsRemaining] = useState(0)
+
   // Fetch sessions on mount
   useEffect(() => {
     async function fetchSessions() {
@@ -132,6 +140,52 @@ export default function ToddlerRegistrationPage() {
     }
   }
 
+  // Look up returning family by email
+  const handleLookup = async () => {
+    if (!lookupEmail) return
+    setLookingUp(true)
+    setError('')
+
+    try {
+      const res = await fetch(`/api/toddler/lookup?email=${encodeURIComponent(lookupEmail)}`)
+      const data = await res.json()
+
+      if (data.found) {
+        // Map children with IDs for selection
+        const childrenWithIds = data.children.map((c: { name: string; dateOfBirth: string; gender: string; nationality: string }, i: number) => ({
+          id: String(i + 1),
+          name: c.name,
+          dateOfBirth: c.dateOfBirth,
+          gender: c.gender,
+          nationality: c.nationality || ''
+        }))
+        setFoundChildren(childrenWithIds)
+        setSelectedChildIds(childrenWithIds.map((c: Child) => c.id)) // Select all by default
+        setSessionsRemaining(data.registration.sessionsRemaining || 0)
+        setEmail(data.registration.email)
+        setParentName(data.registration.parentName)
+        setPhone(data.registration.phone)
+        setLookupDone(true)
+      } else {
+        setError('No registration found for this email. Please register as a new family.')
+      }
+    } catch (err) {
+      console.error('Lookup error:', err)
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLookingUp(false)
+    }
+  }
+
+  // Toggle child selection for returning families
+  const toggleChildSelection = (childId: string) => {
+    if (selectedChildIds.includes(childId)) {
+      setSelectedChildIds(selectedChildIds.filter(id => id !== childId))
+    } else {
+      setSelectedChildIds([...selectedChildIds, childId])
+    }
+  }
+
   // Format date for display
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr)
@@ -156,31 +210,51 @@ export default function ToddlerRegistrationPage() {
     setError('')
     setSubmitting(true)
 
-    // Validate
-    if (!parentName || !phone || !email) {
-      setError('Please fill in all parent information')
-      setSubmitting(false)
-      return
+    // Different validation for returning vs new
+    if (isReturning) {
+      // Returning family validation
+      if (selectedChildIds.length === 0) {
+        setError('Please select at least one child')
+        setSubmitting(false)
+        return
+      }
+      if (selectedSessions.length === 0) {
+        setError('Please select at least one session')
+        setSubmitting(false)
+        return
+      }
+    } else {
+      // New family validation
+      if (!parentName || !phone || !email) {
+        setError('Please fill in all parent information')
+        setSubmitting(false)
+        return
+      }
+
+      const validChildren = children.filter(c => c.name && c.dateOfBirth && c.gender)
+      if (validChildren.length === 0) {
+        setError('Please add at least one child with name, date of birth, and gender')
+        setSubmitting(false)
+        return
+      }
+
+      if (selectedSessions.length === 0) {
+        setError('Please select at least one session')
+        setSubmitting(false)
+        return
+      }
+
+      if (!termsAcknowledged) {
+        setError('Please acknowledge the terms and conditions')
+        setSubmitting(false)
+        return
+      }
     }
 
-    const validChildren = children.filter(c => c.name && c.dateOfBirth && c.gender)
-    if (validChildren.length === 0) {
-      setError('Please add at least one child with name, date of birth, and gender')
-      setSubmitting(false)
-      return
-    }
-
-    if (selectedSessions.length === 0) {
-      setError('Please select at least one session')
-      setSubmitting(false)
-      return
-    }
-
-    if (!termsAcknowledged) {
-      setError('Please acknowledge the terms and conditions')
-      setSubmitting(false)
-      return
-    }
+    // Get children data
+    const childrenToSubmit = isReturning
+      ? foundChildren.filter(c => selectedChildIds.includes(c.id))
+      : children.filter(c => c.name && c.dateOfBirth && c.gender)
 
     try {
       const res = await fetch('/api/toddler/register', {
@@ -192,11 +266,11 @@ export default function ToddlerRegistrationPage() {
           email,
           isReturning,
           howDidYouFind: isReturning ? undefined : howDidYouFind,
-          packageType,
-          children: validChildren,
+          packageType: isReturning ? 'already_paid' : packageType,
+          children: childrenToSubmit,
           sessionIds: selectedSessions,
-          photoPermission,
-          termsAcknowledged
+          photoPermission: isReturning ? true : photoPermission,
+          termsAcknowledged: true
         })
       })
 
@@ -264,7 +338,7 @@ export default function ToddlerRegistrationPage() {
       <form className={styles.formCard} onSubmit={handleSubmit}>
         {/* New or Returning - First Question */}
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Are you new or returning?</h2>
+          <h2 className={styles.sectionTitle}>New or returning?</h2>
 
           <div className={styles.newReturningOptions}>
             <label className={`${styles.newReturningOption} ${!isReturning ? styles.selected : ''}`}>
@@ -275,10 +349,12 @@ export default function ToddlerRegistrationPage() {
                 onChange={() => {
                   setIsReturning(false)
                   setPackageType('single')
+                  setLookupDone(false)
+                  setFoundChildren([])
                 }}
               />
               <span className={styles.optionIcon}>👋</span>
-              <span className={styles.optionText}>New Family</span>
+              <span className={styles.optionText}>New Child</span>
             </label>
             <label className={`${styles.newReturningOption} ${isReturning ? styles.selected : ''}`}>
               <input
@@ -291,11 +367,127 @@ export default function ToddlerRegistrationPage() {
                 }}
               />
               <span className={styles.optionIcon}>🏠</span>
-              <span className={styles.optionText}>Returning Family</span>
+              <span className={styles.optionText}>Returning Child</span>
             </label>
           </div>
         </div>
 
+        {/* RETURNING FAMILY FLOW - Simple lookup and book */}
+        {isReturning && (
+          <>
+            {/* Step 1: Email Lookup */}
+            {!lookupDone ? (
+              <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>Find your registration</h2>
+                <div className={styles.lookupRow}>
+                  <input
+                    type="email"
+                    value={lookupEmail}
+                    onChange={e => setLookupEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className={styles.lookupInput}
+                    onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), handleLookup())}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleLookup}
+                    disabled={lookingUp || !lookupEmail}
+                    className={styles.lookupBtn}
+                  >
+                    {lookingUp ? 'Looking...' : 'Find'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Step 2: Select Children */}
+                <div className={styles.section}>
+                  <h2 className={styles.sectionTitle}>Who&apos;s coming?</h2>
+                  <div className={styles.childButtons}>
+                    {foundChildren.map(child => (
+                      <button
+                        key={child.id}
+                        type="button"
+                        className={`${styles.childButton} ${selectedChildIds.includes(child.id) ? styles.selected : ''}`}
+                        onClick={() => toggleChildSelection(child.id)}
+                      >
+                        {child.name}
+                      </button>
+                    ))}
+                  </div>
+                  {sessionsRemaining > 0 && (
+                    <p className={styles.sessionsInfo}>You have {sessionsRemaining} sessions remaining</p>
+                  )}
+                </div>
+
+                {/* Step 3: Select Sessions */}
+                <div className={styles.section}>
+                  <h2 className={styles.sectionTitle}>Pick your dates</h2>
+
+                  {loadingSessions ? (
+                    <p>Loading...</p>
+                  ) : (
+                    <>
+                      <div className={styles.quickSelect}>
+                        <label className={`${styles.quickSelectOption} ${everyTuesday ? styles.selected : ''}`}>
+                          <input
+                            type="checkbox"
+                            checked={everyTuesday}
+                            onChange={e => toggleEveryTuesday(e.target.checked)}
+                          />
+                          Every Tuesday
+                        </label>
+                        <label className={`${styles.quickSelectOption} ${everyThursday ? styles.selected : ''}`}>
+                          <input
+                            type="checkbox"
+                            checked={everyThursday}
+                            onChange={e => toggleEveryThursday(e.target.checked)}
+                          />
+                          Every Thursday
+                        </label>
+                      </div>
+
+                      <div className={styles.sessionsGrid}>
+                        {sessions.map(session => {
+                          const { day, date } = formatDate(session.session_date)
+                          const isSelected = selectedSessions.includes(session.id)
+                          return (
+                            <label
+                              key={session.id}
+                              className={`${styles.sessionOption} ${isSelected ? styles.selected : ''}`}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={() => toggleSession(session.id)}
+                              />
+                              <div className={styles.sessionDay}>{day}</div>
+                              <div className={styles.sessionDate}>{date}</div>
+                            </label>
+                          )
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {error && <div className={styles.error}>{error}</div>}
+
+                <button
+                  type="submit"
+                  className={styles.submitBtn}
+                  disabled={submitting || selectedChildIds.length === 0 || selectedSessions.length === 0}
+                >
+                  {submitting ? 'Booking...' : `Book ${selectedSessions.length} Session${selectedSessions.length !== 1 ? 's' : ''}`}
+                </button>
+              </>
+            )}
+          </>
+        )}
+
+        {/* NEW FAMILY FLOW - Full registration form */}
+        {!isReturning && (
+          <>
         {/* Parent Information */}
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Parent/Guardian Information</h2>
@@ -555,9 +747,7 @@ export default function ToddlerRegistrationPage() {
           </label>
         </div>
 
-        {error && (
-          <div className={styles.error}>{error}</div>
-        )}
+        {error && <div className={styles.error}>{error}</div>}
 
         <button
           type="submit"
@@ -566,6 +756,8 @@ export default function ToddlerRegistrationPage() {
         >
           {submitting ? 'Registering...' : packageType === 'already_paid' ? 'Book Sessions' : `Register Now - ฿${getPrice().toLocaleString()}`}
         </button>
+          </>
+        )}
       </form>
 
       <div className={styles.backLinkContainer}>
