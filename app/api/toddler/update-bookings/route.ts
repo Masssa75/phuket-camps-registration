@@ -103,6 +103,8 @@ export async function POST(request: NextRequest) {
         child_id: actualChildIds[0] || null // Use first child if available
       }))
 
+      console.log('Inserting bookings:', JSON.stringify(bookings))
+
       const { data: booked, error: bookError } = await supabase
         .from('toddler_session_bookings')
         .insert(bookings)
@@ -110,8 +112,41 @@ export async function POST(request: NextRequest) {
 
       if (bookError) {
         console.error('Error booking sessions:', bookError)
+        return NextResponse.json(
+          { error: `Failed to book sessions: ${bookError.message}` },
+          { status: 500 }
+        )
       } else {
         results.booked = booked?.length || 0
+
+        // Decrement sessions_remaining for booked sessions
+        if (results.booked > 0) {
+          const { data: reg } = await supabase
+            .from('toddler_registrations')
+            .select('sessions_remaining')
+            .eq('id', registrationId)
+            .single()
+
+          const newRemaining = Math.max(0, (reg?.sessions_remaining || 0) - results.booked)
+          await supabase
+            .from('toddler_registrations')
+            .update({ sessions_remaining: newRemaining })
+            .eq('id', registrationId)
+
+          // Increment current_bookings for each booked session
+          for (const sessionId of newSessionIds) {
+            const { data: sess } = await supabase
+              .from('toddler_sessions')
+              .select('current_bookings')
+              .eq('id', sessionId)
+              .single()
+
+            await supabase
+              .from('toddler_sessions')
+              .update({ current_bookings: (sess?.current_bookings || 0) + 1 })
+              .eq('id', sessionId)
+          }
+        }
       }
     }
 
