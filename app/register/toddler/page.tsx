@@ -262,6 +262,40 @@ export default function ToddlerRegistrationPage() {
       </div>
 
       <form className={styles.formCard} onSubmit={handleSubmit}>
+        {/* New or Returning - First Question */}
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Are you new or returning?</h2>
+
+          <div className={styles.newReturningOptions}>
+            <label className={`${styles.newReturningOption} ${!isReturning ? styles.selected : ''}`}>
+              <input
+                type="radio"
+                name="newReturning"
+                checked={!isReturning}
+                onChange={() => {
+                  setIsReturning(false)
+                  setPackageType('single')
+                }}
+              />
+              <span className={styles.optionIcon}>👋</span>
+              <span className={styles.optionText}>New Family</span>
+            </label>
+            <label className={`${styles.newReturningOption} ${isReturning ? styles.selected : ''}`}>
+              <input
+                type="radio"
+                name="newReturning"
+                checked={isReturning}
+                onChange={() => {
+                  setIsReturning(true)
+                  setPackageType('already_paid')
+                }}
+              />
+              <span className={styles.optionIcon}>🏠</span>
+              <span className={styles.optionText}>Returning Family</span>
+            </label>
+          </div>
+        </div>
+
         {/* Parent Information */}
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Parent/Guardian Information</h2>
@@ -441,62 +475,52 @@ export default function ToddlerRegistrationPage() {
 
         {/* Package Selection */}
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Choose Package</h2>
+          <h2 className={styles.sectionTitle}>{isReturning ? 'Payment' : 'Choose Package'}</h2>
 
-          <div className={styles.packageOptions}>
-            <label className={`${styles.packageOption} ${packageType === 'single' ? styles.selected : ''}`}>
-              <input
-                type="radio"
-                name="package"
-                checked={packageType === 'single'}
-                onChange={() => setPackageType('single')}
-              />
-              <div className={styles.packageName}>Single Session</div>
-              <div className={styles.packagePrice}>฿500 <span>per session</span></div>
-            </label>
-
-            <label className={`${styles.packageOption} ${packageType === 'bundle' ? styles.selected : ''}`}>
-              <input
-                type="radio"
-                name="package"
-                checked={packageType === 'bundle'}
-                onChange={() => setPackageType('bundle')}
-              />
-              <div className={styles.packageName}>
-                10 Session Bundle <span className={styles.packageBadge}>+2 FREE</span>
+          {isReturning ? (
+            // Returning families - Already Paid is selected
+            <div className={styles.alreadyPaidInfo}>
+              <span className={styles.checkIcon}>✓</span>
+              <div>
+                <div className={styles.alreadyPaidTitle}>Using existing session credits</div>
+                <div className={styles.alreadyPaidDesc}>These sessions will be deducted from your remaining balance</div>
               </div>
-              <div className={styles.packagePrice}>฿5,000 <span>save ฿1,000</span></div>
-            </label>
+            </div>
+          ) : (
+            // New families - Show package options
+            <div className={styles.packageOptions}>
+              <label className={`${styles.packageOption} ${packageType === 'single' ? styles.selected : ''}`}>
+                <input
+                  type="radio"
+                  name="package"
+                  checked={packageType === 'single'}
+                  onChange={() => setPackageType('single')}
+                />
+                <div className={styles.packageName}>Single Session</div>
+                <div className={styles.packagePrice}>฿500 <span>per session</span></div>
+              </label>
 
-            <label className={`${styles.packageOption} ${styles.alreadyPaidOption} ${packageType === 'already_paid' ? styles.selected : ''}`}>
-              <input
-                type="radio"
-                name="package"
-                checked={packageType === 'already_paid'}
-                onChange={() => setPackageType('already_paid')}
-              />
-              <div className={styles.packageName}>Already Paid</div>
-              <div className={styles.packagePrice}><span>I have sessions remaining from a previous purchase</span></div>
-            </label>
-          </div>
+              <label className={`${styles.packageOption} ${packageType === 'bundle' ? styles.selected : ''}`}>
+                <input
+                  type="radio"
+                  name="package"
+                  checked={packageType === 'bundle'}
+                  onChange={() => setPackageType('bundle')}
+                />
+                <div className={styles.packageName}>
+                  10 Session Bundle <span className={styles.packageBadge}>+2 FREE</span>
+                </div>
+                <div className={styles.packagePrice}>฿5,000 <span>save ฿1,000</span></div>
+              </label>
+            </div>
+          )}
         </div>
 
-        {/* How did you find us */}
-        <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>How did you find us?</h2>
-
-          <label className={`${styles.consentOption} ${styles.returningOption}`}>
-            <input
-              type="checkbox"
-              checked={isReturning}
-              onChange={e => setIsReturning(e.target.checked)}
-            />
-            <span>I&apos;m a returning family - we&apos;ve attended before!</span>
-          </label>
-
-          {!isReturning && (
+        {/* How did you find us - Only for new families */}
+        {!isReturning && (
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>How did you find us?</h2>
             <div className={styles.formGroup}>
-              <label>If new, how did you hear about us?</label>
               <input
                 type="text"
                 value={howDidYouFind}
@@ -504,8 +528,8 @@ export default function ToddlerRegistrationPage() {
                 placeholder="e.g., Facebook, friend's recommendation, Google..."
               />
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Consent */}
         <div className={styles.section}>
