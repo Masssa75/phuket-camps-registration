@@ -47,9 +47,20 @@ export async function GET(request: NextRequest) {
     // Get their session balance
     const sessionsRemaining = registration.sessions_remaining || 0
 
+    // Get already booked sessions (future sessions only)
+    const today = new Date().toISOString().split('T')[0]
+    const { data: bookings } = await supabase
+      .from('toddler_session_bookings')
+      .select('session_id, toddler_sessions!inner(session_date)')
+      .eq('registration_id', registration.id)
+      .gte('toddler_sessions.session_date', today)
+
+    const bookedSessionIds = bookings?.map(b => b.session_id) || []
+
     return NextResponse.json({
       found: true,
       registration: {
+        id: registration.id,
         parentName: registration.parent_name,
         phone: registration.phone,
         email: registration.email,
@@ -57,11 +68,13 @@ export async function GET(request: NextRequest) {
         packageType: registration.package_type
       },
       children: children?.map(c => ({
+        id: c.id,
         name: c.child_name,
         dateOfBirth: c.date_of_birth,
         gender: c.gender,
         nationality: c.nationality
-      })) || []
+      })) || [],
+      bookedSessionIds
     })
 
   } catch (error) {

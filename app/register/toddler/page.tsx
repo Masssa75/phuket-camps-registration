@@ -58,6 +58,8 @@ export default function ToddlerRegistrationPage() {
   const [selectedChildIds, setSelectedChildIds] = useState<string[]>([])
   const [lookupDone, setLookupDone] = useState(false)
   const [sessionsRemaining, setSessionsRemaining] = useState(0)
+  const [alreadyBookedSessions, setAlreadyBookedSessions] = useState<string[]>([])
+  const [registrationId, setRegistrationId] = useState<string>('')
 
   // Fetch sessions on mount
   useEffect(() => {
@@ -123,8 +125,8 @@ export default function ToddlerRegistrationPage() {
 
       if (data.found) {
         // Map children with IDs for selection
-        const childrenWithIds = data.children.map((c: { name: string; dateOfBirth: string; gender: string; nationality: string }, i: number) => ({
-          id: String(i + 1),
+        const childrenWithIds = data.children.map((c: { id: string; name: string; dateOfBirth: string; gender: string; nationality: string }) => ({
+          id: c.id,
           name: c.name,
           dateOfBirth: c.dateOfBirth,
           gender: c.gender,
@@ -136,6 +138,11 @@ export default function ToddlerRegistrationPage() {
         setEmail(data.registration.email)
         setParentName(data.registration.parentName)
         setPhone(data.registration.phone)
+        setRegistrationId(data.registration.id)
+        // Set already booked sessions and pre-select them
+        const booked = data.bookedSessionIds || []
+        setAlreadyBookedSessions(booked)
+        setSelectedSessions(booked) // Pre-select already booked
         setLookupDone(true)
       } else {
         setError('No registration found for this email. Please register as a new family.')
@@ -181,7 +188,7 @@ export default function ToddlerRegistrationPage() {
     setError('')
     setSubmitting(true)
 
-    // Different validation for returning vs new
+    // Different validation and handling for returning vs new
     if (isReturning) {
       // Returning family validation
       if (selectedChildIds.length === 0) {
@@ -189,8 +196,43 @@ export default function ToddlerRegistrationPage() {
         setSubmitting(false)
         return
       }
-      if (selectedSessions.length === 0) {
-        setError('Please select at least one session')
+
+      // Calculate changes
+      const newBookings = selectedSessions.filter(id => !alreadyBookedSessions.includes(id))
+      const cancellations = alreadyBookedSessions.filter(id => !selectedSessions.includes(id))
+
+      if (newBookings.length === 0 && cancellations.length === 0) {
+        setError('No changes to save')
+        setSubmitting(false)
+        return
+      }
+
+      // Use update-bookings API for returning families
+      try {
+        const res = await fetch('/api/toddler/update-bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            registrationId,
+            newSessionIds: newBookings,
+            cancelSessionIds: cancellations,
+            childIds: selectedChildIds
+          })
+        })
+
+        const data = await res.json()
+
+        if (!res.ok) {
+          setError(data.error || 'Update failed')
+          setSubmitting(false)
+          return
+        }
+
+        setSubmitted(true)
+        return
+      } catch (err) {
+        console.error('Update error:', err)
+        setError('Something went wrong. Please try again.')
         setSubmitting(false)
         return
       }
@@ -402,10 +444,11 @@ export default function ToddlerRegistrationPage() {
                         {sessions.map(session => {
                           const { day, date } = formatDate(session.session_date)
                           const isSelected = selectedSessions.includes(session.id)
+                          const isBooked = alreadyBookedSessions.includes(session.id)
                           return (
                             <label
                               key={session.id}
-                              className={`${styles.sessionOption} ${isSelected ? styles.selected : ''}`}
+                              className={`${styles.sessionOption} ${isSelected ? styles.selected : ''} ${isBooked ? styles.booked : ''}`}
                             >
                               <input
                                 type="checkbox"
@@ -414,6 +457,7 @@ export default function ToddlerRegistrationPage() {
                               />
                               <div className={styles.sessionDay}>{day}</div>
                               <div className={styles.sessionDate}>{date}</div>
+                              {isBooked && <div className={styles.bookedBadge}>Booked</div>}
                             </label>
                           )
                         })}
@@ -423,13 +467,30 @@ export default function ToddlerRegistrationPage() {
 
                 {error && <div className={styles.error}>{error}</div>}
 
-                <button
-                  type="submit"
-                  className={styles.submitBtn}
-                  disabled={submitting || selectedChildIds.length === 0 || selectedSessions.length === 0}
-                >
-                  {submitting ? 'Booking...' : `Book ${selectedSessions.length} Session${selectedSessions.length !== 1 ? 's' : ''}`}
-                </button>
+                {(() => {
+                  const newBookings = selectedSessions.filter(id => !alreadyBookedSessions.includes(id))
+                  const cancellations = alreadyBookedSessions.filter(id => !selectedSessions.includes(id))
+                  const hasChanges = newBookings.length > 0 || cancellations.length > 0
+
+                  let buttonText = 'No changes'
+                  if (newBookings.length > 0 && cancellations.length > 0) {
+                    buttonText = `Book ${newBookings.length} & Cancel ${cancellations.length}`
+                  } else if (newBookings.length > 0) {
+                    buttonText = `Book ${newBookings.length} Session${newBookings.length !== 1 ? 's' : ''}`
+                  } else if (cancellations.length > 0) {
+                    buttonText = `Cancel ${cancellations.length} Session${cancellations.length !== 1 ? 's' : ''}`
+                  }
+
+                  return (
+                    <button
+                      type="submit"
+                      className={styles.submitBtn}
+                      disabled={submitting || selectedChildIds.length === 0 || !hasChanges}
+                    >
+                      {submitting ? 'Saving...' : buttonText}
+                    </button>
+                  )
+                })()}
               </>
             )}
           </>
