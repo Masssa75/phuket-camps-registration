@@ -115,7 +115,7 @@ export default function ToddlerRegistrationPage() {
     setEveryTuesday(checked)
     const tuesdaySessions = sessions.filter(s => getDayOfWeek(s.session_date) === 2).map(s => s.id)
     if (checked) {
-      setSelectedSessions(prev => [...new Set([...prev, ...tuesdaySessions])])
+      setSelectedSessions(prev => Array.from(new Set([...prev, ...tuesdaySessions])))
     } else {
       setSelectedSessions(prev => prev.filter(id => !tuesdaySessions.includes(id)))
     }
@@ -126,7 +126,7 @@ export default function ToddlerRegistrationPage() {
     setEveryThursday(checked)
     const thursdaySessions = sessions.filter(s => getDayOfWeek(s.session_date) === 4).map(s => s.id)
     if (checked) {
-      setSelectedSessions(prev => [...new Set([...prev, ...thursdaySessions])])
+      setSelectedSessions(prev => Array.from(new Set([...prev, ...thursdaySessions])))
     } else {
       setSelectedSessions(prev => prev.filter(id => !thursdaySessions.includes(id)))
     }
