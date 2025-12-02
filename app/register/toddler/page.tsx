@@ -34,8 +34,6 @@ export default function ToddlerRegistrationPage() {
   const [howDidYouFind, setHowDidYouFind] = useState('')
   const [packageType, setPackageType] = useState<'single' | 'bundle' | 'already_paid'>('single')
   const [selectedSessions, setSelectedSessions] = useState<string[]>([])
-  const [everyTuesday, setEveryTuesday] = useState(false)
-  const [everyThursday, setEveryThursday] = useState(false)
   const [photoPermission, setPhotoPermission] = useState(false)
   const [termsAcknowledged, setTermsAcknowledged] = useState(false)
 
@@ -110,33 +108,6 @@ export default function ToddlerRegistrationPage() {
       setSelectedSessions(selectedSessions.filter(id => id !== sessionId))
     } else {
       setSelectedSessions([...selectedSessions, sessionId])
-    }
-  }
-
-  // Get day of week from session
-  const getDayOfWeek = (dateStr: string) => {
-    return new Date(dateStr).getDay() // 2 = Tuesday, 4 = Thursday
-  }
-
-  // Toggle all Tuesdays
-  const toggleEveryTuesday = (checked: boolean) => {
-    setEveryTuesday(checked)
-    const tuesdaySessions = sessions.filter(s => getDayOfWeek(s.session_date) === 2).map(s => s.id)
-    if (checked) {
-      setSelectedSessions(prev => Array.from(new Set([...prev, ...tuesdaySessions])))
-    } else {
-      setSelectedSessions(prev => prev.filter(id => !tuesdaySessions.includes(id)))
-    }
-  }
-
-  // Toggle all Thursdays
-  const toggleEveryThursday = (checked: boolean) => {
-    setEveryThursday(checked)
-    const thursdaySessions = sessions.filter(s => getDayOfWeek(s.session_date) === 4).map(s => s.id)
-    if (checked) {
-      setSelectedSessions(prev => Array.from(new Set([...prev, ...thursdaySessions])))
-    } else {
-      setSelectedSessions(prev => prev.filter(id => !thursdaySessions.includes(id)))
     }
   }
 
@@ -427,27 +398,7 @@ export default function ToddlerRegistrationPage() {
                   {loadingSessions ? (
                     <p>Loading...</p>
                   ) : (
-                    <>
-                      <div className={styles.quickSelect}>
-                        <label className={`${styles.quickSelectOption} ${everyTuesday ? styles.selected : ''}`}>
-                          <input
-                            type="checkbox"
-                            checked={everyTuesday}
-                            onChange={e => toggleEveryTuesday(e.target.checked)}
-                          />
-                          Every Tuesday
-                        </label>
-                        <label className={`${styles.quickSelectOption} ${everyThursday ? styles.selected : ''}`}>
-                          <input
-                            type="checkbox"
-                            checked={everyThursday}
-                            onChange={e => toggleEveryThursday(e.target.checked)}
-                          />
-                          Every Thursday
-                        </label>
-                      </div>
-
-                      <div className={styles.sessionsGrid}>
+                    <div className={styles.sessionsGrid}>
                         {sessions.map(session => {
                           const { day, date } = formatDate(session.session_date)
                           const isSelected = selectedSessions.includes(session.id)
@@ -466,8 +417,7 @@ export default function ToddlerRegistrationPage() {
                             </label>
                           )
                         })}
-                      </div>
-                    </>
+                    </div>
                   )}
                 </div>
 
@@ -617,51 +567,29 @@ export default function ToddlerRegistrationPage() {
           ) : sessions.length === 0 ? (
             <p>No sessions available at the moment.</p>
           ) : (
-            <>
-              {/* Quick select options */}
-              <div className={styles.quickSelect}>
-                <label className={`${styles.quickSelectOption} ${everyTuesday ? styles.selected : ''}`}>
-                  <input
-                    type="checkbox"
-                    checked={everyTuesday}
-                    onChange={e => toggleEveryTuesday(e.target.checked)}
-                  />
-                  Every Tuesday
-                </label>
-                <label className={`${styles.quickSelectOption} ${everyThursday ? styles.selected : ''}`}>
-                  <input
-                    type="checkbox"
-                    checked={everyThursday}
-                    onChange={e => toggleEveryThursday(e.target.checked)}
-                  />
-                  Every Thursday
-                </label>
-              </div>
+            <div className={styles.sessionsGrid}>
+              {sessions.map(session => {
+                const { day, date } = formatDate(session.session_date)
+                const spotsLeft = session.capacity - session.current_bookings
+                const isSelected = selectedSessions.includes(session.id)
 
-              <div className={styles.sessionsGrid}>
-                {sessions.map(session => {
-                  const { day, date } = formatDate(session.session_date)
-                  const spotsLeft = session.capacity - session.current_bookings
-                  const isSelected = selectedSessions.includes(session.id)
-
-                  return (
-                    <label
-                      key={session.id}
-                      className={`${styles.sessionOption} ${isSelected ? styles.selected : ''}`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={() => toggleSession(session.id)}
-                      />
-                      <div className={styles.sessionDay}>{day}</div>
-                      <div className={styles.sessionDate}>{date}</div>
-                      <div className={styles.sessionSpots}>{spotsLeft} spots left</div>
-                    </label>
-                  )
-                })}
-              </div>
-            </>
+                return (
+                  <label
+                    key={session.id}
+                    className={`${styles.sessionOption} ${isSelected ? styles.selected : ''}`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => toggleSession(session.id)}
+                    />
+                    <div className={styles.sessionDay}>{day}</div>
+                    <div className={styles.sessionDate}>{date}</div>
+                    <div className={styles.sessionSpots}>{spotsLeft} spots left</div>
+                  </label>
+                )
+              })}
+            </div>
           )}
         </div>
 
