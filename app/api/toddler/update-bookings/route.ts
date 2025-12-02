@@ -1,32 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { sendTelegramMessage, getAdminTelegramIds } from '@/utils/telegram'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
-
-// Send Telegram notification
-async function sendTelegramNotification(message: string) {
-  const botToken = process.env.TELEGRAM_BOT_TOKEN
-  const chatId = process.env.TELEGRAM_CHAT_ID
-
-  if (!botToken || !chatId) return
-
-  try {
-    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: message,
-        parse_mode: 'HTML'
-      })
-    })
-  } catch (err) {
-    console.error('Telegram notification failed:', err)
-  }
-}
 
 /**
  * POST /api/toddler/update-bookings
@@ -151,18 +130,24 @@ export async function POST(request: NextRequest) {
 
     // Send Telegram notification
     if (results.booked > 0 || results.cancelled > 0) {
-      let message = `<b>Toddler Class Update</b>\n\n`
-      message += `Parent: ${registration?.parent_name || 'Unknown'}\n`
-      message += `Email: ${registration?.email || 'Unknown'}\n\n`
+      let message = `👶 <b>Toddler Class Update</b>\n\n`
+      message += `👨‍👩‍👦 <b>Parent:</b> ${registration?.parent_name || 'Unknown'}\n`
+      message += `📧 <b>Email:</b> ${registration?.email || 'Unknown'}\n\n`
 
       if (results.booked > 0) {
-        message += `<b>New bookings:</b> ${results.booked} session(s)\n`
+        message += `✅ <b>New bookings:</b> ${results.booked} session(s)\n`
       }
       if (results.cancelled > 0) {
-        message += `<b>Cancelled:</b> ${results.cancelled} session(s)\n`
+        message += `❌ <b>Cancelled:</b> ${results.cancelled} session(s)\n`
       }
 
-      await sendTelegramNotification(message)
+      message += `\n🔗 <a href="https://phuketcamp.com/admin">View in Admin</a>`
+
+      // Send to all admins
+      const adminIds = await getAdminTelegramIds()
+      for (const adminId of adminIds) {
+        await sendTelegramMessage(adminId, message)
+      }
     }
 
     return NextResponse.json({
