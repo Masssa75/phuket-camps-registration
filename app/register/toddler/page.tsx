@@ -410,6 +410,7 @@ export default function ToddlerRegistrationPage() {
                     {lookingUp ? 'Looking...' : 'Find'}
                   </button>
                 </div>
+                {error && <div className={styles.error}>{error}</div>}
               </div>
             ) : (
               <>
