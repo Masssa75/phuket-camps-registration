@@ -99,9 +99,11 @@ export default function ChristmasMarketPage() {
           />
           <div className="hero-gradient"></div>
         </div>
+        <div className="hero-logo">
+          <img src="/Logo with text.png" alt="Bamboo Valley" />
+        </div>
         <div className="hero-content">
           <h1>Christmas Market</h1>
-          <p className="hero-subtitle">at Bamboo Valley Phuket</p>
           <div className="hero-date-badge">
             <span className="hero-day">Saturday, Dec 6</span>
             <span className="hero-time">4 PM - 7 PM</span>
@@ -109,23 +111,19 @@ export default function ChristmasMarketPage() {
         </div>
       </section>
 
-      {/* Quick Highlights - Hook them fast */}
-      <section className="highlights">
-        <div className="highlight-strip">
-          <div className="highlight-item">
-            <img src="/images/christmas-market/icon-wool.png" alt="" />
-            <span>20+ Vendors</span>
-          </div>
-          <div className="highlight-item">
-            <img src="/images/christmas-market/icon-coffee.png" alt="" />
-            <span>Food & Drinks</span>
-          </div>
-          <div className="highlight-item">
-            <img src="/images/christmas-market/icon-bowl.png" alt="" />
+      {/* Activity Images - Visual hook */}
+      <section className="activities">
+        <div className="activity-grid">
+          <div className="activity-card">
+            <img src="/images/christmas-market/activity-sound-healing.png" alt="Sound Healing Session" />
             <span>Sound Healing</span>
           </div>
-          <div className="highlight-item">
-            <img src="/images/christmas-market/icon-scissors.png" alt="" />
+          <div className="activity-card">
+            <img src="/images/christmas-market/activity-animals.png" alt="Animal Care" />
+            <span>Animal Care</span>
+          </div>
+          <div className="activity-card">
+            <img src="/images/christmas-market/activity-sound-healing.png" alt="Kids Crafts" />
             <span>Kids Crafts</span>
           </div>
         </div>
