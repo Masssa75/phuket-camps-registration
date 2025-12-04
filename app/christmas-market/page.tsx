@@ -101,9 +101,9 @@ export default function ChristmasMarketPage() {
         </div>
         <div className="hero-logo">
           <img src="/Logo with text.png" alt="Bamboo Valley" />
+          <h1 className="hero-title">Christmas Market</h1>
         </div>
         <div className="hero-content">
-          <h1>Christmas Market</h1>
           <div className="hero-date-badge">
             <span className="hero-day">Saturday, Dec 6</span>
             <span className="hero-time">4 PM - 7 PM</span>
