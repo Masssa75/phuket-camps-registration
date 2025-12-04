@@ -50,14 +50,14 @@
 }
 
 .hero-logo img {
-  height: clamp(100px, 20vw, 300px);
+  height: 100px;
   width: auto;
   filter: drop-shadow(0 4px 15px rgba(255, 255, 255, 0.95));
 }
 
 .hero-title {
   font-family: 'Mountains of Christmas', cursive;
-  font-size: clamp(2.8rem, 12vw, 9rem);
+  font-size: 2.8rem;
   font-weight: 700;
   color: #8B2323;
   text-shadow:
@@ -65,6 +65,26 @@
     0 0 30px rgba(255, 255, 255, 0.9);
   margin: 0;
   line-height: 1;
+}
+
+/* Tablet: 768px+ */
+@media (min-width: 768px) {
+  .hero-logo img {
+    height: 160px;
+  }
+  .hero-title {
+    font-size: 5rem;
+  }
+}
+
+/* Desktop: 1024px+ */
+@media (min-width: 1024px) {
+  .hero-logo img {
+    height: 220px;
+  }
+  .hero-title {
+    font-size: 7rem;
+  }
 }
 
 .hero-title-sub {
