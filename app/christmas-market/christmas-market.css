@@ -50,14 +50,14 @@
 }
 
 .hero-logo img {
-  height: 100px;
+  height: 120px;
   width: auto;
   filter: drop-shadow(0 4px 15px rgba(255, 255, 255, 0.95));
 }
 
 .hero-title {
   font-family: 'Mountains of Christmas', cursive;
-  font-size: 2.8rem;
+  font-size: 2.2rem;
   font-weight: 700;
   color: #8B2323;
   text-shadow:
@@ -83,7 +83,7 @@
     height: 220px;
   }
   .hero-title {
-    font-size: 7rem;
+    font-size: 9rem;
   }
 }
 
