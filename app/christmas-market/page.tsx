@@ -172,7 +172,7 @@ export default function ChristmasMarketPage() {
           </div>
         </section>
 
-        {/* Raffle Section */}
+        {/* Raffle Section - Commented out until finalized
         <section className="raffle-card">
           <div className="raffle-badge">FREE ENTRY</div>
           <h2>Win Amazing Prizes!</h2>
@@ -229,6 +229,7 @@ export default function ChristmasMarketPage() {
             </button>
           </form>
         </section>
+        */}
 
         {/* Location */}
         <section className="location-card">
