@@ -69,7 +69,7 @@ export default function ChristmasMarketPage() {
           <h1>You're Entered!</h1>
           <p>Thanks for entering our raffle. Winners will be announced at the Lucky Draw at 6:30 PM!</p>
           <div className="success-details">
-            <h3>See You Friday!</h3>
+            <h3>See You Saturday!</h3>
             <p><strong>December 6, 2025</strong></p>
             <p>4:00 PM - 7:00 PM</p>
             <p>Bamboo Valley Phuket</p>
@@ -103,7 +103,7 @@ export default function ChristmasMarketPage() {
           <h1>Christmas Market</h1>
           <p className="hero-subtitle">at Bamboo Valley Phuket</p>
           <div className="hero-date-badge">
-            <span className="hero-day">Friday, Dec 6</span>
+            <span className="hero-day">Saturday, Dec 6</span>
             <span className="hero-time">4 PM - 7 PM</span>
           </div>
         </div>
