@@ -93,7 +93,7 @@ export default function ChristmasMarketPage() {
       <section className="hero">
         <div className="hero-image-container">
           <img
-            src="/images/christmas-market/hero-illustration.jpg"
+            src="/images/christmas-market/hero-horizontal.png"
             alt="Bamboo Valley Christmas Market"
             className="hero-img"
           />
