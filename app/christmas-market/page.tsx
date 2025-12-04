@@ -94,7 +94,7 @@ export default function ChristmasMarketPage() {
           </div>
 
           <a
-            href="https://maps.google.com/?q=3/74+Moo+4+Cherngtalay+Thalang+Phuket+83110"
+            href="https://maps.app.goo.gl/t1AdeUKvhAx5tJ2h7"
             target="_blank"
             rel="noopener noreferrer"
             className="directions-button"
@@ -287,7 +287,7 @@ export default function ChristmasMarketPage() {
             <p className="location-address">3/74 Moo 4, Cherngtalay, Thalang<br/>Phuket 83110, Thailand</p>
             <div className="location-buttons">
               <a
-                href="https://maps.google.com/?q=3/74+Moo+4+Cherngtalay+Thalang+Phuket+83110"
+                href="https://maps.app.goo.gl/t1AdeUKvhAx5tJ2h7"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="location-button primary"
