@@ -123,8 +123,8 @@ export default function ChristmasMarketPage() {
             <span>Animal Care</span>
           </div>
           <div className="activity-card">
-            <img src="/images/christmas-market/activity-sound-healing.png" alt="Kids Crafts" />
-            <span>Kids Crafts</span>
+            <img src="/images/christmas-market/activity-crafts.png" alt="Arts & Crafts" />
+            <span>Arts & Crafts</span>
           </div>
         </div>
       </section>
