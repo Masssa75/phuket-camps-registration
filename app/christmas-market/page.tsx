@@ -126,6 +126,10 @@ export default function ChristmasMarketPage() {
             <img src="/images/christmas-market/activity-crafts.png" alt="Arts & Crafts" />
             <span>Arts & Crafts</span>
           </div>
+          <div className="activity-card">
+            <img src="/images/christmas-market/vendors.png" alt="Market Vendors" />
+            <span>20+ Vendors</span>
+          </div>
         </div>
       </section>
 
