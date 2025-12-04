@@ -250,22 +250,22 @@ export default function ChristmasMarketPage() {
           <h2>What to Expect</h2>
           <div className="highlights-grid">
             <div className="highlight-card">
-              <span className="highlight-icon">🛍️</span>
+              <img src="/images/christmas-market/icon-wool.png" alt="" className="highlight-icon-img" />
               <h3>20+ Local Vendors</h3>
               <p>Handmade crafts, unique gifts, and artisan goods</p>
             </div>
             <div className="highlight-card">
-              <span className="highlight-icon">🍪</span>
+              <img src="/images/christmas-market/icon-coffee.png" alt="" className="highlight-icon-img" />
               <h3>Festive Food & Drinks</h3>
               <p>Delicious treats with a tropical twist</p>
             </div>
             <div className="highlight-card">
-              <span className="highlight-icon">🔔</span>
+              <img src="/images/christmas-market/icon-bowl.png" alt="" className="highlight-icon-img" />
               <h3>Sound Healing</h3>
               <p>Relaxing sessions for children and adults</p>
             </div>
             <div className="highlight-card">
-              <span className="highlight-icon">🎨</span>
+              <img src="/images/christmas-market/icon-scissors.png" alt="" className="highlight-icon-img" />
               <h3>Kids Activities</h3>
               <p>Craft workshops and animal care</p>
             </div>

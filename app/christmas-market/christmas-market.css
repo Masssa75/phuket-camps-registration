@@ -309,6 +309,13 @@ select {
   margin-bottom: 8px;
 }
 
+.highlight-icon-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
 .highlight-card h3 {
   font-size: 1rem;
   color: #5D7A5D;
