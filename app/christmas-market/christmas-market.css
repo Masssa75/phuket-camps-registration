@@ -50,14 +50,14 @@
 }
 
 .hero-logo img {
-  height: 120px;
+  height: 160px;
   width: auto;
   filter: drop-shadow(0 4px 15px rgba(255, 255, 255, 0.95));
 }
 
 .hero-title {
   font-family: 'Mountains of Christmas', cursive;
-  font-size: 2.2rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: #8B2323;
   text-shadow:
@@ -65,15 +65,17 @@
     0 0 30px rgba(255, 255, 255, 0.9);
   margin: 0;
   line-height: 1;
+  white-space: nowrap;
 }
 
 /* Tablet: 768px+ */
 @media (min-width: 768px) {
   .hero-logo img {
-    height: 160px;
+    height: 180px;
   }
   .hero-title {
     font-size: 5rem;
+    white-space: normal;
   }
 }
 
