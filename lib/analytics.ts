@@ -25,7 +25,7 @@ export async function getTopPages(limit: number = 10) {
     property: `properties/${propertyId}`,
     dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
     dimensions: [{ name: 'pageTitle' }, { name: 'pagePath' }],
-    metrics: [{ name: 'screenPageViews' }],
+    metrics: [{ name: 'screenPageViews' }, { name: 'activeUsers' }],
     limit,
     orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
   })
