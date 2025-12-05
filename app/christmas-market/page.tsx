@@ -145,6 +145,11 @@ export default function ChristmasMarketPage() {
         </div>
       </section>
 
+      {/* Free Entry Banner */}
+      <div className="free-entry-banner">
+        <span className="free-entry-text">FREE ENTRY</span>
+      </div>
+
       {/* Activity Images - Visual hook */}
       <section className="activities">
         <div className="activity-grid">

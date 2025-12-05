@@ -159,6 +159,31 @@
 }
 
 /* ============================================
+   FREE ENTRY BANNER
+   ============================================ */
+.free-entry-banner {
+  background: linear-gradient(135deg, #4A6741 0%, #3D5A35 100%);
+  padding: 14px 20px;
+  text-align: center;
+}
+
+.free-entry-text {
+  font-family: 'Mountains of Christmas', cursive;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 3px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+  .free-entry-text {
+    font-size: 2.2rem;
+    letter-spacing: 5px;
+  }
+}
+
+/* ============================================
    ACTIVITY IMAGES
    ============================================ */
 .activities {
