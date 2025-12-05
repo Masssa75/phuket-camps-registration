@@ -51,12 +51,19 @@ export async function getConversionEvents() {
     property: `properties/${propertyId}`,
     dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
     dimensions: [{ name: 'eventName' }],
-    metrics: [{ name: 'eventCount' }],
+    metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
     dimensionFilter: {
       filter: {
         fieldName: 'eventName',
         inListFilter: {
-          values: ['registration_click', 'whatsapp_click', 'video_complete', 'map_click'],
+          values: [
+            'registration_click',
+            'whatsapp_click',
+            'video_complete',
+            'map_click',
+            'scroll_to_location',
+            'activity_click'
+          ],
         },
       },
     },

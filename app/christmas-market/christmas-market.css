@@ -178,6 +178,12 @@
   flex: 1;
   max-width: 180px;
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.activity-card:hover {
+  transform: scale(1.05);
 }
 
 .activity-card img {

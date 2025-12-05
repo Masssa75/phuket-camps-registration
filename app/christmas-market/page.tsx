@@ -22,14 +22,39 @@ export default function ChristmasMarketPage() {
     utm_campaign: ''
   })
 
-  const trackEvent = (eventName: string) => {
+  const trackEvent = (eventName: string, extraParams?: Record<string, string>) => {
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', eventName, {
         event_category: 'christmas_market',
-        event_label: 'christmas_market_page'
+        event_label: 'christmas_market_page',
+        utm_source: utmParams.utm_source,
+        utm_medium: utmParams.utm_medium,
+        utm_campaign: utmParams.utm_campaign,
+        ...extraParams
       })
     }
   }
+
+  // Track scroll to location section
+  useEffect(() => {
+    const locationSection = document.querySelector('.location-card')
+    if (!locationSection) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            trackEvent('scroll_to_location')
+            observer.disconnect() // Only track once
+          }
+        })
+      },
+      { threshold: 0.5 }
+    )
+
+    observer.observe(locationSection)
+    return () => observer.disconnect()
+  }, [utmParams])
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -123,19 +148,19 @@ export default function ChristmasMarketPage() {
       {/* Activity Images - Visual hook */}
       <section className="activities">
         <div className="activity-grid">
-          <div className="activity-card">
+          <div className="activity-card" onClick={() => trackEvent('activity_click', { activity: 'sound_healing' })}>
             <img src="/images/christmas-market/activity-sound-healing.png" alt="Sound Healing Session" />
             <span>Sound Healing</span>
           </div>
-          <div className="activity-card">
+          <div className="activity-card" onClick={() => trackEvent('activity_click', { activity: 'animal_care' })}>
             <img src="/images/christmas-market/activity-animals.png" alt="Animal Care" />
             <span>Animal Care</span>
           </div>
-          <div className="activity-card">
+          <div className="activity-card" onClick={() => trackEvent('activity_click', { activity: 'arts_crafts' })}>
             <img src="/images/christmas-market/activity-crafts.png" alt="Arts & Crafts" />
             <span>Arts & Crafts</span>
           </div>
-          <div className="activity-card">
+          <div className="activity-card" onClick={() => trackEvent('activity_click', { activity: 'vendors' })}>
             <img src="/images/christmas-market/vendors.png" alt="Market Vendors" />
             <span>20+ Vendors</span>
           </div>
