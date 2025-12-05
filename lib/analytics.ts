@@ -56,7 +56,7 @@ export async function getConversionEvents() {
       filter: {
         fieldName: 'eventName',
         inListFilter: {
-          values: ['registration_click', 'whatsapp_click', 'video_complete'],
+          values: ['registration_click', 'whatsapp_click', 'video_complete', 'map_click'],
         },
       },
     },

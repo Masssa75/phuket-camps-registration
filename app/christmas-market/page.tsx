@@ -22,6 +22,15 @@ export default function ChristmasMarketPage() {
     utm_campaign: ''
   })
 
+  const trackEvent = (eventName: string) => {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', eventName, {
+        event_category: 'christmas_market',
+        event_label: 'christmas_market_page'
+      })
+    }
+  }
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     setUtmParams({
@@ -241,10 +250,22 @@ export default function ChristmasMarketPage() {
           <p className="location-name">Bamboo Valley Phuket</p>
           <p className="location-address">3/74 Moo 4, Cherngtalay, Thalang</p>
           <div className="location-buttons">
-            <a href="https://maps.app.goo.gl/t1AdeUKvhAx5tJ2h7" target="_blank" rel="noopener noreferrer" className="btn-primary">
+            <a
+              href="https://maps.app.goo.gl/t1AdeUKvhAx5tJ2h7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+              onClick={() => trackEvent('map_click')}
+            >
               Open in Maps
             </a>
-            <a href="https://wa.me/66989124218" target="_blank" rel="noopener noreferrer" className="btn-secondary">
+            <a
+              href="https://wa.me/66989124218"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+              onClick={() => trackEvent('whatsapp_click')}
+            >
               WhatsApp
             </a>
           </div>
