@@ -10,7 +10,7 @@ const auth = new google.auth.GoogleAuth({
 
 const searchconsole = google.searchconsole({ version: 'v1', auth })
 
-const siteUrl = 'sc-domain:phuketcamp.com' // or 'https://phuketcamp.com/'
+const siteUrl = 'https://phuketcamp.com/' // URL prefix property
 
 export async function getSearchQueries(days: number = 7, limit: number = 20) {
   const endDate = new Date()
