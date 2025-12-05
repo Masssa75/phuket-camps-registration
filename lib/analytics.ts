@@ -72,6 +72,24 @@ export async function getConversionEvents() {
   return response
 }
 
+export async function getRetentionBySource() {
+  const [response] = await analyticsDataClient.runReport({
+    property: `properties/${propertyId}`,
+    dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
+    dimensions: [{ name: 'sessionSource' }],
+    metrics: [
+      { name: 'sessions' },
+      { name: 'activeUsers' },
+      { name: 'averageSessionDuration' },
+      { name: 'screenPageViewsPerSession' }
+    ],
+    orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
+    limit: 15,
+  })
+
+  return response
+}
+
 export async function getOverallStats() {
   const [response] = await analyticsDataClient.runReport({
     property: `properties/${propertyId}`,

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getPageViews, getTopPages, getTrafficSources, getConversionEvents, getOverallStats } from '@/lib/analytics'
+import { getPageViews, getTopPages, getTrafficSources, getConversionEvents, getOverallStats, getRetentionBySource } from '@/lib/analytics'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -23,6 +23,9 @@ export async function GET(request: Request) {
         break
       case 'overview':
         data = await getOverallStats()
+        break
+      case 'retention':
+        data = await getRetentionBySource()
         break
       default:
         return NextResponse.json({ error: 'Invalid type parameter' }, { status: 400 })
