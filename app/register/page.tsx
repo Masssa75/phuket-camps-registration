@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import { trackEvent, useScrollTracking } from '@/components/Analytics'
 import ContactSection from '@/components/registration/ContactSection'
 import ParentInfoSection from '@/components/registration/ParentInfoSection'
 import EmergencyContactSection from '@/components/registration/EmergencyContactSection'
@@ -94,14 +95,27 @@ function RegisterContent() {
   })
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
+  const [formStarted, setFormStarted] = useState(false)
+
+  // Track scroll depth
+  useScrollTracking()
 
   // Component lifecycle logging
   useEffect(() => {
     console.log('🚀 [COMPONENT] RegisterContent mounted')
+    trackEvent('page_view', { page: 'register', camp: campSlug })
     return () => {
       console.log('💀 [COMPONENT] RegisterContent unmounting')
     }
   }, [])
+
+  // Track form start on first interaction
+  const handleFormInteraction = () => {
+    if (!formStarted) {
+      setFormStarted(true)
+      trackEvent('form_start', { form: 'registration', camp: campSlug })
+    }
+  }
 
   useEffect(() => {
     const fetchCamp = async () => {
@@ -198,6 +212,7 @@ function RegisterContent() {
       setChildren(prev => prev.map(c => c.id === editingChildId ? currentChild : c))
     } else {
       setChildren(prev => [...prev, currentChild])
+      trackEvent('child_added', { camp: campSlug, program: currentChild.selectedProgram })
     }
 
     setShowChildForm(false)
@@ -212,6 +227,8 @@ function RegisterContent() {
     e.preventDefault()
     const submitStartTime = performance.now()
     console.log('🚀 [SUBMIT START]', new Date().toISOString(), 'Browser:', navigator.userAgent)
+
+    trackEvent('form_submit_attempt', { camp: campSlug, children_count: children.length })
 
     setSubmitting(true)
     setFormErrors({})
@@ -300,6 +317,11 @@ function RegisterContent() {
       if (registrations.length > 0) {
         const totalTime = performance.now() - submitStartTime
         console.log(`🎉 [SUCCESS] All registrations complete (${totalTime}ms total)`)
+        trackEvent('registration_complete', {
+          camp: campSlug,
+          children_count: registrations.length,
+          duration_ms: Math.round(totalTime)
+        })
 
         // Scroll first, then set state - gives Safari time to process scroll before re-render
         console.log(`📜 [SCROLL] Scrolling to top first`)
@@ -501,7 +523,7 @@ function RegisterContent() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} onFocus={handleFormInteraction} className="space-y-8">
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Parent Contact Information</h2>
             <div className="space-y-6">

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { CampsPageTracking } from '@/components/Analytics'
 
 export const metadata: Metadata = {
   title: 'Upcoming Camps - Phuket Nature Camp | Bamboo Valley',
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 export default function CampsPage() {
   return (
     <div style={{minHeight: '100vh', background: '#f8f9fa'}}>
+      <CampsPageTracking />
       {/* Upcoming Camps */}
       <section style={{padding: '40px 20px 60px', backgroundImage: 'url(/backgrounds/5F1B0766-367A-4892-8D9E-D9006FBB64EB.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', minHeight: '100vh'}}>
         <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.85)'}}></div>

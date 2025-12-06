@@ -3,6 +3,7 @@ import { MessageCircle } from 'lucide-react'
 import './home.css'
 import type { Metadata } from 'next'
 import HeroVideo from '@/components/HeroVideo'
+import { HomePageTracking } from '@/components/Analytics'
 
 export const metadata: Metadata = {
   title: 'Phuket Nature Camp - Christmas, Winter, Songkran & Summer Camps 2025-2026 | Bamboo Valley',
@@ -38,6 +39,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div>
+      <HomePageTracking />
       {/* JSON-LD Structured Data for SEO */}
       <script
         type="application/ld+json"

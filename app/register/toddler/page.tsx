@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import styles from './toddler.module.css'
+import { trackEvent, useScrollTracking } from '@/components/Analytics'
 
 interface Session {
   id: string
@@ -60,6 +61,14 @@ export default function ToddlerRegistrationPage() {
   const [sessionsRemaining, setSessionsRemaining] = useState(0)
   const [alreadyBookedSessions, setAlreadyBookedSessions] = useState<string[]>([])
   const [registrationId, setRegistrationId] = useState<string>('')
+
+  // Track scroll depth
+  useScrollTracking()
+
+  // Track page view on mount
+  useEffect(() => {
+    trackEvent('page_view', { page: 'register_toddler' })
+  }, [])
 
   // Fetch sessions on mount
   useEffect(() => {
@@ -228,6 +237,7 @@ export default function ToddlerRegistrationPage() {
           return
         }
 
+        trackEvent('toddler_registration_complete', { type: 'returning', sessions: selectedSessions.length })
         setSubmitted(true)
         return
       } catch (err) {
@@ -295,6 +305,12 @@ export default function ToddlerRegistrationPage() {
         return
       }
 
+      trackEvent('toddler_registration_complete', {
+        type: 'new',
+        sessions: selectedSessions.length,
+        package: packageType,
+        children_count: children.filter(c => c.name).length
+      })
       setSubmitted(true)
     } catch (err) {
       console.error('Registration error:', err)
