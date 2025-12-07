@@ -4,12 +4,12 @@ import { sendTelegramMessage, getAdminTelegramIds } from '@/utils/telegram'
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, phone, markets } = await request.json()
+    const { name, email, phone, products, markets } = await request.json()
 
     // Validate required fields
-    if (!name || !email || !phone) {
+    if (!name || !email || !phone || !products) {
       return NextResponse.json(
-        { error: 'Name, email, and phone are required' },
+        { error: 'Name, email, phone, and products are required' },
         { status: 400 }
       )
     }
@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
         name,
         email,
         phone,
+        products,
         markets: markets || []
       })
       .select()
@@ -47,6 +48,7 @@ export async function POST(request: NextRequest) {
 👤 <b>Name:</b> ${name}
 📧 <b>Email:</b> ${email}
 📱 <b>Phone:</b> ${phone}
+🛒 <b>Products:</b> ${products}
 🎯 <b>Markets:</b> ${marketsList}
 🕐 <b>Registered:</b> ${new Date().toLocaleString()}
     `.trim()

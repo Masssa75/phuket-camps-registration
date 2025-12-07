@@ -8,6 +8,7 @@ export default function MarketVendorPage() {
     name: '',
     email: '',
     phone: '',
+    products: '',
     markets: [] as string[]
   })
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
@@ -40,7 +41,7 @@ export default function MarketVendorPage() {
       }
 
       setStatus('success')
-      setFormData({ name: '', email: '', phone: '', markets: [] })
+      setFormData({ name: '', email: '', phone: '', products: '', markets: [] })
     } catch (error) {
       setStatus('error')
       setErrorMessage(error instanceof Error ? error.message : 'Something went wrong')
@@ -118,6 +119,18 @@ export default function MarketVendorPage() {
               />
             </div>
 
+            {/* Products */}
+            <div style={{marginBottom: '20px'}}>
+              <label style={{display: 'block', color: '#333', fontWeight: 600, marginBottom: '8px'}}>What do you sell? *</label>
+              <textarea
+                required
+                value={formData.products}
+                onChange={e => setFormData(prev => ({ ...prev, products: e.target.value }))}
+                style={{width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', boxSizing: 'border-box', minHeight: '80px', resize: 'vertical'}}
+                placeholder="e.g. Handmade jewelry, organic soaps, baked goods..."
+              />
+            </div>
+
             {/* Markets */}
             <div style={{marginBottom: '25px'}}>
               <label style={{display: 'block', color: '#333', fontWeight: 600, marginBottom: '12px'}}>Which markets are you interested in?</label>
@@ -129,7 +142,7 @@ export default function MarketVendorPage() {
                     onChange={() => handleMarketChange('christmas-2025')}
                     style={{width: '20px', height: '20px', accentColor: '#7a9a3b'}}
                   />
-                  <span style={{color: '#555'}}>🎄 Christmas Market 2025 (December)</span>
+                  <span style={{color: '#555'}}>🎄 Christmas Market - Saturday, December 6, 2025</span>
                 </label>
                 <label style={{display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer'}}>
                   <input
@@ -138,7 +151,7 @@ export default function MarketVendorPage() {
                     onChange={() => handleMarketChange('easter-2026')}
                     style={{width: '20px', height: '20px', accentColor: '#7a9a3b'}}
                   />
-                  <span style={{color: '#555'}}>🐰 Easter Market 2026 (April)</span>
+                  <span style={{color: '#555'}}>🐰 Easter Market - Saturday, March 28, 2026</span>
                 </label>
               </div>
             </div>
