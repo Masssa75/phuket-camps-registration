@@ -142,7 +142,7 @@ export default function MarketVendorPage() {
                     onChange={() => handleMarketChange('christmas-2025')}
                     style={{width: '20px', height: '20px', accentColor: '#7a9a3b'}}
                   />
-                  <span style={{color: '#555'}}>🎄 Christmas Market - Saturday, December 6, 2025</span>
+                  <span style={{color: '#555'}}>🎄 Christmas Market - Saturday, December 5, 2026</span>
                 </label>
                 <label style={{display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer'}}>
                   <input
