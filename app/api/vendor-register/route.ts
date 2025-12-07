@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     // Send Telegram notification
     const marketsList = markets && markets.length > 0
-      ? markets.map((m: string) => m === 'christmas-2025' ? 'Christmas 2025' : 'Easter 2026').join(', ')
+      ? markets.map((m: string) => m === 'christmas-2026' ? 'Christmas 2026' : 'Easter 2026').join(', ')
       : 'Not specified'
 
     const message = `
