@@ -41,6 +41,15 @@ export async function POST(request: NextRequest) {
     const termsAcknowledged = formData.get('termsAcknowledged') === 'true'
     const allStatementsTrue = formData.get('allStatementsTrue') === 'true'
 
+    // Traffic source attribution
+    const utmSource = formData.get('utmSource') as string | null
+    const utmMedium = formData.get('utmMedium') as string | null
+    const utmCampaign = formData.get('utmCampaign') as string | null
+    const utmContent = formData.get('utmContent') as string | null
+    const utmTerm = formData.get('utmTerm') as string | null
+    const referrer = formData.get('referrer') as string | null
+    const landingPage = formData.get('landingPage') as string | null
+
     // Files
     const childPassport = formData.get('childPassport') as File | null
     const parentPassport1 = formData.get('parentPassport1') as File | null
@@ -119,7 +128,15 @@ export async function POST(request: NextRequest) {
         how_did_you_find: howDidYouFind,
         terms_acknowledged: termsAcknowledged,
         all_statements_true: allStatementsTrue,
-        payment_status: 'pending'
+        payment_status: 'pending',
+        // Traffic source attribution
+        utm_source: utmSource,
+        utm_medium: utmMedium,
+        utm_campaign: utmCampaign,
+        utm_content: utmContent,
+        utm_term: utmTerm,
+        referrer: referrer,
+        landing_page: landingPage
       })
       .select()
       .single()

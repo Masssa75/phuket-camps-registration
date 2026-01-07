@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { trackEvent, useScrollTracking } from '@/components/Analytics'
+import { captureTrafficSource, getTrafficSource, TrafficSource } from '@/utils/trafficSource'
 import ContactSection from '@/components/registration/ContactSection'
 import ParentInfoSection from '@/components/registration/ParentInfoSection'
 import EmergencyContactSection from '@/components/registration/EmergencyContactSection'
@@ -96,9 +97,17 @@ function RegisterContent() {
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
   const [formStarted, setFormStarted] = useState(false)
+  const [trafficSource, setTrafficSource] = useState<TrafficSource | null>(null)
 
   // Track scroll depth
   useScrollTracking()
+
+  // Capture traffic source on mount
+  useEffect(() => {
+    const source = captureTrafficSource()
+    setTrafficSource(source)
+    console.log('📊 [TRAFFIC] Captured traffic source:', source)
+  }, [])
 
   // Component lifecycle logging
   useEffect(() => {
@@ -287,6 +296,16 @@ function RegisterContent() {
           formData.append('howDidYouFind', permissions.howDidYouFind)
           formData.append('termsAcknowledged', permissions.termsAcknowledged.toString())
           formData.append('allStatementsTrue', permissions.allStatementsTrue.toString())
+
+          // Traffic source attribution
+          const ts = trafficSource || getTrafficSource()
+          if (ts.utm_source) formData.append('utmSource', ts.utm_source)
+          if (ts.utm_medium) formData.append('utmMedium', ts.utm_medium)
+          if (ts.utm_campaign) formData.append('utmCampaign', ts.utm_campaign)
+          if (ts.utm_content) formData.append('utmContent', ts.utm_content)
+          if (ts.utm_term) formData.append('utmTerm', ts.utm_term)
+          if (ts.referrer) formData.append('referrer', ts.referrer)
+          if (ts.landing_page) formData.append('landingPage', ts.landing_page)
 
           console.log(`🌐 [CHILD ${child.childName}] Sending API request... (${performance.now() - childStartTime}ms prep time)`)
 
