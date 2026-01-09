@@ -144,7 +144,7 @@ export default function Home() {
       />
 
       {/* Hero Section with Video */}
-      <section className="hero">
+      <section className="hero" data-track-section="hero">
         <HeroVideo />
         <img src="/Logo with text.png" alt="Bamboo Valley Phuket Nature Camps Logo" className="hero-logo" />
         <div className="hero-content">
@@ -172,7 +172,7 @@ export default function Home() {
       </section>
 
       {/* Upcoming Camps */}
-      <section style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/5F1B0766-367A-4892-8D9E-D9006FBB64EB.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
+      <section data-track-section="upcoming-camps" style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/5F1B0766-367A-4892-8D9E-D9006FBB64EB.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
         <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.85)'}}></div>
         <div style={{position: 'relative', zIndex: 1}}>
           <h2 className="section-title">Upcoming Camps</h2>
@@ -222,7 +222,7 @@ export default function Home() {
       </section>
 
       {/* Watch Them Grow Section */}
-      <section style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/BF210057-87F6-4A30-8F69-5FE03B3203F4.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
+      <section data-track-section="watch-them-grow" style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/BF210057-87F6-4A30-8F69-5FE03B3203F4.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
         <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.85)'}}></div>
         <div style={{position: 'relative', zIndex: 1}}>
           <h2 className="section-title">Watch Them Grow</h2>
@@ -253,7 +253,7 @@ export default function Home() {
       </section>
 
       {/* Choose Your Program */}
-      <section id="programs" style={{padding: '100px 20px', backgroundImage: 'url(/backgrounds/EBA7D34E-A638-4BB2-B685-E9A33A5AE49D.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
+      <section id="programs" data-track-section="choose-program" style={{padding: '100px 20px', backgroundImage: 'url(/backgrounds/EBA7D34E-A638-4BB2-B685-E9A33A5AE49D.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
         <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.88)'}}></div>
         <div style={{position: 'relative', zIndex: 1}}>
           <h2 style={{fontSize: '3rem', fontWeight: 800, marginBottom: '20px', textAlign: 'center', color: '#333'}}>Choose Your Program</h2>
@@ -294,7 +294,7 @@ export default function Home() {
       </section>
 
       {/* Activities Section */}
-      <section style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/77D501D4-63AB-4537-B054-39C17D4AEF33.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
+      <section data-track-section="activities" style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/77D501D4-63AB-4537-B054-39C17D4AEF33.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
         <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.82)'}}></div>
         <div style={{position: 'relative', zIndex: 1}}>
           <h2 className="section-title">Daily Activities</h2>
@@ -318,7 +318,7 @@ export default function Home() {
       </section>
 
       {/* Field Trips Section */}
-      <section style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/94FC350D-D518-4DF6-A2B3-3F74EAE7FD26.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
+      <section data-track-section="field-trips" style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/94FC350D-D518-4DF6-A2B3-3F74EAE7FD26.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
         <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.88)'}}></div>
         <div style={{position: 'relative', zIndex: 1}}>
           <h2 className="section-title">Field Trips - Maxi Camp</h2>
@@ -359,7 +359,7 @@ export default function Home() {
       </section>
 
       {/* Blog Preview Section */}
-      <section style={{padding: '80px 20px', background: 'linear-gradient(135deg, #BED7AF 0%, #DCEBE1 100%)'}}>
+      <section data-track-section="blog" style={{padding: '80px 20px', background: 'linear-gradient(135deg, #BED7AF 0%, #DCEBE1 100%)'}}>
         <div style={{maxWidth: '1200px', margin: '0 auto', textAlign: 'center'}}>
           <h2 style={{fontSize: '2.5rem', fontWeight: 800, marginBottom: '20px', color: '#2c3e2c'}}>Latest from Our Blog</h2>
           <p style={{fontSize: '1.1rem', color: '#5a6a5a', marginBottom: '50px'}}>Research-backed insights on nature education and child development</p>
@@ -393,7 +393,7 @@ export default function Home() {
       </section>
 
       {/* Register/Contact Section */}
-      <section id="register" style={{padding: '100px 20px', backgroundImage: 'url(/backgrounds/D64442BA-F797-41FF-87AD-A5E0DDBC289B.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', textAlign: 'center'}}>
+      <section id="register" data-track-section="register-cta" style={{padding: '100px 20px', backgroundImage: 'url(/backgrounds/D64442BA-F797-41FF-87AD-A5E0DDBC289B.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', textAlign: 'center'}}>
         <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.90)'}}></div>
         <div style={{position: 'relative', zIndex: 1}}>
           <h2 style={{fontSize: '3rem', fontWeight: 800, marginBottom: '30px', color: '#333'}}>Ready to Register?</h2>

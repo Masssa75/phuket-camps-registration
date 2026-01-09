@@ -49,3 +49,41 @@ export const trackVideoComplete = () => {
     label: 'Hero Video',
   })
 }
+
+// Section visibility tracking
+export const trackSectionView = (sectionName: string, page: string) => {
+  event({
+    action: 'section_view',
+    category: 'Engagement',
+    label: `${sectionName} | ${page}`,
+  })
+}
+
+// Section engagement time tracking
+export const trackSectionEngagement = (sectionName: string, page: string, timeSpent: number) => {
+  event({
+    action: 'section_engagement',
+    category: 'Engagement',
+    label: `${sectionName} | ${page}`,
+    value: timeSpent,
+  })
+}
+
+// Scroll depth tracking (enhanced)
+export const trackScrollDepth = (depth: number, page: string) => {
+  event({
+    action: 'scroll_depth',
+    category: 'Engagement',
+    label: page,
+    value: depth,
+  })
+}
+
+// CTA click tracking with context
+export const trackCTAClick = (buttonText: string, page: string, section: string) => {
+  event({
+    action: 'cta_click',
+    category: 'Engagement',
+    label: `${buttonText} | ${page} | ${section}`,
+  })
+}

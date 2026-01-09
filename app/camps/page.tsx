@@ -17,7 +17,7 @@ export default function CampsPage() {
     <div style={{minHeight: '100vh', background: '#f8f9fa'}}>
       <CampsPageTracking />
       {/* Upcoming Camps */}
-      <section style={{padding: '40px 20px 60px', backgroundImage: 'url(/backgrounds/5F1B0766-367A-4892-8D9E-D9006FBB64EB.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', minHeight: '100vh'}}>
+      <section data-track-section="camps-list" style={{padding: '40px 20px 60px', backgroundImage: 'url(/backgrounds/5F1B0766-367A-4892-8D9E-D9006FBB64EB.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', minHeight: '100vh'}}>
         <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.85)'}}></div>
         <div style={{position: 'relative', zIndex: 1, maxWidth: '900px', margin: '0 auto'}}>
           {/* Large centered logo */}
@@ -32,7 +32,7 @@ export default function CampsPage() {
 
           <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
             {/* Winter Camp */}
-            <div style={{background: 'linear-gradient(135deg, #e8f3ff 0%, #d8ebff 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
+            <div data-camp="winter-2026" style={{background: 'linear-gradient(135deg, #e8f3ff 0%, #d8ebff 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
               <div style={{fontSize: '3rem'}}>❄️</div>
               <div style={{flex: 1, minWidth: '200px'}}>
                 <h3 style={{color: '#4a90d9', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Winter Nature Camp</h3>
@@ -46,7 +46,7 @@ export default function CampsPage() {
             </div>
 
             {/* Songkran Camp */}
-            <div style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
+            <div data-camp="songkran-2026" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
               <div style={{fontSize: '3rem'}}>💦</div>
               <div style={{flex: 1, minWidth: '200px'}}>
                 <h3 style={{color: '#e67e22', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Easter/Songkran Nature Camp</h3>
@@ -60,7 +60,7 @@ export default function CampsPage() {
             </div>
 
             {/* Summer Camp */}
-            <div style={{background: 'linear-gradient(135deg, #e8fff0 0%, #d0ffe8 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
+            <div data-camp="summer-2026" style={{background: 'linear-gradient(135deg, #e8fff0 0%, #d0ffe8 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
               <div style={{fontSize: '3rem'}}>☀️</div>
               <div style={{flex: 1, minWidth: '200px'}}>
                 <h3 style={{color: '#27ae60', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Summer Nature Camp</h3>
@@ -79,7 +79,7 @@ export default function CampsPage() {
             </div>
 
             {/* Parent & Toddler Class */}
-            <div style={{background: 'linear-gradient(135deg, #f5e6ff 0%, #ead6ff 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
+            <div data-camp="toddler-class" style={{background: 'linear-gradient(135deg, #f5e6ff 0%, #ead6ff 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
               <div style={{fontSize: '3rem'}}>👶</div>
               <div style={{flex: 1, minWidth: '200px'}}>
                 <h3 style={{color: '#8b5cf6', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Parent & Toddler Class</h3>

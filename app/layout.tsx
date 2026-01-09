@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import './globals.css'
 import { GA_MEASUREMENT_ID } from '@/lib/gtag'
+import { EngagementTracker } from '@/components/Analytics'
 
 export const metadata: Metadata = {
   title: 'Phuket Nature Camp - Bamboo Valley Phuket',
@@ -54,6 +55,7 @@ export default function RootLayout({
             />
           </>
         )}
+        <EngagementTracker />
         {children}
       </body>
     </html>

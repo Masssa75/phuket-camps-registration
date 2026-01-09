@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
+import { trackScrollDepth, trackSectionView, trackSectionEngagement } from '@/lib/gtag'
 
 // Track custom events
 export function trackEvent(eventName: string, params?: Record<string, string | number>) {
@@ -184,6 +185,96 @@ export function CampsPageTracking() {
     })
 
   }, [])
+
+  return null
+}
+
+// Global engagement tracker - tracks section visibility and engagement time
+export function EngagementTracker() {
+  const pathname = usePathname()
+  const scrollMilestonesReached = useRef<Set<number>>(new Set())
+  const sectionsViewed = useRef<Set<string>>(new Set())
+  const sectionEntryTimes = useRef<Map<string, number>>(new Map())
+
+  // Reset tracking on page change
+  useEffect(() => {
+    scrollMilestonesReached.current = new Set()
+    sectionsViewed.current = new Set()
+    sectionEntryTimes.current = new Map()
+  }, [pathname])
+
+  // Scroll depth tracking with RAF throttle
+  const handleScroll = useCallback(() => {
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
+    if (scrollHeight <= 0) return
+
+    const scrollPercent = Math.round((window.scrollY / scrollHeight) * 100)
+    const milestones = [25, 50, 75, 100]
+
+    milestones.forEach(milestone => {
+      if (scrollPercent >= milestone && !scrollMilestonesReached.current.has(milestone)) {
+        scrollMilestonesReached.current.add(milestone)
+        trackScrollDepth(milestone, pathname)
+      }
+    })
+  }, [pathname])
+
+  // Section visibility tracking with Intersection Observer
+  useEffect(() => {
+    let rafId: number | null = null
+
+    const throttledScroll = () => {
+      if (rafId) return
+      rafId = requestAnimationFrame(() => {
+        handleScroll()
+        rafId = null
+      })
+    }
+
+    window.addEventListener('scroll', throttledScroll, { passive: true })
+
+    // Intersection Observer for section tracking
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          const sectionName = entry.target.getAttribute('data-track-section')
+          if (!sectionName) return
+
+          if (entry.isIntersecting) {
+            // Section came into view
+            if (!sectionsViewed.current.has(sectionName)) {
+              sectionsViewed.current.add(sectionName)
+              trackSectionView(sectionName, pathname)
+            }
+            // Record entry time for engagement tracking
+            sectionEntryTimes.current.set(sectionName, Date.now())
+          } else {
+            // Section left view - track engagement time
+            const entryTime = sectionEntryTimes.current.get(sectionName)
+            if (entryTime) {
+              const timeSpent = Math.round((Date.now() - entryTime) / 1000)
+              if (timeSpent > 0) {
+                trackSectionEngagement(sectionName, pathname, timeSpent)
+              }
+              sectionEntryTimes.current.delete(sectionName)
+            }
+          }
+        })
+      },
+      { threshold: 0.3 } // Trigger when 30% of section is visible
+    )
+
+    // Observe all sections with data-track-section attribute
+    document.querySelectorAll('[data-track-section]').forEach(section => {
+      observer.observe(section)
+    })
+
+    return () => {
+      window.removeEventListener('scroll', throttledScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+      observer.disconnect()
+    }
+  }, [pathname, handleScroll])
 
   return null
 }
