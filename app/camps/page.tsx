@@ -4,10 +4,10 @@ import { CampsPageTracking } from '@/components/Analytics'
 
 export const metadata: Metadata = {
   title: 'Upcoming Camps - Phuket Nature Camp | Bamboo Valley',
-  description: 'Register for our nature camps in Phuket: Christmas Camp Dec 2025, Winter Camp Jan-Mar 2026, Songkran Camp Apr 2026, Summer Camp Jun-Aug 2026. Ages 3-10.',
+  description: 'Register for our nature camps in Phuket: Winter Camp Jan-Mar 2026, Songkran Camp Apr 2026, Summer Camp Jun-Aug 2026. Ages 3-10.',
   openGraph: {
     title: 'Upcoming Nature Camps in Phuket',
-    description: 'Christmas, Winter, Songkran & Summer camps for children ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
+    description: 'Winter, Songkran & Summer camps for children ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
     url: 'https://phuketcamp.com/camps',
   }
 }
@@ -31,20 +31,6 @@ export default function CampsPage() {
           <p style={{textAlign: 'center', color: '#666', fontSize: '1.1rem', marginBottom: '40px'}}>Join us for nature-based learning adventures</p>
 
           <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
-            {/* Christmas Camp */}
-            <div style={{background: 'linear-gradient(135deg, #fef0e8 0%, #ffe8d8 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
-              <div style={{fontSize: '3rem'}}>🎄</div>
-              <div style={{flex: 1, minWidth: '200px'}}>
-                <h3 style={{color: '#d15b47', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Christmas Nature Camp</h3>
-                <div style={{color: '#d15b47', fontSize: '0.95rem', lineHeight: 1.6}}>
-                  Dec 15-26, 2025<br/>
-                  Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>
-                  <span style={{fontSize: '0.85em', opacity: 0.8}}>Early bird pricing (first price) available until Nov 15</span>
-                </div>
-              </div>
-              <Link href="/register?camp=christmas-2025" style={{background: '#7a9a3b', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
-            </div>
-
             {/* Winter Camp */}
             <div style={{background: 'linear-gradient(135deg, #e8f3ff 0%, #d8ebff 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
               <div style={{fontSize: '3rem'}}>❄️</div>

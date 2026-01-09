@@ -6,12 +6,12 @@ import HeroVideo from '@/components/HeroVideo'
 import { HomePageTracking } from '@/components/Analytics'
 
 export const metadata: Metadata = {
-  title: 'Phuket Nature Camp - Christmas, Winter, Songkran & Summer Camps 2025-2026 | Bamboo Valley',
-  description: 'Science-backed outdoor camp in Phuket building immunity, confidence, and life skills through nature. Christmas Dec 15-26, Winter Jan-Mar, Songkran Apr 6-10, Summer Jun-Aug. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
-  keywords: 'phuket camp, nature camp phuket, christmas camp thailand, winter camp phuket, easter camp phuket, songkran camp phuket, summer camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket',
+  title: 'Phuket Nature Camp - Winter, Songkran & Summer Camps 2026 | Bamboo Valley',
+  description: 'Science-backed outdoor camp in Phuket building immunity, confidence, and life skills through nature. Winter Jan-Mar, Songkran Apr 6-10, Summer Jun-Aug 2026. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
+  keywords: 'phuket camp, nature camp phuket, winter camp phuket, easter camp phuket, songkran camp phuket, summer camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket',
   openGraph: {
     title: 'Phuket Nature Camp - Nature Skills for Life',
-    description: 'Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-10. Licensed English teachers. Christmas & Winter programs available.',
+    description: 'Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-10. Licensed English teachers. Winter & Summer programs available.',
     images: [{
       url: 'https://phuketcamp.com/images/Confidence.jpeg',
       width: 1200,
@@ -65,26 +65,6 @@ export default function Home() {
             },
             "priceRange": "฿฿",
             "offers": [
-              {
-                "@type": "Offer",
-                "name": "Christmas Nature Camp - Mini Camp (Ages 3-6)",
-                "price": "11000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2025-12-15",
-                "validThrough": "2025-12-26",
-                "description": "Full day camp 8AM-5PM with organic meals, animal care, gardening, baking, yoga, arts & crafts"
-              },
-              {
-                "@type": "Offer",
-                "name": "Christmas Nature Camp - Maxi Camp (Ages 6-10)",
-                "price": "13000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2025-12-15",
-                "validThrough": "2025-12-26",
-                "description": "Full day camp with field trips including beach days, elephant sanctuary, marine biology, Muay Thai"
-              },
               {
                 "@type": "Offer",
                 "name": "Winter Nature Camp - Mini Camp (Ages 3-6)",
@@ -181,7 +161,7 @@ export default function Home() {
             <li>Arts & crafts</li>
           </ul>
           <a
-            href="https://wa.me/66989124218?text=Hi!%20I%27m%20interested%20in%20the%20Christmas%20Nature%20Camp."
+            href="https://wa.me/66989124218?text=Hi!%20I%27m%20interested%20in%20the%20Phuket%20Nature%20Camp."
             className="cta-button"
             style={{display: 'inline-flex', alignItems: 'center', gap: '12px'}}
           >
@@ -199,19 +179,6 @@ export default function Home() {
           <p className="section-subtitle">Join us for nature-based learning adventures</p>
 
           <div className="camp-list">
-            <div className="cute-item" style={{background: 'linear-gradient(135deg, #fef0e8 0%, #ffe8d8 100%)'}}>
-              <div className="cute-emoji">🎄</div>
-              <div className="cute-content">
-                <h3 style={{color: '#d15b47'}}>Christmas Nature Camp</h3>
-                <div className="cute-meta" style={{color: '#d15b47'}}>
-                  Dec 15-26, 2025<br/>
-                  Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>
-                  <span style={{fontSize: '0.85em', opacity: 0.8}}>Early bird pricing (first price) available until Nov 15</span>
-                </div>
-              </div>
-              <Link href="/register?camp=christmas-2025" className="cta-button" style={{display: 'inline-block'}}>Register</Link>
-            </div>
-
             <div className="cute-item" style={{background: 'linear-gradient(135deg, #e8f3ff 0%, #d8ebff 100%)'}}>
               <div className="cute-emoji">❄️</div>
               <div className="cute-content">
@@ -300,7 +267,7 @@ export default function Home() {
                 <h3>Mini Camp</h3>
                 <p className="age">Ages 3-6</p>
                 <p className="description">On-site nature activities: animal care, gardening, baking, yoga, arts & crafts</p>
-                <p className="schedule">Dec 15-19 & Dec 22-26 • 8AM-5PM</p>
+                <p className="schedule">Jan 19 - Mar 6, 2026 • 8AM-5PM</p>
                 <p className="price">11,000฿/week</p>
                 <a href="#register" className="cta-btn">Choose Mini Camp</a>
               </div>
@@ -314,7 +281,7 @@ export default function Home() {
                 <h3>Maxi Camp</h3>
                 <p className="age">Ages 6-10</p>
                 <p className="description">Field trips: beach days, elephant sanctuary, marine biology, Muay Thai</p>
-                <p className="schedule">Dec 15-19 & Dec 22-26 • 8AM-5PM</p>
+                <p className="schedule">Jan 19 - Mar 6, 2026 • 8AM-5PM</p>
                 <p className="price">13,000฿/week</p>
                 <p className="price-note">Pay by Nov 30 • Regular: 15,000฿</p>
                 <a href="#register" className="cta-btn">Choose Maxi Camp</a>
@@ -432,7 +399,7 @@ export default function Home() {
           <h2 style={{fontSize: '3rem', fontWeight: 800, marginBottom: '30px', color: '#333'}}>Ready to Register?</h2>
 
           <div style={{display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap', marginBottom: '60px'}}>
-            <a href="https://wa.me/66989124218?text=Hi!%20I%27m%20interested%20in%20the%20Christmas%20Nature%20Camp." style={{display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '20px 50px', background: '#25D366', color: 'white', textDecoration: 'none', borderRadius: '50px', fontSize: '1.3rem', fontWeight: 700, transition: 'all 0.3s', boxShadow: '0 6px 20px rgba(37, 211, 102, 0.4)'}}>
+            <a href="https://wa.me/66989124218?text=Hi!%20I%27m%20interested%20in%20the%20Phuket%20Nature%20Camp." style={{display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '20px 50px', background: '#25D366', color: 'white', textDecoration: 'none', borderRadius: '50px', fontSize: '1.3rem', fontWeight: 700, transition: 'all 0.3s', boxShadow: '0 6px 20px rgba(37, 211, 102, 0.4)'}}>
               <MessageCircle size={24} />
               WhatsApp: +66 98 912 4218
             </a>
