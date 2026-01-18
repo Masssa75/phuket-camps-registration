@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { trackEvent, useScrollTracking } from '@/components/Analytics'
-import { captureTrafficSource, getTrafficSource, TrafficSource } from '@/utils/trafficSource'
+import { getTrafficSource, TrafficSource } from '@/utils/trafficSource'
 import ContactSection from '@/components/registration/ContactSection'
 import ParentInfoSection from '@/components/registration/ParentInfoSection'
 import EmergencyContactSection from '@/components/registration/EmergencyContactSection'
@@ -102,11 +102,10 @@ function RegisterContent() {
   // Track scroll depth
   useScrollTracking()
 
-  // Capture traffic source on mount
+  // Get traffic source (captured globally in layout)
   useEffect(() => {
-    const source = captureTrafficSource()
+    const source = getTrafficSource()
     setTrafficSource(source)
-    console.log('📊 [TRAFFIC] Captured traffic source:', source)
   }, [])
 
   // Component lifecycle logging

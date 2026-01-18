@@ -3,6 +3,7 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
 import { trackScrollDepth, trackSectionView, trackSectionEngagement } from '@/lib/gtag'
+import { captureTrafficSource } from '@/utils/trafficSource'
 
 // Track custom events
 export function trackEvent(eventName: string, params?: Record<string, string | number>) {
@@ -275,6 +276,18 @@ export function EngagementTracker() {
       observer.disconnect()
     }
   }, [pathname, handleScroll])
+
+  return null
+}
+
+// Traffic source capture - runs once on first page load to capture referrer/UTM
+export function TrafficSourceCapture() {
+  useEffect(() => {
+    const source = captureTrafficSource()
+    if (source.utm_source || source.referrer) {
+      console.log('📊 [TRAFFIC] Captured traffic source:', source)
+    }
+  }, [])
 
   return null
 }
