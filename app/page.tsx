@@ -362,7 +362,7 @@ export default function Home() {
       <section data-track-section="blog" style={{padding: '80px 20px', background: 'linear-gradient(135deg, #BED7AF 0%, #DCEBE1 100%)'}}>
         <div style={{maxWidth: '1200px', margin: '0 auto', textAlign: 'center'}}>
           <h2 style={{fontSize: '2.5rem', fontWeight: 800, marginBottom: '20px', color: '#2c3e2c'}}>Latest from Our Blog</h2>
-          <p style={{fontSize: '1.1rem', color: '#5a6a5a', marginBottom: '50px'}}>Research-backed insights on nature education and child development</p>
+          <p style={{fontSize: '1.1rem', color: '#5a6a5a', marginBottom: '50px'}}>Research-backed insights on nature education and childhood development</p>
 
           <div style={{background: 'white', borderRadius: '20px', overflow: 'hidden', textAlign: 'left', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', maxWidth: '800px', margin: '0 auto'}}>
             <div style={{padding: '40px'}}>
