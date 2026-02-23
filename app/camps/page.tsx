@@ -38,8 +38,7 @@ export default function CampsPage() {
                 <h3 style={{color: '#4a90d9', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Winter Nature Camp</h3>
                 <div style={{color: '#4a90d9', fontSize: '0.95rem', lineHeight: 1.6}}>
                   Jan 19 - Mar 6, 2026<br/>
-                  Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>
-                  <span style={{fontSize: '0.85em', opacity: 0.8}}>Early bird pricing (first price) available until Nov 15</span>
+                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
                 </div>
               </div>
               <Link href="/register?camp=winter-2026" style={{background: '#7a9a3b', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
@@ -52,8 +51,7 @@ export default function CampsPage() {
                 <h3 style={{color: '#e67e22', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Easter/Songkran Nature Camp</h3>
                 <div style={{color: '#e67e22', fontSize: '0.95rem', lineHeight: 1.6}}>
                   Apr 6-10, 2026<br/>
-                  Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>
-                  <span style={{fontSize: '0.85em', opacity: 0.8}}>Early bird pricing (first price) available until Mar 9</span>
+                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
                 </div>
               </div>
               <Link href="/register?camp=songkran-2026" style={{background: '#7a9a3b', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
@@ -66,8 +64,7 @@ export default function CampsPage() {
                 <h3 style={{color: '#27ae60', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Summer Nature Camp</h3>
                 <div style={{color: '#27ae60', fontSize: '0.95rem', lineHeight: 1.6}}>
                   Jun 29 - Aug 14, 2026<br/>
-                  Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>
-                  <span style={{fontSize: '0.85em', opacity: 0.8}}>Early bird pricing (first price) available until May 25</span>
+                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
                 </div>
               </div>
               <Link href="/register?camp=summer-2026" style={{background: '#7a9a3b', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>

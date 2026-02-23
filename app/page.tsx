@@ -68,15 +68,6 @@ export default function Home() {
               {
                 "@type": "Offer",
                 "name": "Winter Nature Camp - Mini Camp (Ages 3-6)",
-                "price": "11000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2026-01-19",
-                "validThrough": "2026-03-06"
-              },
-              {
-                "@type": "Offer",
-                "name": "Winter Nature Camp - Maxi Camp (Ages 6-10)",
                 "price": "13000",
                 "priceCurrency": "THB",
                 "availability": "https://schema.org/InStock",
@@ -85,8 +76,17 @@ export default function Home() {
               },
               {
                 "@type": "Offer",
+                "name": "Winter Nature Camp - Maxi Camp (Ages 6-10)",
+                "price": "15000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2026-01-19",
+                "validThrough": "2026-03-06"
+              },
+              {
+                "@type": "Offer",
                 "name": "Easter/Songkran Nature Camp - Mini Camp (Ages 3-6)",
-                "price": "11000",
+                "price": "13000",
                 "priceCurrency": "THB",
                 "availability": "https://schema.org/InStock",
                 "validFrom": "2026-04-06",
@@ -96,7 +96,7 @@ export default function Home() {
               {
                 "@type": "Offer",
                 "name": "Easter/Songkran Nature Camp - Maxi Camp (Ages 6-10)",
-                "price": "13000",
+                "price": "15000",
                 "priceCurrency": "THB",
                 "availability": "https://schema.org/InStock",
                 "validFrom": "2026-04-06",
@@ -105,7 +105,7 @@ export default function Home() {
               {
                 "@type": "Offer",
                 "name": "Summer Nature Camp - Mini Camp (Ages 3-6)",
-                "price": "11000",
+                "price": "13000",
                 "priceCurrency": "THB",
                 "availability": "https://schema.org/InStock",
                 "validFrom": "2026-06-29",
@@ -115,7 +115,7 @@ export default function Home() {
               {
                 "@type": "Offer",
                 "name": "Summer Nature Camp - Maxi Camp (Ages 6-10)",
-                "price": "13000",
+                "price": "15000",
                 "priceCurrency": "THB",
                 "availability": "https://schema.org/InStock",
                 "validFrom": "2026-06-29",
@@ -185,8 +185,7 @@ export default function Home() {
                 <h3 style={{color: '#4a90d9'}}>Winter Nature Camp</h3>
                 <div className="cute-meta" style={{color: '#4a90d9'}}>
                   Jan 19 - Mar 6, 2026<br/>
-                  Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>
-                  <span style={{fontSize: '0.85em', opacity: 0.8}}>Early bird pricing (first price) available until Nov 15</span>
+                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
                 </div>
               </div>
               <Link href="/register?camp=winter-2026" className="cta-button" style={{display: 'inline-block'}}>Register</Link>
@@ -198,8 +197,7 @@ export default function Home() {
                 <h3 style={{color: '#e67e22'}}>Easter/Songkran Nature Camp</h3>
                 <div className="cute-meta" style={{color: '#e67e22'}}>
                   Apr 6-10, 2026<br/>
-                  Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>
-                  <span style={{fontSize: '0.85em', opacity: 0.8}}>Early bird pricing (first price) available until Mar 9</span>
+                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
                 </div>
               </div>
               <Link href="/register?camp=songkran-2026" className="cta-button" style={{display: 'inline-block'}}>Register</Link>
@@ -211,8 +209,7 @@ export default function Home() {
                 <h3 style={{color: '#27ae60'}}>Summer Nature Camp</h3>
                 <div className="cute-meta" style={{color: '#27ae60'}}>
                   Jun 29 - Aug 14, 2026<br/>
-                  Ages 3-6: 11,000฿ / 13,000฿ • Ages 6+: 13,000฿ / 15,000฿<br/>
-                  <span style={{fontSize: '0.85em', opacity: 0.8}}>Early bird pricing (first price) available until May 25</span>
+                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
                 </div>
               </div>
               <Link href="/register?camp=summer-2026" className="cta-button" style={{display: 'inline-block'}}>Register</Link>
@@ -268,22 +265,20 @@ export default function Home() {
                 <p className="age">Ages 3-6</p>
                 <p className="description">On-site nature activities: animal care, gardening, baking, yoga, arts & crafts</p>
                 <p className="schedule">Jan 19 - Mar 6, 2026 • 8AM-5PM</p>
-                <p className="price">11,000฿/week</p>
+                <p className="price">13,000฿/week</p>
                 <a href="#register" className="cta-btn">Choose Mini Camp</a>
               </div>
             </div>
 
             {/* Maxi Camp Card */}
-            <div className="program-card" style={{backgroundImage: 'url(/images/IMG_2047.jpeg)', border: '4px solid #7a9a3b'}}>
-              <div style={{position: 'absolute', top: '20px', right: '20px', background: 'white', color: '#7a9a3b', padding: '10px 25px', borderRadius: '25px', fontWeight: 700, fontSize: '1rem', zIndex: 10}}>Early Bird</div>
+            <div className="program-card" style={{backgroundImage: 'url(/images/IMG_2047.jpeg)'}}>
               <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%)'}}></div>
               <div className="program-card-content">
                 <h3>Maxi Camp</h3>
                 <p className="age">Ages 6-10</p>
                 <p className="description">Field trips: beach days, elephant sanctuary, marine biology, Muay Thai</p>
                 <p className="schedule">Jan 19 - Mar 6, 2026 • 8AM-5PM</p>
-                <p className="price">13,000฿/week</p>
-                <p className="price-note">Pay by Nov 30 • Regular: 15,000฿</p>
+                <p className="price">15,000฿/week</p>
                 <a href="#register" className="cta-btn">Choose Maxi Camp</a>
               </div>
             </div>
