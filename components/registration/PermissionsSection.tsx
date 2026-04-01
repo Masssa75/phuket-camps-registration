@@ -55,7 +55,6 @@ export default function PermissionsSection({
             name="photoPermission"
             checked={photoPermission}
             onChange={(e) => onChange('photoPermission', e.target.checked)}
-            required
             className="w-5 h-5 mt-0.5 rounded border-gray-300 text-green-600 focus:ring-green-500 flex-shrink-0"
           />
           <label htmlFor="photoPermission" className="text-sm text-gray-700 cursor-pointer">

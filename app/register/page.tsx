@@ -89,7 +89,7 @@ function RegisterContent() {
   })
 
   const [permissions, setPermissions] = useState({
-    photoPermission: false,  // Required checkbox
+    photoPermission: true,  // Optional, pre-checked (opt-out)
     howDidYouFind: '',
     termsAcknowledged: false,
     allStatementsTrue: false

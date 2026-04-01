@@ -35,7 +35,7 @@ export default function ToddlerRegistrationPage() {
   const [howDidYouFind, setHowDidYouFind] = useState('')
   const [packageType, setPackageType] = useState<'single' | 'bundle' | 'already_paid'>('single')
   const [selectedSessions, setSelectedSessions] = useState<string[]>([])
-  const [photoPermission, setPhotoPermission] = useState(false)
+  const [photoPermission, setPhotoPermission] = useState(true)
   const [termsAcknowledged, setTermsAcknowledged] = useState(false)
 
   // Children
