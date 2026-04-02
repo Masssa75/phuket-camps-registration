@@ -50,7 +50,7 @@ export default function CampsPage() {
               <div style={{flex: 1, minWidth: '200px'}}>
                 <h3 style={{color: '#e67e22', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Easter/Songkran Nature Camp</h3>
                 <div style={{color: '#e67e22', fontSize: '0.95rem', lineHeight: 1.6}}>
-                  Apr 6-10, 2026<br/>
+                  Apr 6-17, 2026<br/>
                   Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
                 </div>
               </div>

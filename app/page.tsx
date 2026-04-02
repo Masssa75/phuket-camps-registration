@@ -7,7 +7,7 @@ import { HomePageTracking } from '@/components/Analytics'
 
 export const metadata: Metadata = {
   title: 'Phuket Nature Camp - Winter, Songkran & Summer Camps 2026 | Bamboo Valley',
-  description: 'Science-backed outdoor camp in Phuket building immunity, confidence, and life skills through nature. Winter Jan-Mar, Songkran Apr 6-10, Summer Jun-Aug 2026. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
+  description: 'Science-backed outdoor camp in Phuket building immunity, confidence, and life skills through nature. Winter Jan-Mar, Songkran Apr 6-17, Summer Jun-Aug 2026. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
   keywords: 'phuket camp, nature camp phuket, winter camp phuket, easter camp phuket, songkran camp phuket, summer camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket',
   openGraph: {
     title: 'Phuket Nature Camp - Nature Skills for Life',
@@ -90,8 +90,8 @@ export default function Home() {
                 "priceCurrency": "THB",
                 "availability": "https://schema.org/InStock",
                 "validFrom": "2026-04-06",
-                "validThrough": "2026-04-10",
-                "description": "Full day camp 8AM-5PM during Songkran festival"
+                "validThrough": "2026-04-17",
+                "description": "Full day camp 8AM-5PM, two weeks during Songkran festival"
               },
               {
                 "@type": "Offer",
@@ -100,7 +100,7 @@ export default function Home() {
                 "priceCurrency": "THB",
                 "availability": "https://schema.org/InStock",
                 "validFrom": "2026-04-06",
-                "validThrough": "2026-04-10"
+                "validThrough": "2026-04-17"
               },
               {
                 "@type": "Offer",
@@ -196,7 +196,7 @@ export default function Home() {
               <div className="cute-content">
                 <h3 style={{color: '#e67e22'}}>Easter/Songkran Nature Camp</h3>
                 <div className="cute-meta" style={{color: '#e67e22'}}>
-                  Apr 6-10, 2026<br/>
+                  Apr 6-17, 2026<br/>
                   Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
                 </div>
               </div>

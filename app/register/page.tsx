@@ -458,8 +458,16 @@ function RegisterContent() {
               <thead>
                 <tr className="bg-gray-100">
                   <th className="border border-gray-300 px-4 py-3 text-left">Program</th>
-                  <th className="border border-gray-300 px-4 py-3 text-left">Early Bird (pay by Nov 30th)</th>
-                  <th className="border border-gray-300 px-4 py-3 text-left">Regular</th>
+                  {earlyBirdActive ? (
+                    <>
+                      <th className="border border-gray-300 px-4 py-3 text-left">
+                        Early Bird (pay by {new Date(camp.settings.programs[0]?.pricing.earlyBirdDeadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})
+                      </th>
+                      <th className="border border-gray-300 px-4 py-3 text-left">Regular</th>
+                    </>
+                  ) : (
+                    <th className="border border-gray-300 px-4 py-3 text-left">Price</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -468,12 +476,20 @@ function RegisterContent() {
                     <td className="border border-gray-300 px-4 py-3">
                       <strong>{program.name} ({program.ageRange} years)</strong>
                     </td>
-                    <td className="border border-gray-300 px-4 py-3">
-                      {program.pricing.earlyBird.toLocaleString()} ฿/week
-                    </td>
-                    <td className="border border-gray-300 px-4 py-3">
-                      {program.pricing.regular.toLocaleString()} ฿/week
-                    </td>
+                    {earlyBirdActive ? (
+                      <>
+                        <td className="border border-gray-300 px-4 py-3">
+                          {program.pricing.earlyBird.toLocaleString()} ฿/week
+                        </td>
+                        <td className="border border-gray-300 px-4 py-3">
+                          {program.pricing.regular.toLocaleString()} ฿/week
+                        </td>
+                      </>
+                    ) : (
+                      <td className="border border-gray-300 px-4 py-3">
+                        {program.pricing.regular.toLocaleString()} ฿/week
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
