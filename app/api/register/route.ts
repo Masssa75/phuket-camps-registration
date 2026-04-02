@@ -1,6 +1,5 @@
 import { createClient } from '@/utils/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
-import { notifyAdminsOfNewRegistration } from '@/utils/telegram'
 
 export async function POST(request: NextRequest) {
   try {
@@ -149,17 +148,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Send Telegram notification to admins (don't wait for it)
-    notifyAdminsOfNewRegistration({
-      child_name: childName,
-      email: email,
-      age_group: ageGroup,
-      weeks_selected: weeksSelected,
-      parent_name_1: parentName1,
-      created_at: new Date().toISOString()
-    }).catch(error => {
-      console.warn('Failed to send admin notification:', error)
-    })
+    // Telegram notification handled by Supabase database trigger (edge function)
 
     return NextResponse.json({
       success: true,
