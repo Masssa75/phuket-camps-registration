@@ -439,7 +439,7 @@ function RegisterContent() {
         <div className="text-center mb-8 mt-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">{camp.name} Registration</h1>
           <p className="text-gray-600 text-lg">
-            {camp.settings.weeks.length} weeks • {new Date(camp.settings.weeks[0].startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} - {new Date(camp.settings.weeks[camp.settings.weeks.length - 1].endDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            {camp.settings.weeks.length} weeks • {new Date(camp.settings.weeks[0].startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })} - {new Date(camp.settings.weeks[camp.settings.weeks.length - 1].endDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}
           </p>
         </div>
 
@@ -461,7 +461,7 @@ function RegisterContent() {
                   {earlyBirdActive ? (
                     <>
                       <th className="border border-gray-300 px-4 py-3 text-left">
-                        Early Bird (pay by {new Date(camp.settings.programs[0]?.pricing.earlyBirdDeadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})
+                        Early Bird (pay by {new Date(camp.settings.programs[0]?.pricing.earlyBirdDeadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })})
                       </th>
                       <th className="border border-gray-300 px-4 py-3 text-left">Regular</th>
                     </>
