@@ -4,10 +4,10 @@ import { CampsPageTracking } from '@/components/Analytics'
 
 export const metadata: Metadata = {
   title: 'Upcoming Camps - Phuket Nature Camp | Bamboo Valley',
-  description: 'Register for our nature camps in Phuket: Winter Camp Jan-Mar 2026, Songkran Camp Apr 2026, Summer Camp Jun-Aug 2026. Ages 3-10.',
+  description: 'Register for our nature camps in Phuket: Songkran Camp Apr 2026, Summer Camp Jun-Aug 2026. Ages 3-10.',
   openGraph: {
     title: 'Upcoming Nature Camps in Phuket',
-    description: 'Winter, Songkran & Summer camps for children ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
+    description: 'Songkran & Summer camps for children ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
     url: 'https://phuketcamp.com/camps',
   }
 }
@@ -31,19 +31,6 @@ export default function CampsPage() {
           <p style={{textAlign: 'center', color: '#666', fontSize: '1.1rem', marginBottom: '40px'}}>Join us for nature-based learning adventures</p>
 
           <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
-            {/* Winter Camp */}
-            <div data-camp="winter-2026" style={{background: 'linear-gradient(135deg, #e8f3ff 0%, #d8ebff 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
-              <div style={{fontSize: '3rem'}}>❄️</div>
-              <div style={{flex: 1, minWidth: '200px'}}>
-                <h3 style={{color: '#4a90d9', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Winter Nature Camp</h3>
-                <div style={{color: '#4a90d9', fontSize: '0.95rem', lineHeight: 1.6}}>
-                  Jan 19 - Mar 6, 2026<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <Link href="/register?camp=winter-2026" style={{background: '#7a9a3b', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
-            </div>
-
             {/* Songkran Camp */}
             <div data-camp="songkran-2026" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
               <div style={{fontSize: '3rem'}}>💦</div>

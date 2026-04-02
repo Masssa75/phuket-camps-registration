@@ -6,8 +6,8 @@ import HeroVideo from '@/components/HeroVideo'
 import { HomePageTracking } from '@/components/Analytics'
 
 export const metadata: Metadata = {
-  title: 'Phuket Nature Camp - Winter, Songkran & Summer Camps 2026 | Bamboo Valley',
-  description: 'Science-backed outdoor camp in Phuket building immunity, confidence, and life skills through nature. Winter Jan-Mar, Songkran Apr 6-17, Summer Jun-Aug 2026. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
+  title: 'Phuket Nature Camp - Songkran & Summer Camps 2026 | Bamboo Valley',
+  description: 'Science-backed outdoor camp in Phuket building immunity, confidence, and life skills through nature. Songkran Apr 6-17, Summer Jun-Aug 2026. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
   keywords: 'phuket camp, nature camp phuket, winter camp phuket, easter camp phuket, songkran camp phuket, summer camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket',
   openGraph: {
     title: 'Phuket Nature Camp - Nature Skills for Life',
@@ -65,24 +65,6 @@ export default function Home() {
             },
             "priceRange": "฿฿",
             "offers": [
-              {
-                "@type": "Offer",
-                "name": "Winter Nature Camp - Mini Camp (Ages 3-6)",
-                "price": "13000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2026-01-19",
-                "validThrough": "2026-03-06"
-              },
-              {
-                "@type": "Offer",
-                "name": "Winter Nature Camp - Maxi Camp (Ages 6-10)",
-                "price": "15000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2026-01-19",
-                "validThrough": "2026-03-06"
-              },
               {
                 "@type": "Offer",
                 "name": "Easter/Songkran Nature Camp - Mini Camp (Ages 3-6)",
@@ -179,18 +161,6 @@ export default function Home() {
           <p className="section-subtitle">Join us for nature-based learning adventures</p>
 
           <div className="camp-list">
-            <div className="cute-item" style={{background: 'linear-gradient(135deg, #e8f3ff 0%, #d8ebff 100%)'}}>
-              <div className="cute-emoji">❄️</div>
-              <div className="cute-content">
-                <h3 style={{color: '#4a90d9'}}>Winter Nature Camp</h3>
-                <div className="cute-meta" style={{color: '#4a90d9'}}>
-                  Jan 19 - Mar 6, 2026<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <Link href="/register?camp=winter-2026" className="cta-button" style={{display: 'inline-block'}}>Register</Link>
-            </div>
-
             <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)'}}>
               <div className="cute-emoji">💦</div>
               <div className="cute-content">
