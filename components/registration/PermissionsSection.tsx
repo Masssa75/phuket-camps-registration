@@ -48,7 +48,7 @@ export default function PermissionsSection({
       </div>
 
       <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
-        <div className={`flex items-start gap-3 p-3 rounded ${errors.photoPermission ? 'bg-red-50 border border-red-300' : ''}`}>
+        <div className="flex items-start gap-3 p-3 rounded">
           <input
             type="checkbox"
             id="photoPermission"
@@ -59,7 +59,7 @@ export default function PermissionsSection({
           />
           <label htmlFor="photoPermission" className="text-sm text-gray-700 cursor-pointer">
             I grant permission for my child's photos and videos to be used by Bamboo Valley
-            for promotional purposes, including on our website, social media, and printed materials. <span className="text-red-500">*</span>
+            for promotional purposes, including on our website, social media, and printed materials.
           </label>
         </div>
 
