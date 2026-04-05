@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { trackEvent, useScrollTracking } from '@/components/Analytics'
 import { getTrafficSource, TrafficSource } from '@/utils/trafficSource'
 import ContactSection from '@/components/registration/ContactSection'
@@ -391,6 +392,61 @@ function RegisterContent() {
           <div className="registration-header">
             <h1>Camp Not Found</h1>
             <p className="text-red-600 mt-4">{error || 'The requested camp could not be found.'}</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Check if camp registration period has ended
+  const lastWeek = camp.settings.weeks[camp.settings.weeks.length - 1]
+  const campEnded = lastWeek && new Date(lastWeek.endDate) < new Date()
+
+  if (campEnded) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-12 px-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <div className="bg-gray-600 text-white p-8 text-center">
+              <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-12 h-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h1 className="text-3xl font-bold mb-2">{camp.name} Has Ended</h1>
+              <p className="text-gray-200">This camp&apos;s registration is no longer available.</p>
+            </div>
+            <div className="p-8 text-center">
+              <p className="text-gray-700 text-lg mb-6">Check out our upcoming camps below!</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <Link href="/register?camp=songkran-2026" className="block bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border-l-4 border-orange-400">
+              <div className="flex items-center gap-4">
+                <span className="text-3xl">💦</span>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-900">Easter/Songkran Nature Camp</h3>
+                  <p className="text-gray-600">Apr 6-17, 2026 • Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week</p>
+                </div>
+                <span className="text-green-600 font-semibold whitespace-nowrap">Register →</span>
+              </div>
+            </Link>
+
+            <Link href="/register?camp=summer-2026" className="block bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border-l-4 border-green-400">
+              <div className="flex items-center gap-4">
+                <span className="text-3xl">☀️</span>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-900">Summer Nature Camp</h3>
+                  <p className="text-gray-600">Jun 29 - Aug 14, 2026 • Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week</p>
+                </div>
+                <span className="text-green-600 font-semibold whitespace-nowrap">Register →</span>
+              </div>
+            </Link>
+          </div>
+
+          <div className="text-center mt-8">
+            <Link href="/" className="text-green-600 hover:text-green-700 font-medium">← Back to Home</Link>
           </div>
         </div>
       </div>

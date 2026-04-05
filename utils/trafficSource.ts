@@ -45,7 +45,7 @@ export function captureTrafficSource(): TrafficSource {
     utm_content: params.get('utm_content'),
     utm_term: params.get('utm_term'),
     referrer: document.referrer || null,
-    landing_page: window.location.pathname,
+    landing_page: window.location.pathname + window.location.search,
   }
 
   // Infer source from referrer if no UTM params
