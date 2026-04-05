@@ -137,13 +137,14 @@ function RegisterContent() {
   useEffect(() => {
     const fetchCampData = async () => {
       try {
-        // Always fetch the camps list (needed for default resolution + ended view)
-        const listRes = await fetch('/api/camps')
-        const listData = listRes.ok ? await listRes.json() : { camps: [] }
-        const openCamps = (listData.camps || []).filter((c: CampListItem) => c.registration_status === 'open')
+        // Single API call — list includes full camp data + registration status
+        const res = await fetch('/api/camps')
+        const data = res.ok ? await res.json() : { camps: [] }
+        const allCamps: CampListItem[] = data.camps || []
+        const openCamps = allCamps.filter(c => c.registration_status === 'open')
         setActiveCamps(openCamps)
 
-        // If no camp slug specified, redirect to first active camp
+        // If no camp slug, redirect to first active camp
         if (!campSlug) {
           if (openCamps.length > 0) {
             router.replace(`/register?camp=${openCamps[0].slug}`)
@@ -154,15 +155,13 @@ function RegisterContent() {
           return
         }
 
-        // Fetch the specific camp
-        console.log('📡 [API] Fetching camp data for:', campSlug)
-        const response = await fetch(`/api/camps/${campSlug}`)
-        if (!response.ok) {
+        // Find the requested camp from the list (no second API call)
+        const found = allCamps.find(c => c.slug === campSlug)
+        if (!found) {
           throw new Error('Camp not found')
         }
-        const data = await response.json()
-        console.log('✅ [API] Camp data loaded:', data.camp.name)
-        setCamp(data.camp)
+        console.log('✅ [API] Camp data loaded:', found.name)
+        setCamp(found as Camp)
       } catch (err) {
         console.error('❌ [API] Failed to load camp:', err)
         setError(err instanceof Error ? err.message : 'Failed to load camp')
