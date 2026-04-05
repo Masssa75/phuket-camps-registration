@@ -8,10 +8,10 @@ import { HomePageTracking } from '@/components/Analytics'
 export const metadata: Metadata = {
   title: 'Phuket Nature Camp - Songkran & Summer Camps 2026 | Bamboo Valley',
   description: 'Science-backed outdoor camp in Phuket building immunity, confidence, and life skills through nature. Songkran Apr 6-17, Summer Jun-Aug 2026. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
-  keywords: 'phuket camp, nature camp phuket, winter camp phuket, easter camp phuket, songkran camp phuket, summer camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket',
+  keywords: 'phuket camp, nature camp phuket, easter camp phuket, songkran camp phuket, summer camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket, holiday camp phuket, school break camp phuket',
   openGraph: {
     title: 'Phuket Nature Camp - Nature Skills for Life',
-    description: 'Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-10. Licensed English teachers. Winter & Summer programs available.',
+    description: 'Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-10. Licensed English teachers. Songkran & Summer programs available.',
     images: [{
       url: 'https://phuketcamp.com/images/Confidence.jpeg',
       width: 1200,
@@ -234,9 +234,9 @@ export default function Home() {
                 <h3>Mini Camp</h3>
                 <p className="age">Ages 3-6</p>
                 <p className="description">On-site nature activities: animal care, gardening, baking, yoga, arts & crafts</p>
-                <p className="schedule">Jan 19 - Mar 6, 2026 • 8AM-5PM</p>
+                <p className="schedule">Full day • 8AM-5PM</p>
                 <p className="price">13,000฿/week</p>
-                <a href="#register" className="cta-btn">Choose Mini Camp</a>
+                <Link href="/camps" className="cta-btn">View Camps</Link>
               </div>
             </div>
 
@@ -247,9 +247,9 @@ export default function Home() {
                 <h3>Maxi Camp</h3>
                 <p className="age">Ages 6-10</p>
                 <p className="description">Field trips: beach days, elephant sanctuary, marine biology, Muay Thai</p>
-                <p className="schedule">Jan 19 - Mar 6, 2026 • 8AM-5PM</p>
+                <p className="schedule">Full day • 8AM-5PM</p>
                 <p className="price">15,000฿/week</p>
-                <a href="#register" className="cta-btn">Choose Maxi Camp</a>
+                <Link href="/camps" className="cta-btn">View Camps</Link>
               </div>
             </div>
           </div>

@@ -179,7 +179,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             marginBottom: '30px',
             lineHeight: 1.6
           }}>
-            Join our Christmas Nature Camp for two weeks of outdoor exploration, immunity-building play, and joyful learning.
+            Join our Nature Camp for outdoor exploration, immunity-building play, and joyful learning.
           </p>
           <div style={{
             display: 'flex',
@@ -188,7 +188,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             flexWrap: 'wrap'
           }}>
             <Link
-              href="/register?camp=christmas-2025"
+              href="/register"
               style={{
                 display: 'inline-block',
                 padding: '18px 40px',
@@ -202,10 +202,10 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 boxShadow: '0 4px 15px rgba(122, 154, 59, 0.3)'
               }}
             >
-              Register for Christmas Camp
+              Register for Camp
             </Link>
             <a
-              href="https://wa.me/66989124218?text=Hi!%20I%20read%20your%20blog%20about%20forest%20immunity.%20I%27m%20interested%20in%20the%20Christmas%20camp."
+              href="https://wa.me/66989124218?text=Hi!%20I%20read%20your%20blog%20and%20I%27m%20interested%20in%20the%20camp."
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',

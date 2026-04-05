@@ -38,12 +38,20 @@ interface Camp {
   }
 }
 
+interface CampListItem {
+  name: string
+  slug: string
+  registration_status: string
+  settings: Camp['settings']
+}
+
 function RegisterContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const campSlug = searchParams.get('camp') || 'summer-2025'
+  const campSlug = searchParams.get('camp')
 
   const [camp, setCamp] = useState<Camp | null>(null)
+  const [activeCamps, setActiveCamps] = useState<CampListItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -112,7 +120,7 @@ function RegisterContent() {
   // Component lifecycle logging
   useEffect(() => {
     console.log('🚀 [COMPONENT] RegisterContent mounted')
-    trackEvent('page_view', { page: 'register', camp: campSlug })
+    trackEvent('page_view', { page: 'register', camp: campSlug || 'default' })
     return () => {
       console.log('💀 [COMPONENT] RegisterContent unmounting')
     }
@@ -122,14 +130,32 @@ function RegisterContent() {
   const handleFormInteraction = () => {
     if (!formStarted) {
       setFormStarted(true)
-      trackEvent('form_start', { form: 'registration', camp: campSlug })
+      trackEvent('form_start', { form: 'registration', camp: campSlug || 'default' })
     }
   }
 
   useEffect(() => {
-    const fetchCamp = async () => {
-      console.log('📡 [API] Fetching camp data for:', campSlug)
+    const fetchCampData = async () => {
       try {
+        // Always fetch the camps list (needed for default resolution + ended view)
+        const listRes = await fetch('/api/camps')
+        const listData = listRes.ok ? await listRes.json() : { camps: [] }
+        const openCamps = (listData.camps || []).filter((c: CampListItem) => c.registration_status === 'open')
+        setActiveCamps(openCamps)
+
+        // If no camp slug specified, redirect to first active camp
+        if (!campSlug) {
+          if (openCamps.length > 0) {
+            router.replace(`/register?camp=${openCamps[0].slug}`)
+          } else {
+            setError('No camps are currently accepting registrations.')
+          }
+          setLoading(false)
+          return
+        }
+
+        // Fetch the specific camp
+        console.log('📡 [API] Fetching camp data for:', campSlug)
         const response = await fetch(`/api/camps/${campSlug}`)
         if (!response.ok) {
           throw new Error('Camp not found')
@@ -145,8 +171,8 @@ function RegisterContent() {
       }
     }
 
-    fetchCamp()
-  }, [campSlug])
+    fetchCampData()
+  }, [campSlug, router])
 
   // Log when success state changes (must be before conditional returns)
   useEffect(() => {
@@ -221,7 +247,7 @@ function RegisterContent() {
       setChildren(prev => prev.map(c => c.id === editingChildId ? currentChild : c))
     } else {
       setChildren(prev => [...prev, currentChild])
-      trackEvent('child_added', { camp: campSlug, program: currentChild.selectedProgram })
+      trackEvent('child_added', { camp: campSlug || '', program: currentChild.selectedProgram })
     }
 
     setShowChildForm(false)
@@ -237,7 +263,7 @@ function RegisterContent() {
     const submitStartTime = performance.now()
     console.log('🚀 [SUBMIT START]', new Date().toISOString(), 'Browser:', navigator.userAgent)
 
-    trackEvent('form_submit_attempt', { camp: campSlug, children_count: children.length })
+    trackEvent('form_submit_attempt', { camp: campSlug || '', children_count: children.length })
 
     setSubmitting(true)
     setFormErrors({})
@@ -337,7 +363,7 @@ function RegisterContent() {
         const totalTime = performance.now() - submitStartTime
         console.log(`🎉 [SUCCESS] All registrations complete (${totalTime}ms total)`)
         trackEvent('registration_complete', {
-          camp: campSlug,
+          camp: campSlug || '',
           children_count: registrations.length,
           duration_ms: Math.round(totalTime)
         })
@@ -403,6 +429,18 @@ function RegisterContent() {
   const campEnded = lastWeek && new Date(lastWeek.endDate) < new Date()
 
   if (campEnded) {
+    const formatDateRange = (c: CampListItem) => {
+      const first = new Date(c.settings.weeks[0].startDate)
+      const last = new Date(c.settings.weeks[c.settings.weeks.length - 1].endDate)
+      return `${first.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })} - ${last.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}`
+    }
+
+    const formatPricing = (c: CampListItem) => {
+      return c.settings.programs.map(p =>
+        `${p.ageRange}: ${p.pricing.regular.toLocaleString()}฿/week`
+      ).join(' • ')
+    }
+
     return (
       <div className="min-h-screen bg-gray-50 py-12 px-4">
         <div className="max-w-2xl mx-auto">
@@ -417,33 +455,33 @@ function RegisterContent() {
               <p className="text-gray-200">This camp&apos;s registration is no longer available.</p>
             </div>
             <div className="p-8 text-center">
-              <p className="text-gray-700 text-lg mb-6">Check out our upcoming camps below!</p>
+              <p className="text-gray-700 text-lg mb-6">
+                {activeCamps.length > 0
+                  ? 'Check out our upcoming camps below!'
+                  : 'No camps are currently open for registration. Please check back soon!'}
+              </p>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <Link href="/register?camp=songkran-2026" className="block bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border-l-4 border-orange-400">
-              <div className="flex items-center gap-4">
-                <span className="text-3xl">💦</span>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-900">Easter/Songkran Nature Camp</h3>
-                  <p className="text-gray-600">Apr 6-17, 2026 • Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week</p>
-                </div>
-                <span className="text-green-600 font-semibold whitespace-nowrap">Register →</span>
-              </div>
-            </Link>
-
-            <Link href="/register?camp=summer-2026" className="block bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border-l-4 border-green-400">
-              <div className="flex items-center gap-4">
-                <span className="text-3xl">☀️</span>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-900">Summer Nature Camp</h3>
-                  <p className="text-gray-600">Jun 29 - Aug 14, 2026 • Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week</p>
-                </div>
-                <span className="text-green-600 font-semibold whitespace-nowrap">Register →</span>
-              </div>
-            </Link>
-          </div>
+          {activeCamps.length > 0 && (
+            <div className="space-y-4">
+              {activeCamps.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/register?camp=${c.slug}`}
+                  className="block bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border-l-4 border-green-400"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-gray-900">{c.name}</h3>
+                      <p className="text-gray-600">{formatDateRange(c)} • {formatPricing(c)}</p>
+                    </div>
+                    <span className="text-green-600 font-semibold whitespace-nowrap">Register →</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
 
           <div className="text-center mt-8">
             <Link href="/" className="text-green-600 hover:text-green-700 font-medium">← Back to Home</Link>
