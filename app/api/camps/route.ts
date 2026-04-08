@@ -1,13 +1,14 @@
 import { createClient } from '@/utils/supabase/server'
 import { NextResponse } from 'next/server'
 
-export type CampStatus = 'open' | 'upcoming' | 'closed'
+export type CampStatus = 'open' | 'upcoming' | 'closed' | 'sold_out'
 
 export interface CampWithStatus {
   id: string
   name: string
   slug: string
   settings: {
+    soldOut?: boolean
     programs: Array<{
       id: string
       name: string
@@ -29,7 +30,10 @@ export interface CampWithStatus {
   registration_status: CampStatus
 }
 
-function getCampStatus(camp: { settings: { weeks: Array<{ startDate: string; endDate: string }> } }): CampStatus {
+function getCampStatus(camp: { settings: { soldOut?: boolean; weeks: Array<{ startDate: string; endDate: string }> } }): CampStatus {
+  // Sold-out check takes priority over all date logic
+  if (camp.settings.soldOut === true) return 'sold_out'
+
   const now = new Date()
   const weeks = camp.settings.weeks
   if (!weeks || weeks.length === 0) return 'closed'
@@ -61,8 +65,8 @@ export async function GET() {
       registration_status: getCampStatus(camp),
     }))
 
-    // Sort: open first, then upcoming, then closed
-    const statusOrder: Record<CampStatus, number> = { open: 0, upcoming: 1, closed: 2 }
+    // Sort: open first, then sold_out, then upcoming, then closed
+    const statusOrder: Record<CampStatus, number> = { open: 0, sold_out: 1, upcoming: 2, closed: 3 }
     campsWithStatus.sort((a, b) => statusOrder[a.registration_status] - statusOrder[b.registration_status])
 
     return NextResponse.json({ camps: campsWithStatus })

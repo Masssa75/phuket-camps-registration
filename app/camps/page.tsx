@@ -31,8 +31,9 @@ export default function CampsPage() {
           <p style={{textAlign: 'center', color: '#666', fontSize: '1.1rem', marginBottom: '40px'}}>Join us for nature-based learning adventures</p>
 
           <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
-            {/* Songkran Camp */}
-            <div data-camp="songkran-2026" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
+            {/* Songkran Camp - SOLD OUT */}
+            <div data-camp="songkran-2026" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap', position: 'relative', overflow: 'hidden'}}>
+              <div style={{position: 'absolute', top: '12px', right: '-35px', background: '#e67e22', color: 'white', padding: '4px 40px', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.05em', transform: 'rotate(45deg)', zIndex: 1, boxShadow: '0 2px 4px rgba(0,0,0,0.15)'}}>SOLD OUT</div>
               <div style={{fontSize: '3rem'}}>💦</div>
               <div style={{flex: 1, minWidth: '200px'}}>
                 <h3 style={{color: '#e67e22', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Easter/Songkran Nature Camp</h3>
@@ -41,7 +42,7 @@ export default function CampsPage() {
                   Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
                 </div>
               </div>
-              <Link href="/register?camp=songkran-2026" style={{background: '#7a9a3b', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
+              <a href="https://wa.me/66989124218?text=Hi!%20I%27d%20like%20to%20join%20the%20waitlist%20for%20the%20Songkran%20Nature%20Camp." style={{background: '#e67e22', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Join Waitlist</a>
             </div>
 
             {/* Summer Camp */}

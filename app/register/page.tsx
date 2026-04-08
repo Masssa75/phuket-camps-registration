@@ -18,6 +18,7 @@ interface Camp {
   name: string
   slug: string
   settings: {
+    soldOut?: boolean
     programs: Array<{
       id: string
       name: string
@@ -39,10 +40,11 @@ interface Camp {
 }
 
 interface CampListItem {
+  id: string
   name: string
   slug: string
   registration_status: string
-  settings: Camp['settings']
+  settings: Camp['settings']  // includes soldOut
 }
 
 function RegisterContent() {
@@ -141,7 +143,7 @@ function RegisterContent() {
         const res = await fetch('/api/camps')
         const data = res.ok ? await res.json() : { camps: [] }
         const allCamps: CampListItem[] = data.camps || []
-        const openCamps = allCamps.filter(c => c.registration_status === 'open')
+        const openCamps = allCamps.filter(c => c.registration_status === 'open' && !c.settings.soldOut)
         setActiveCamps(openCamps)
 
         // If no camp slug, redirect to first active camp
@@ -417,6 +419,79 @@ function RegisterContent() {
           <div className="registration-header">
             <h1>Camp Not Found</h1>
             <p className="text-red-600 mt-4">{error || 'The requested camp could not be found.'}</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Check if camp is sold out (takes priority over campEnded)
+  if (camp.settings.soldOut) {
+    const formatDateRange = (c: CampListItem) => {
+      const first = new Date(c.settings.weeks[0].startDate)
+      const last = new Date(c.settings.weeks[c.settings.weeks.length - 1].endDate)
+      return `${first.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })} - ${last.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}`
+    }
+
+    const formatPricing = (c: CampListItem) => {
+      return c.settings.programs.map(p =>
+        `${p.ageRange}: ${p.pricing.regular.toLocaleString()}฿/week`
+      ).join(' • ')
+    }
+
+    return (
+      <div className="min-h-screen bg-gray-50 py-12 px-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <div style={{background: '#e67e22'}} className="text-white p-8 text-center">
+              <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6">
+                <span style={{fontSize: '2.5rem'}}>🎉</span>
+              </div>
+              <h1 className="text-3xl font-bold mb-2">{camp.name} is Sold Out!</h1>
+              <p style={{color: 'rgba(255,255,255,0.9)'}}>This camp filled up fast — thank you for the incredible interest!</p>
+            </div>
+            <div className="p-8 text-center">
+              <p className="text-gray-700 text-lg mb-6">
+                Want to be first in line if a spot opens up? Join our waitlist on WhatsApp:
+              </p>
+              <a
+                href="https://wa.me/66989124218?text=Hi!%20I%27d%20like%20to%20join%20the%20waitlist%20for%20the%20Songkran%20Nature%20Camp."
+                style={{display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '16px 36px', background: '#25D366', color: 'white', textDecoration: 'none', borderRadius: '50px', fontSize: '1.1rem', fontWeight: 700, boxShadow: '0 4px 15px rgba(37, 211, 102, 0.3)'}}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.717-1.394A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.339 0-4.508-.764-6.26-2.058l-.176-.138-3.63 1.073 1.118-3.484-.157-.185A9.944 9.944 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+                Join Waitlist on WhatsApp
+              </a>
+              <p className="text-gray-500 text-sm mt-4">
+                We&apos;ll let you know as soon as a spot becomes available.
+              </p>
+            </div>
+          </div>
+
+          {activeCamps.length > 0 && (
+            <>
+              <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Other Camps Open for Registration</h2>
+              <div className="space-y-4">
+                {activeCamps.map((c) => (
+                  <Link
+                    key={c.slug}
+                    href={`/register?camp=${c.slug}`}
+                    className="block bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border-l-4 border-green-400"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-gray-900">{c.name}</h3>
+                        <p className="text-gray-600">{formatDateRange(c)} • {formatPricing(c)}</p>
+                      </div>
+                      <span className="text-green-600 font-semibold whitespace-nowrap">Register →</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </>
+          )}
+
+          <div className="text-center mt-8">
+            <Link href="/" className="text-green-600 hover:text-green-700 font-medium">← Back to Home</Link>
           </div>
         </div>
       </div>
