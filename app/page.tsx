@@ -70,18 +70,18 @@ export default function Home() {
                 "name": "Easter/Songkran Nature Camp - Mini Camp (Ages 3-6)",
                 "price": "13000",
                 "priceCurrency": "THB",
-                "availability": "https://schema.org/SoldOut",
-                "validFrom": "2026-04-06",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2026-04-13",
                 "validThrough": "2026-04-17",
-                "description": "Full day camp 8AM-5PM, two weeks during Songkran festival"
+                "description": "Full day camp 8AM-5PM, Week 2 during Songkran festival"
               },
               {
                 "@type": "Offer",
                 "name": "Easter/Songkran Nature Camp - Maxi Camp (Ages 6-10)",
                 "price": "15000",
                 "priceCurrency": "THB",
-                "availability": "https://schema.org/SoldOut",
-                "validFrom": "2026-04-06",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2026-04-13",
                 "validThrough": "2026-04-17"
               },
               {
@@ -161,17 +161,16 @@ export default function Home() {
           <p className="section-subtitle">Join us for nature-based learning adventures</p>
 
           <div className="camp-list">
-            <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)', position: 'relative', overflow: 'hidden'}}>
-              <div style={{position: 'absolute', top: '12px', right: '-35px', background: '#e67e22', color: 'white', padding: '4px 40px', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.05em', transform: 'rotate(45deg)', zIndex: 1, boxShadow: '0 2px 4px rgba(0,0,0,0.15)'}}>SOLD OUT</div>
+            <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)'}}>
               <div className="cute-emoji">💦</div>
               <div className="cute-content">
                 <h3 style={{color: '#e67e22'}}>Easter/Songkran Nature Camp</h3>
                 <div className="cute-meta" style={{color: '#e67e22'}}>
-                  Apr 6-17, 2026<br/>
+                  Apr 13-17, 2026 (Week 2)<br/>
                   Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
                 </div>
               </div>
-              <a href="https://wa.me/66989124218?text=Hi!%20I%27d%20like%20to%20join%20the%20waitlist%20for%20the%20Songkran%20Nature%20Camp." className="cta-button" style={{display: 'inline-block', background: '#e67e22', color: 'white', fontSize: '0.95rem', padding: '12px 24px'}}>Join Waitlist</a>
+              <a href="/register?camp=songkran-2026" className="cta-button" style={{display: 'inline-block', background: '#e67e22', color: 'white', fontSize: '0.95rem', padding: '12px 24px'}}>Register Now</a>
             </div>
 
             <div className="cute-item" style={{background: 'linear-gradient(135deg, #e8fff0 0%, #d0ffe8 100%)'}}>
