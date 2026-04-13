@@ -73,7 +73,7 @@ export default function Home() {
                 "availability": "https://schema.org/InStock",
                 "validFrom": "2026-04-13",
                 "validThrough": "2026-04-17",
-                "description": "Full day camp 8AM-5PM, Week 2 during Songkran festival"
+                "description": "Full day camp 9AM-3PM, Week 2 during Songkran festival"
               },
               {
                 "@type": "Offer",
@@ -234,7 +234,7 @@ export default function Home() {
                 <h3>Mini Camp</h3>
                 <p className="age">Ages 3-6</p>
                 <p className="description">On-site nature activities: animal care, gardening, baking, yoga, arts & crafts</p>
-                <p className="schedule">Full day • 8AM-5PM</p>
+                <p className="schedule">Full day • 9AM-3PM</p>
                 <p className="price">13,000฿/week</p>
                 <Link href="/camps" className="cta-btn">View Camps</Link>
               </div>
@@ -247,7 +247,7 @@ export default function Home() {
                 <h3>Maxi Camp</h3>
                 <p className="age">Ages 6-10</p>
                 <p className="description">Field trips: beach days, elephant sanctuary, marine biology, Muay Thai</p>
-                <p className="schedule">Full day • 8AM-5PM</p>
+                <p className="schedule">Full day • 9AM-3PM</p>
                 <p className="price">15,000฿/week</p>
                 <Link href="/camps" className="cta-btn">View Camps</Link>
               </div>
