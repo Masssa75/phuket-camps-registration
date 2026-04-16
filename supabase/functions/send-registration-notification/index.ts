@@ -47,12 +47,17 @@ serve(async (req) => {
 
     // Format the Telegram message
     const weeksList = registration.weeks_selected.join(', ')
+    const campName = registration.camp_name || 'Camp'
     const campType = registration.age_group === 'mini'
       ? 'Mini Camp (3-6)'
       : 'Explorer/Maxi Camp (6+)'
+    const isWhatsAppScan = registration.imported_from === 'whatsapp_scan'
+    const heading = isWhatsAppScan
+      ? `🤖 <b>Auto-detected from WhatsApp — ${campName}</b>\n<i>Created by AI scan — verify details before treating as confirmed</i>`
+      : `🏕️ <b>New ${campName} Registration!</b>`
 
     const message = `
-🏕️ <b>New Camp Registration!</b>
+${heading}
 
 👶 <b>Child:</b> ${registration.child_name}
 👨‍👩‍👧‍👦 <b>Parent:</b> ${registration.parent_name_1}

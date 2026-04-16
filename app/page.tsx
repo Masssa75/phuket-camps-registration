@@ -6,12 +6,12 @@ import HeroVideo from '@/components/HeroVideo'
 import { HomePageTracking } from '@/components/Analytics'
 
 export const metadata: Metadata = {
-  title: 'Phuket Nature Camp - Songkran & Summer Camps 2026 | Bamboo Valley',
-  description: 'Science-backed outdoor camp in Phuket building immunity, confidence, and life skills through nature. Songkran Apr 6-17, Summer Jun-Aug 2026. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
-  keywords: 'phuket camp, nature camp phuket, easter camp phuket, songkran camp phuket, summer camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket, holiday camp phuket, school break camp phuket',
+  title: 'Phuket Nature Camp - Year-Round Camps 2026-2027 | Bamboo Valley',
+  description: 'Science-backed outdoor camps in Phuket building immunity, confidence, and life skills through nature. Summer, October, Christmas, Winter and Easter programs across 2026-2027. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
+  keywords: 'phuket camp, nature camp phuket, summer camp phuket, october camp phuket, christmas camp phuket, winter camp phuket, easter camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket, holiday camp phuket, school break camp phuket',
   openGraph: {
     title: 'Phuket Nature Camp - Nature Skills for Life',
-    description: 'Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-10. Licensed English teachers. Songkran & Summer programs available.',
+    description: 'Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-10. Licensed native English teachers. Summer, October, Christmas, Winter and Easter programs.',
     images: [{
       url: 'https://phuketcamp.com/images/Confidence.jpeg',
       width: 1200,
@@ -67,25 +67,6 @@ export default function Home() {
             "offers": [
               {
                 "@type": "Offer",
-                "name": "Easter/Songkran Nature Camp - Mini Camp (Ages 3-6)",
-                "price": "13000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2026-04-13",
-                "validThrough": "2026-04-17",
-                "description": "Full day camp 9AM-3PM, Week 2 during Songkran festival"
-              },
-              {
-                "@type": "Offer",
-                "name": "Easter/Songkran Nature Camp - Maxi Camp (Ages 6-10)",
-                "price": "15000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2026-04-13",
-                "validThrough": "2026-04-17"
-              },
-              {
-                "@type": "Offer",
                 "name": "Summer Nature Camp - Mini Camp (Ages 3-6)",
                 "price": "13000",
                 "priceCurrency": "THB",
@@ -96,12 +77,88 @@ export default function Home() {
               },
               {
                 "@type": "Offer",
-                "name": "Summer Nature Camp - Maxi Camp (Ages 6-10)",
+                "name": "Summer Nature Camp - Maxi Camp (Ages 7-13)",
                 "price": "15000",
                 "priceCurrency": "THB",
                 "availability": "https://schema.org/InStock",
                 "validFrom": "2026-06-29",
                 "validThrough": "2026-08-14"
+              },
+              {
+                "@type": "Offer",
+                "name": "October Nature Camp - Mini Camp (Ages 3-6)",
+                "price": "13000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2026-10-12",
+                "validThrough": "2026-10-16",
+                "description": "One-week autumn nature camp"
+              },
+              {
+                "@type": "Offer",
+                "name": "October Nature Camp - Maxi Camp (Ages 7-13)",
+                "price": "15000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2026-10-12",
+                "validThrough": "2026-10-16"
+              },
+              {
+                "@type": "Offer",
+                "name": "Christmas Nature Camp - Mini Camp (Ages 3-6)",
+                "price": "13000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2026-12-14",
+                "validThrough": "2026-12-25",
+                "description": "Two-week Christmas nature camp program"
+              },
+              {
+                "@type": "Offer",
+                "name": "Christmas Nature Camp - Maxi Camp (Ages 7-13)",
+                "price": "15000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2026-12-14",
+                "validThrough": "2026-12-25"
+              },
+              {
+                "@type": "Offer",
+                "name": "Winter Nature Camp - Mini Camp (Ages 3-6)",
+                "price": "13000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2027-01-18",
+                "validThrough": "2027-03-05",
+                "description": "Seven-week winter nature camp program"
+              },
+              {
+                "@type": "Offer",
+                "name": "Winter Nature Camp - Maxi Camp (Ages 7-13)",
+                "price": "15000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2027-01-18",
+                "validThrough": "2027-03-05"
+              },
+              {
+                "@type": "Offer",
+                "name": "Easter Nature Camp - Mini Camp (Ages 3-6)",
+                "price": "13000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2027-04-05",
+                "validThrough": "2027-04-09",
+                "description": "One-week Easter nature camp"
+              },
+              {
+                "@type": "Offer",
+                "name": "Easter Nature Camp - Maxi Camp (Ages 7-13)",
+                "price": "15000",
+                "priceCurrency": "THB",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2027-04-05",
+                "validThrough": "2027-04-09"
               }
             ],
             "image": "https://phuketcamp.com/images/Confidence.jpeg",
@@ -161,18 +218,6 @@ export default function Home() {
           <p className="section-subtitle">Join us for nature-based learning adventures</p>
 
           <div className="camp-list">
-            <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)'}}>
-              <div className="cute-emoji">💦</div>
-              <div className="cute-content">
-                <h3 style={{color: '#e67e22'}}>Easter/Songkran Nature Camp</h3>
-                <div className="cute-meta" style={{color: '#e67e22'}}>
-                  Apr 13-17, 2026 (Week 2)<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <a href="/register?camp=songkran-2026" className="cta-button" style={{display: 'inline-block', background: '#e67e22', color: 'white', fontSize: '0.95rem', padding: '12px 24px'}}>Register Now</a>
-            </div>
-
             <div className="cute-item" style={{background: 'linear-gradient(135deg, #e8fff0 0%, #d0ffe8 100%)'}}>
               <div className="cute-emoji">☀️</div>
               <div className="cute-content">
@@ -183,6 +228,54 @@ export default function Home() {
                 </div>
               </div>
               <Link href="/register?camp=summer-2026" className="cta-button" style={{display: 'inline-block'}}>Register</Link>
+            </div>
+
+            <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff4e0 0%, #ffe4c0 100%)'}}>
+              <div className="cute-emoji">🍂</div>
+              <div className="cute-content">
+                <h3 style={{color: '#d35400'}}>October Nature Camp</h3>
+                <div className="cute-meta" style={{color: '#d35400'}}>
+                  Oct 12-16, 2026<br/>
+                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
+                </div>
+              </div>
+              <Link href="/register?camp=october-2026" className="cta-button" style={{display: 'inline-block', background: '#d35400', color: 'white'}}>Register</Link>
+            </div>
+
+            <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff0f0 0%, #ffe0e0 100%)'}}>
+              <div className="cute-emoji">🎄</div>
+              <div className="cute-content">
+                <h3 style={{color: '#c0392b'}}>Christmas Nature Camp</h3>
+                <div className="cute-meta" style={{color: '#c0392b'}}>
+                  Dec 14-25, 2026 (2 weeks)<br/>
+                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
+                </div>
+              </div>
+              <Link href="/register?camp=christmas-2026" className="cta-button" style={{display: 'inline-block', background: '#c0392b', color: 'white'}}>Register</Link>
+            </div>
+
+            <div className="cute-item" style={{background: 'linear-gradient(135deg, #e8f4ff 0%, #d0e8ff 100%)'}}>
+              <div className="cute-emoji">❄️</div>
+              <div className="cute-content">
+                <h3 style={{color: '#4a90d9'}}>Winter Nature Camp</h3>
+                <div className="cute-meta" style={{color: '#4a90d9'}}>
+                  Jan 18 - Mar 5, 2027 (7 weeks)<br/>
+                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
+                </div>
+              </div>
+              <Link href="/register?camp=winter-2027" className="cta-button" style={{display: 'inline-block', background: '#4a90d9', color: 'white'}}>Register</Link>
+            </div>
+
+            <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)'}}>
+              <div className="cute-emoji">🐣</div>
+              <div className="cute-content">
+                <h3 style={{color: '#e67e22'}}>Easter Nature Camp</h3>
+                <div className="cute-meta" style={{color: '#e67e22'}}>
+                  Apr 5-9, 2027<br/>
+                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
+                </div>
+              </div>
+              <Link href="/register?camp=easter-2027" className="cta-button" style={{display: 'inline-block', background: '#e67e22', color: 'white'}}>Register</Link>
             </div>
           </div>
         </div>
@@ -245,7 +338,7 @@ export default function Home() {
               <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%)'}}></div>
               <div className="program-card-content">
                 <h3>Maxi Camp</h3>
-                <p className="age">Ages 6-10</p>
+                <p className="age">Ages 7-13</p>
                 <p className="description">Field trips: beach days, elephant sanctuary, marine biology, Muay Thai</p>
                 <p className="schedule">Full day • 9AM-3PM</p>
                 <p className="price">15,000฿/week</p>

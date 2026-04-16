@@ -87,7 +87,7 @@ Building with sticks, nature exploration, unstructured outdoor time.
 **Mini Camp (Ages 3-6):** 11,000฿/week
 Forest play, animal care, garden time, nature crafts
 
-**Maxi Camp (Ages 6-10):** 13,000฿/week
+**Maxi Camp (Ages 7-13):** 13,000฿/week
 Everything above + field trips, marine biology, advanced outdoor projects
 
 **Early bird discount ends November 30!**
