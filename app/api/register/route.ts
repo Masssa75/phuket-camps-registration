@@ -160,18 +160,31 @@ export async function POST(request: NextRequest) {
     const errStack = error instanceof Error ? error.stack?.split('\n').slice(0, 3).join(' | ') : ''
     console.error('Registration API error:', errMsg, errStack)
 
-    // Try to notify via Telegram so we catch these in real-time
+    // Dump full form data + error to Telegram so we can register manually if needed
     try {
       const botToken = process.env.TELEGRAM_BOT_TOKEN
       const chatId = process.env.TELEGRAM_TASKS_GROUP_ID || '-4990540528'
       if (botToken) {
-        const childName = formData?.get?.('childName') || 'unknown'
-        const email = formData?.get?.('email') || 'unknown'
-        const text = `⚠️ Registration failed\nChild: ${childName}\nEmail: ${email}\nError: ${errMsg}\n${errStack}`
+        // Extract all form fields for manual recovery
+        const fields: Record<string, string> = {}
+        if (formData?.forEach) {
+          formData.forEach((value, key) => {
+            if (value instanceof File) {
+              fields[key] = `[File: ${value.name}, ${value.type}, ${(value.size / 1024).toFixed(1)}KB]`
+            } else {
+              fields[key] = String(value).slice(0, 200)
+            }
+          })
+        }
+        const formDump = Object.entries(fields)
+          .map(([k, v]) => `  ${k}: ${v}`)
+          .join('\n')
+
+        const text = `⚠️ Registration FAILED\n\nChild: ${fields.childName || 'unknown'}\nEmail: ${fields.email || 'unknown'}\nCamp: ${fields.campId || 'unknown'}\nWeeks: ${fields.weeksSelected || '?'}\nProgram: ${fields.ageGroup || '?'}\n\nError: ${errMsg}\n${errStack}\n\n📋 Full form data:\n${formDump}`
         await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
+          body: JSON.stringify({ chat_id: chatId, text })
         }).catch(() => {}) // don't let Telegram failure mask the original error
       }
     } catch {} // silent — notification is best-effort
