@@ -2,8 +2,9 @@ import { createClient } from '@/utils/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
+  let formData: FormData | null = null
   try {
-    const formData = await request.formData()
+    formData = await request.formData()
 
     // Extract form fields
     const campId = formData.get('campId') as string
