@@ -156,11 +156,30 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Registration API error:', error)
+    const errMsg = error instanceof Error ? error.message : 'Unknown error'
+    const errStack = error instanceof Error ? error.stack?.split('\n').slice(0, 3).join(' | ') : ''
+    console.error('Registration API error:', errMsg, errStack)
+
+    // Try to notify via Telegram so we catch these in real-time
+    try {
+      const botToken = process.env.TELEGRAM_BOT_TOKEN
+      const chatId = process.env.TELEGRAM_TASKS_GROUP_ID || '-4990540528'
+      if (botToken) {
+        const childName = formData?.get?.('childName') || 'unknown'
+        const email = formData?.get?.('email') || 'unknown'
+        const text = `⚠️ Registration failed\nChild: ${childName}\nEmail: ${email}\nError: ${errMsg}\n${errStack}`
+        await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
+        }).catch(() => {}) // don't let Telegram failure mask the original error
+      }
+    } catch {} // silent — notification is best-effort
+
     return NextResponse.json(
       {
-        error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        error: 'Registration failed',
+        details: errMsg
       },
       { status: 500 }
     )
