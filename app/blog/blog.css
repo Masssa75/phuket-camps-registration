@@ -123,3 +123,64 @@
   margin-top: -28px;
   margin-bottom: 30px;
 }
+
+/* ===== Reusable editorial components (Mandarin-Zone-pattern upgrade) ===== */
+
+html { scroll-behavior: smooth; }
+.blog-content h2 { scroll-margin-top: 90px; }
+
+/* Anchor chip navigation */
+.bv-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0 36px; }
+.bv-chips a {
+  background: #DCEBE1; color: #2c3e2c; padding: 8px 18px; border-radius: 20px;
+  font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: background .15s;
+}
+.bv-chips a:hover { background: #BED7AF; }
+
+/* TL;DR capsule */
+.bv-tldr {
+  background: #eef6ef; border-left: 5px solid #8fb573; border-radius: 0 10px 10px 0;
+  padding: 18px 24px; margin: 26px 0; font-size: 1.02rem; line-height: 1.65;
+}
+.bv-tldr .label {
+  display: inline-block; background: #8fb573; color: #fff; font-size: 0.75rem;
+  font-weight: 800; letter-spacing: 1px; padding: 3px 10px; border-radius: 12px;
+  margin-bottom: 8px; text-transform: uppercase;
+}
+
+/* Day timeline */
+.bv-timeline { list-style: none; padding: 0 0 0 6px; margin: 30px 0; }
+.bv-timeline li {
+  position: relative; padding: 0 0 20px 28px; margin: 0; border-left: 3px solid #BED7AF;
+  font-size: 1.02rem; line-height: 1.55;
+}
+.bv-timeline li:last-child { border-left-color: transparent; padding-bottom: 0; }
+.bv-timeline li::before {
+  content: ''; position: absolute; left: -9px; top: 4px; width: 15px; height: 15px;
+  border-radius: 50%; background: #BED7AF; border: 3px solid #fff; box-shadow: 0 0 0 2px #BED7AF;
+}
+.bv-timeline .t { font-weight: 800; color: #5a7a2b; display: inline-block; min-width: 105px; }
+
+/* Quick-match cards */
+.bv-match { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin: 28px 0; }
+.bv-match .card {
+  border: 2px solid #DCEBE1; border-radius: 14px; padding: 20px 22px; background: #fff;
+}
+.bv-match .card .head { font-weight: 800; font-size: 1.05rem; color: #2c3e2c; margin: 0 0 8px; }
+.bv-match .card p { margin: 0; font-size: 0.95rem; color: #444; line-height: 1.6; }
+.bv-match .card .pick { display: block; margin-top: 10px; font-weight: 700; color: #5a7a2b; }
+
+/* Insider tip box */
+.bv-tip {
+  background: #fdf3e0; border-left: 5px solid #FAD7AA; border-radius: 0 10px 10px 0;
+  padding: 16px 22px; margin: 26px 0; font-size: 0.99rem; line-height: 1.65;
+}
+
+/* Checklist box */
+.bv-checklist {
+  background: #f7faf4; border: 2px solid #BED7AF; border-radius: 14px;
+  padding: 26px 30px; margin: 32px 0;
+}
+.bv-checklist .head { font-weight: 800; font-size: 1.15rem; color: #2c3e2c; margin: 0 0 6px; }
+.bv-checklist ol { margin: 12px 0 0; padding-left: 22px; }
+.bv-checklist li { margin-bottom: 8px; line-height: 1.6; }

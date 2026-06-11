@@ -29,15 +29,29 @@ faq:
 
 Choosing a summer camp in Phuket for 2026? Here's the short answer: **six established camps are running, full-day prices range from 10,000 to 22,550 THB per week, most start June 29** — and each one has a genuinely different character.
 
+<div class="bv-chips">
+<a href="#glance">📊 Compare All Six</a>
+<a href="#video">🎬 Watch a Camp Day</a>
+<a href="#camps">🏕 The Camps</a>
+<a href="#real-day">📅 A Real Day</a>
+<a href="#match">🎯 Find Your Match</a>
+<a href="#tips">💡 Booking Tips</a>
+<a href="#faq">❓ FAQ</a>
+</div>
+
 ## Why Trust This Guide?
 
-Full disclosure up front: **we run one of these camps** — Bamboo Valley, the nature camp in Cherngtalay.
+Full disclosure up front: **we run one of these camps** — Bamboo Valley, the nature camp in Cherngtalay. Our own children attend it; we're parents first, camp operators second.
 
 We built this guide anyway, with real 2026 dates and prices for everyone, including our competitors' genuine strengths. It's the comparison we wished existed when we were choosing camps for our own children.
 
 All details come from each camp's official 2026 announcements. Confirm directly before booking — places fill, and details can change.
 
-## All Six Camps at a Glance
+<h2 id="glance">All Six Camps at a Glance</h2>
+
+<div class="bv-tldr"><span class="label">TL;DR</span><br />
+Ages 3–6 full-day: only Bamboo Valley. Cheapest: Lighthouse (10,000฿). Biggest programme menu: BISP. Earliest start: UWC (Jun 22). Open in mid-August: only Bamboo Valley. Boarding: BISP (9+) and UWC (12+). Every camp books week by week.
+</div>
 
 | Camp | Location | Ages | 2026 Dates | Price/week | Hours |
 |---|---|---|---|---|---|
@@ -50,9 +64,7 @@ All details come from each camp's official 2026 announcements. Confirm directly 
 
 *BISP Early Years (3–5) is mornings only, 8:30–11:30. Main camp day students run 8:00–18:00.
 
-Every camp on this list takes **week-by-week bookings** — Phuket is one of the few places in Asia where a visiting family can drop into a full international camp programme for a single week.
-
-## See What a Camp Day Looks Like
+<h2 id="video">See What a Camp Day Looks Like</h2>
 
 One minute inside Bamboo Valley — the campus, the animals, the mud, the children:
 
@@ -60,7 +72,7 @@ One minute inside Bamboo Valley — the campus, the animals, the mud, the childr
 
 Now, the camps — one by one.
 
-## Bamboo Valley — The Nature Camp (Ours)
+<h2 id="camps">Bamboo Valley — The Nature Camp (Ours)</h2>
 
 > **Best for:** children who thrive outdoors, and families who want a screen-free week of gardening, animals, and mud rather than classrooms.
 
@@ -149,55 +161,98 @@ Prasan Gateway International School runs July 13 – August 7 for ages 5–13, b
 
 Weekly island excursions and Muay Thai are included, along with snacks and lunch. [Details at pgisphuket.com](https://www.pgisphuket.com/post/summer-camp-phuket-2026)
 
+<h2 id="real-day">A Real Day at Camp, Hour by Hour</h2>
+
+<div class="bv-tldr"><span class="label">TL;DR</span><br />
+Most Phuket camps run roughly 8:30–15:00 with a similar skeleton: morning circle, activity blocks, snack, lunch, afternoon wind-down. Here's our actual Mini Camp (ages 3–6) schedule — taken from the timetable on our fridge, not a brochure.
+</div>
+
+<ul class="bv-timeline">
+<li><span class="t">8:45</span> Drop-off — barefoot by 8:50, usually</li>
+<li><span class="t">9:00</span> Circle time &amp; story time</li>
+<li><span class="t">9:30</span> Free play across the campus</li>
+<li><span class="t">10:00</span> Yoga &amp; meditation, then snack</li>
+<li><span class="t">11:00</span> The day's big activity — baking, Waldorf painting, music, or outdoor free play</li>
+<li><span class="t">12:00</span> Lunch together</li>
+<li><span class="t">12:30</span> Story time, quiet time &amp; nap</li>
+<li><span class="t">13:50</span> Crafts, gardening, or animal care</li>
+<li><span class="t">14:30</span> Afternoon snack</li>
+<li><span class="t">15:00</span> Pick-up — check pockets for snails</li>
+</ul>
+
+Maxi Camp (7–13) runs the same hours at a faster pace — sports, science experiments, Muay Thai, clay and crafts — with the **Tuesday field trip** and **Thursday beach day** replacing the on-campus schedule entirely.
+
 ![A girl absorbed in water play at the wooden mud kitchen](/blog/water-play-focus.jpg)
 
 *The kind of focus no worksheet produces.*
 
-## How to Choose: Four Questions
+<h2 id="match">Find the Right Camp in 30 Seconds</h2>
 
-### 1. How old is your child?
+<div class="bv-tldr"><span class="label">TL;DR</span><br />
+Match by age first, then by where you're staying — Phuket traffic decides more than brochures do.
+</div>
 
-- **Age 3:** only BISP (mornings) or Bamboo Valley (full day)
-- **Ages 4–6:** add UWC and Lighthouse
-- **Ages 7–13:** every camp works
-- **Teens 14+:** BISP (to 15) or UWC (to 18)
+### By Age
 
-### 2. Which weeks do you need?
+<div class="bv-match">
+<div class="card"><p class="head">🧒 Age 3</p><p>Two options on the island: BISP Early Years (mornings only) or Bamboo Valley Mini Camp (the only full day).</p><span class="pick">→ Bamboo Valley or BISP</span></div>
+<div class="card"><p class="head">🧒 Ages 4–6</p><p>Add UWC and Lighthouse to the list. Choose by day length, budget, and drive time.</p><span class="pick">→ Bamboo Valley, BISP, UWC, Lighthouse</span></div>
+<div class="card"><p class="head">🧑 Ages 7–13</p><p>Every camp works. Decide by character: nature, sport, academics, or English focus.</p><span class="pick">→ All six — see below</span></div>
+<div class="card"><p class="head">🧑‍🎓 Teens 14+</p><p>Two camps take teens: BISP to 15, UWC to 18 (with residential for 12+). Honest answer: not us — Maxi Camp ends at 13.</p><span class="pick">→ BISP or UWC</span></div>
+</div>
 
-- **Late June:** UWC opens a week before everyone else
-- **July:** every camp is running
+### By Where You're Staying
+
+<div class="bv-match">
+<div class="card"><p class="head">🏖 Bangtao · Laguna · Surin · Kamala</p><p>Bamboo Valley and UWC are the short drives.</p></div>
+<div class="card"><p class="head">🏙 Phuket Town · East Coast</p><p>HeadStart or BISP are closest.</p></div>
+<div class="card"><p class="head">🌅 Rawai · Chalong · Kata</p><p>Lighthouse or PGIS save you the cross-island commute.</p></div>
+</div>
+
+### By the Kind of Week You Want
+
+<div class="bv-match">
+<div class="card"><p class="head">⚽ Structured programmes &amp; sport</p><p>Specialised tracks, coding, football academies on school campuses.</p><span class="pick">→ BISP, UWC, HeadStart</span></div>
+<div class="card"><p class="head">🗣 English progress</p><p>Immersion-built programme with international faculty.</p><span class="pick">→ PGIS</span></div>
+<div class="card"><p class="head">🌿 Outdoors, animals &amp; no screens</p><p>Soil, animals, and free play — the <a href="/blog/forest-play-immunity-boost">research on outdoor play and children's immune systems</a> is worth five minutes.</p><span class="pick">→ Bamboo Valley</span></div>
+</div>
+
+### By the Calendar
+
+- **Late June:** UWC opens a week before everyone else (June 22)
+- **July:** every camp is running — book early
 - **After August 7:** Bamboo Valley is the only camp open (through August 14)
-
-### 3. Where are you staying?
-
-Phuket traffic makes this matter more than parents expect.
-
-- **Bangtao, Laguna, Surin, Kamala:** Bamboo Valley and UWC are closest
-- **Phuket Town:** HeadStart or BISP
-- **Rawai, Chalong, Kata:** Lighthouse or PGIS
-
-### 4. What kind of week do you want for them?
-
-- **Structured programmes, coding, sport** on a school campus: BISP, UWC, or HeadStart
-- **English progress** specifically: PGIS
-- **Outdoors, animals, soil, and no screens:** that's us — and the [research on what outdoor play does for children's immune systems](/blog/forest-play-immunity-boost) is worth five minutes of your time
 
 ![Children climbing under the palm canopy at Bamboo Valley](/blog/camp-free-play.jpg)
 
 *Free play under nearly 100 palms — the part of camp children remember.*
 
-## Booking Tips for 2026
+<h2 id="tips">Booking Tips for 2026</h2>
 
 - **Book early for July.** It's high season — BISP and UWC both reported full programmes last year, and HeadStart discounts multi-week bookings.
-- **Visiting just one week?** Every camp accepts it. Choose by location first — Phuket traffic is real.
+- **Visiting just one week?** Every camp accepts it. Choose by location first.
 - **Late June or August?** Your options narrow fast: UWC for June 22–26, Bamboo Valley for August 10–14.
 - **Want to see before you book?** Any good camp will show you around. [We're happy to](https://wa.me/66989124218?text=Hi!%20Could%20we%20visit%20Bamboo%20Valley%20before%20booking%3F).
+
+<div class="bv-tip">💡 <strong>The traffic tip nobody gives you:</strong> in July, a "20-minute" cross-island drive can take 50 at drop-off time. Pick a camp on your side of the island and you'll gain back hours of holiday every single day.</div>
+
+<div class="bv-checklist">
+<p class="head">✅ 6 Questions to Ask Any Camp Before Booking</p>
+<ol>
+<li>What's the staff-to-children ratio — including on excursions?</li>
+<li>What happens on rainy days?</li>
+<li>How do you handle food allergies?</li>
+<li>Can we visit the campus before booking?</li>
+<li>What's the refund policy if our travel plans change?</li>
+<li>How will you update us during the day — photos, messages, a contact person?</li>
+</ol>
+</div>
 
 ![Two girls collecting shells at the mangrove lake](/blog/field-trip-shell-lake.jpg)
 
 *Shell Lake field trip, Maxi Camp.*
 
-## Frequently Asked Questions
+<h2 id="faq">Frequently Asked Questions</h2>
 
 **How much does a summer camp in Phuket cost in 2026?**
 Full-day camps range from 10,000฿/week (Lighthouse) to 22,550฿/week (BISP), with Bamboo Valley (13,000–15,000฿), HeadStart (18,000–20,000฿) and UWC (18,950฿) in between. Boarding runs 29,400–36,500฿/week.
