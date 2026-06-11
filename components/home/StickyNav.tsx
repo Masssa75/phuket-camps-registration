@@ -1,11 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useLocale, useTranslations } from 'next-intl'
 
 /* Slim top bar that slides in once the hero is scrolled past.
    Keeps Register reachable from anywhere on the page. */
 export default function StickyNav() {
   const [show, setShow] = useState(false)
+  const t = useTranslations('nav')
+  const locale = useLocale()
 
   useEffect(() => {
     const hero = document.getElementById('top')
@@ -20,14 +24,17 @@ export default function StickyNav() {
 
   return (
     <nav className={`stickynav${show ? ' show' : ''}`}>
-      <a className="snbrand" href="#top">Phuket Nature Camp</a>
+      <a className="snbrand" href="#top">{t('brand')}</a>
       <div className="snlinks">
-        <a href="#programs">Programs</a>
-        <a href="#activities">Activities</a>
-        <a href="#day">A day at camp</a>
-        <a href="#camps">Dates</a>
+        <a href="#programs">{t('programs')}</a>
+        <a href="#activities">{t('activities')}</a>
+        <a href="#day">{t('day')}</a>
+        <a href="#camps">{t('dates')}</a>
       </div>
-      <a className="snbtn" href="#camps">Register →</a>
+      {locale === 'en'
+        ? <Link className="snlang" href="/zh" lang="zh">中文</Link>
+        : <Link className="snlang" href="/" lang="en">English</Link>}
+      <a className="snbtn" href="#camps">{t('register')} →</a>
     </nav>
   )
 }

@@ -1,0 +1,223 @@
+{
+  "meta": {
+    "title": "Phuket Nature Camp - Year-Round Camps 2026-2027 | Bamboo Valley",
+    "description": "Science-backed outdoor camps in Phuket building immunity, confidence, and life skills through nature. Summer, October, Christmas, Winter and Easter programs across 2026-2027. Ages 3-13. Organic meals, field trips, animal care, gardening, yoga.",
+    "ogTitle": "Phuket Nature Camp - Nature Skills for Life",
+    "ogDescription": "Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-13. Licensed native English teachers. Summer, October, Christmas, Winter and Easter programs."
+  },
+  "nav": {
+    "brand": "Phuket Nature Camp",
+    "programs": "Programs",
+    "activities": "Activities",
+    "day": "A day at camp",
+    "dates": "Dates",
+    "register": "Register"
+  },
+  "hero": {
+    "title": "Phuket Nature Camp",
+    "slogan": "Where childhood becomes extraordinary.",
+    "ages": "Ages 3–13",
+    "register": "Register"
+  },
+  "intro": {
+    "heading": "A beautiful outdoor program that builds confidence, immunity, and life skills.",
+    "schedule": "Monday–Friday",
+    "hours": "9 AM–3 PM",
+    "pills": ["Animal care", "Gardening", "Baking", "Arts & crafts", "Stories & acting", "Muay Thai", "Yoga", "Meditation", "Music", "Field trips"]
+  },
+  "quotes": {
+    "paradise": "“A children’s paradise.”",
+    "barefoot": "“The mornings begin barefoot in the gardens.”",
+    "barefootAttr": "A day at Bamboo Valley",
+    "everything": "“Everything childhood was always meant to be.”"
+  },
+  "gallery": {
+    "eyebrow": "Camp life",
+    "title": "A look around camp",
+    "alt": "Camp life at Bamboo Valley"
+  },
+  "programs": {
+    "eyebrow": "Programs",
+    "title": "We have two age groups",
+    "mini": {
+      "name": "Mini",
+      "ages": "Ages 3 to 6",
+      "focus": "Gentle, play-based days",
+      "pills": ["1 teacher to 6 children", "Groups of 18"],
+      "acts": ["Animal care", "Gardening", "Baking", "Waldorf painting", "Yoga & meditation", "Stories & circle time"],
+      "price": "13,000",
+      "perWeek": "/ week",
+      "currency": "THB",
+      "incl": "Meals & materials included"
+    },
+    "maxi": {
+      "name": "Maxi",
+      "ages": "Ages 7 to 13",
+      "focus": "Adventure, sport & independence",
+      "pills": ["1 teacher to 6 children", "Groups of 18"],
+      "acts": ["Animal care", "Gardening", "Muay Thai", "Cooking & baking", "Sports & games", "Clay, beads & crafts"],
+      "plusHead": "Plus, two excursions a week",
+      "tue": "Tue",
+      "thu": "Thu",
+      "plusTue": "A new excursion each week",
+      "plusThu": "Beach Day, every week",
+      "price": "15,000",
+      "perWeek": "/ week",
+      "currency": "THB",
+      "incl": "Meals, materials & field trips included"
+    }
+  },
+  "activities": {
+    "eyebrow": "Every day",
+    "title": "Daily activities",
+    "items": ["Animal care", "Free play", "Gardening", "Baking", "Yoga & mindfulness", "Arts & crafts"]
+  },
+  "fieldtrips": {
+    "eyebrow": "Beyond the campus",
+    "title": "Field trips — Maxi camp",
+    "sub": "Twice-weekly adventures for the older children",
+    "pillTrips": "Field Trips",
+    "pillTripsWhen": "Every Tuesday",
+    "pillBeach": "Beach Day",
+    "pillBeachWhen": "Every Thursday",
+    "items": ["Beach Day", "Shell Lake", "Elephant sanctuary", "Pearl factory", "Muay Thai", "Rice farm"]
+  },
+  "day": {
+    "eyebrow": "Daily rhythm",
+    "title": "A day at camp",
+    "sub": "A steady rhythm, a different focus each day",
+    "miniToggle": "Mini · Ages 3–6",
+    "maxiToggle": "Maxi · Ages 7–13",
+    "thead": ["Time", "Mon", "Tue", "Wed", "Thu", "Fri"],
+    "note": "Lunch and snacks included · Activities and field trips may change due to weather",
+    "cells": {
+      "dropoff": "Drop-off",
+      "circle": "Circle time & story time",
+      "freeplay": "Free play",
+      "yoga": "Yoga & meditation",
+      "snack": "Snack time",
+      "snackShort": "Snack",
+      "outdoorFreeplay": "Outdoor free play",
+      "baking": "Baking",
+      "waldorf": "Waldorf painting",
+      "music": "Music",
+      "lunch": "Lunch time",
+      "lunchShort": "Lunch",
+      "nap": "Story time, quiet time & nap",
+      "craftGroup": "Craft time & group activity",
+      "gardening": "Gardening",
+      "animalCare": "Animal care",
+      "pickup": "Pick-up",
+      "rulesTours": "Rules & tours",
+      "fieldTrip": "Field Trip",
+      "fieldTripSub": "A new destination each week",
+      "beachDay": "Beach Day",
+      "peGames": "P.E. games",
+      "iceBreakers": "Ice breaker games",
+      "sports": "Sports",
+      "themeCrafts": "Theme-related crafts",
+      "science": "Science experiment",
+      "beadedArt": "Beaded art",
+      "painting": "Painting",
+      "clay": "Clay work",
+      "teamWork": "Team work activity",
+      "thaiBoxing": "Thai boxing",
+      "thaiCooking": "Thai cooking"
+    }
+  },
+  "camps": {
+    "eyebrow": "Dates",
+    "title": "Upcoming camps",
+    "sub": "Monday to Friday, 9 AM–3 PM · Mini 13,000 THB · Maxi 15,000 THB per week",
+    "register": "Register",
+    "list": [
+      { "name": "Summer Nature Camp", "dates": "29 June – 14 August 2026" },
+      { "name": "October Nature Camp", "dates": "12–16 October 2026" },
+      { "name": "Christmas Nature Camp", "dates": "14–25 December 2026 · 2 weeks" },
+      { "name": "Winter Nature Camp", "dates": "18 January – 5 March 2027 · 7 weeks" },
+      { "name": "Easter Nature Camp", "dates": "5–9 April 2027" }
+    ]
+  },
+  "faq": {
+    "eyebrow": "Good to know",
+    "title": "Common questions",
+    "items": [
+      {
+        "q": "What are the camp hours?",
+        "a": "Camp runs Monday to Friday. Drop-off is between 8:45 and 9:00 in the morning, and pick-up is at 3:00 in the afternoon."
+      },
+      {
+        "q": "What is included in the price?",
+        "a": "Everything for the day: a healthy lunch, two snacks, and all craft materials. For Maxi campers, the two weekly excursions are included too, transportation and all."
+      },
+      {
+        "q": "Which group is right for my child?",
+        "a": "Mini (ages 3 to 6) has gentle, play-based days with a story and rest time after lunch. Maxi (ages 7 to 13) is built around adventure, sport, and independence, with two excursions a week. Both groups run with 1 teacher per 6 children, in groups of up to 18."
+      },
+      {
+        "q": "Does my child need to speak English?",
+        "a": "Camp is run in English by licensed native English-speaking teachers, and children join us at every language level. During registration we ask about your child's English so the teachers know how to support them from day one."
+      },
+      {
+        "q": "What about allergies and dietary restrictions?",
+        "a": "Please list any allergies, dietary restrictions, or medical conditions in the registration form — the team will know about them before your child's first day."
+      },
+      {
+        "q": "What happens when it rains?",
+        "a": "We stay flexible — activities and field trips may change due to weather, and the day's rhythm carries on."
+      },
+      {
+        "q": "Does my child need insurance?",
+        "a": "Yes — every camper needs valid international health insurance or travel medical insurance covering the camp period."
+      },
+      {
+        "q": "What is the cancellation policy?",
+        "a": "Cancel at least one month before camp starts and the full payment is refunded. Less than one month before, half is refunded. Cancellations made less than 7 days before the camp starts, or during the camp, are not refundable."
+      }
+    ]
+  },
+  "visit": {
+    "eyebrow": "Come and see",
+    "title": "Visit us",
+    "sub": "Questions welcome — we answer in any language",
+    "getInTouch": "Get in touch",
+    "where": "Where we are",
+    "addr1": "3/74 Moo 4, Cherngtalay",
+    "addr2": "Thalang, Phuket 83110",
+    "mapLink": "Open in Google Maps",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "wechat": "WeChat",
+    "follow": "Follow us"
+  },
+  "form": {
+    "title": "Send a message",
+    "name": "Name",
+    "namePh": "Your name",
+    "email": "Email",
+    "emailPh": "you@email.com",
+    "message": "Message",
+    "messagePh": "How can we help?",
+    "send": "Send message",
+    "sending": "Sending…",
+    "thanks": "Thank you, {name}!",
+    "thanksBody": "Your message is on its way — we usually reply within a day. If it is urgent, WhatsApp is the fastest way to reach us.",
+    "errFill": "Please fill in your name, email, and message.",
+    "errGeneric": "Something went wrong — please try again.",
+    "errNetwork": "Could not send your message — please check your connection and try again."
+  },
+  "footer": {
+    "blurb": "A beautiful outdoor program building confidence, immunity, and life skills through nature-based learning in Phuket.",
+    "explore": "Explore",
+    "programs": "Programs",
+    "activities": "Daily activities",
+    "camps": "Upcoming camps",
+    "register": "Register",
+    "blog": "Blog",
+    "conduct": "Code of conduct",
+    "school": "Main school website",
+    "contact": "Contact",
+    "rights": "All rights reserved.",
+    "tag": "Built by parents, for parents"
+  }
+}

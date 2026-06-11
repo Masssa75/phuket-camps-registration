@@ -52,6 +52,8 @@ html {
 .bvhome .stickynav .snlinks { display: flex; gap: clamp(14px,2.2vw,26px); }
 .bvhome .stickynav .snlinks a { font-family: var(--geo); font-weight: 500; font-size: .74rem; letter-spacing: .09em; text-transform: uppercase; color: var(--ink); text-decoration: none; transition: color .2s; }
 .bvhome .stickynav .snlinks a:hover { color: var(--green); }
+.bvhome .stickynav .snlang { font-family: var(--geo); font-weight: 500; font-size: .78rem; letter-spacing: .04em; color: var(--ink); text-decoration: none; border: 1px solid rgba(60,51,45,.25); border-radius: 50px; padding: 7px 14px; white-space: nowrap; transition: color .2s, border-color .2s; }
+.bvhome .stickynav .snlang:hover { color: var(--green); border-color: rgba(122,154,59,.6); }
 .bvhome .stickynav .snbtn { font-family: var(--geo); font-weight: 600; font-size: .82rem; letter-spacing: .02em; color: #fff; background: var(--green); border-radius: 50px; padding: 10px 20px; text-decoration: none; transition: background .2s; }
 .bvhome .stickynav .snbtn:hover { background: #6a8732; }
 @media (max-width: 760px) { .bvhome .stickynav .snlinks { display: none; } }

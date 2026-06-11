@@ -8,7 +8,7 @@ const IMAGES = Array.from(
 )
 
 /* Masonry photo grid with a click-to-expand lightbox (‹ › navigation, Esc to close) */
-export default function PhotoGallery() {
+export default function PhotoGallery({ alt = 'Camp life at Bamboo Valley' }: { alt?: string }) {
   const [idx, setIdx] = useState<number | null>(null)
 
   const step = (d: number) =>
@@ -29,7 +29,7 @@ export default function PhotoGallery() {
     <>
       <div className="galmasonry">
         {IMAGES.map((src, i) => (
-          <img key={src} src={src} alt="Camp life at Bamboo Valley" loading="lazy" decoding="async" onClick={() => setIdx(i)} />
+          <img key={src} src={src} alt={alt} loading="lazy" decoding="async" onClick={() => setIdx(i)} />
         ))}
       </div>
       {idx !== null && (
@@ -45,7 +45,7 @@ export default function PhotoGallery() {
             aria-label="Previous"
             onClick={(e) => { e.stopPropagation(); step(-1) }}
           >‹</button>
-          <img src={IMAGES[idx]} alt="Camp life at Bamboo Valley" />
+          <img src={IMAGES[idx]} alt={alt} />
           <button
             className="lb-btn lb-nav lb-next"
             aria-label="Next"
