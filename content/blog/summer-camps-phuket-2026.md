@@ -2,8 +2,11 @@
 title: "Summer Camps in Phuket 2026: Dates, Prices & Honest Comparison"
 excerpt: "Every major summer camp in Phuket for 2026, compared in one place: real dates, real weekly prices, ages, and what's included — BISP, UWC Thailand, HeadStart, Lighthouse, PGIS, and our own Bamboo Valley. Written by camp operators who believe you deserve the full picture."
 date: "2026-06-11"
+updated: "2026-06-11"
 author: "Bamboo Valley Team"
 featuredImage: "/blog/summer-camp-muay-thai-hero.jpg"
+heroVideo: "/videos/blog-hero-loop.mp4"
+heroPoster: "/blog/blog-hero-poster.jpg"
 tags: ["summer camp", "phuket", "2026", "comparison", "parents guide"]
 camps: ["summer", "universal"]
 language: "en"
@@ -24,13 +27,17 @@ faq:
     a: "Bamboo Valley is Phuket's only nature-based, screen-free summer camp. Children garden, care for rabbits, goats and chickens, cook, and play outdoors on a 5,600 sqm palm plantation campus in Cherngtalay, with weekly field trips and beach days for ages 7–13. Other camps are based on school campuses with a sports/academics focus."
 ---
 
-Choosing a summer camp in Phuket for 2026? Here's the short answer: **six established camps are running, full-day prices range from 10,000 to 22,550 THB per week, most start June 29, and each has a genuinely different character** — from BISP's sports-academy scale to Bamboo Valley's screen-free nature campus.
+Choosing a summer camp in Phuket for 2026? Here's the short answer: **six established camps are running, full-day prices range from 10,000 to 22,550 THB per week, most start June 29** — and each one has a genuinely different character.
 
-Full disclosure up front: **we run one of these camps** (Bamboo Valley, the nature camp in Cherngtalay). We built this guide anyway — with real 2026 dates and prices for everyone, including our competitors' genuine strengths — because this is the comparison we wished existed when we were choosing camps for our own children.
+## Why Trust This Guide?
 
-All details below come from each camp's official 2026 announcements. Always confirm with the camp directly, as places fill and details can change.
+Full disclosure up front: **we run one of these camps** — Bamboo Valley, the nature camp in Cherngtalay.
 
-## Phuket Summer Camps 2026 at a Glance
+We built this guide anyway, with real 2026 dates and prices for everyone, including our competitors' genuine strengths. It's the comparison we wished existed when we were choosing camps for our own children.
+
+All details come from each camp's official 2026 announcements. Confirm directly before booking — places fill, and details can change.
+
+## All Six Camps at a Glance
 
 | Camp | Location | Ages | 2026 Dates | Price/week | Hours |
 |---|---|---|---|---|---|
@@ -43,69 +50,152 @@ All details below come from each camp's official 2026 announcements. Always conf
 
 *BISP Early Years (3–5) is mornings only, 8:30–11:30. Main camp day students run 8:00–18:00.
 
-All six camps offer week-by-week booking, which makes them workable for visiting families as well as Phuket residents.
+Every camp on this list takes **week-by-week bookings** — Phuket is one of the few places in Asia where a visiting family can drop into a full international camp programme for a single week.
 
-## What Each Camp Is Like
+## See What a Camp Day Looks Like
 
-### Bamboo Valley — the nature camp (ours)
+One minute inside Bamboo Valley — the campus, the animals, the mud, the children:
 
-**Best for:** children who thrive outdoors; families who want a screen-free week of gardening, animals, and mud rather than classrooms.
+<video controls preload="none" poster="/blog/camp-video-poster.jpg"><source src="/videos/new-1min.mp4" type="video/mp4" /></video>
 
-A 5,600 sqm palm plantation campus in Cherngtalay where camp days are built around gardening, caring for rabbits, goats and chickens, baking, Muay Thai, crafts with natural materials, and lots of free outdoor play. Completely screen-free.
+Now, the camps — one by one.
 
-- **Mini Camp (3–6):** 13,000฿/week — the only full-day programme for 3-year-olds in Phuket
-- **Maxi Camp (7–13):** 15,000฿/week — includes a field trip every Tuesday and beach day every Thursday
-- **Season:** June 29 – August 14, the longest of any Phuket camp and the only one covering mid-August
-- Lunch and snacks included
-- [Register here](/register) or [WhatsApp us](https://wa.me/66989124218?text=Hi!%20I%20read%20your%20summer%20camp%20comparison.%20I%20have%20a%20question.)
+## Bamboo Valley — The Nature Camp (Ours)
+
+> **Best for:** children who thrive outdoors, and families who want a screen-free week of gardening, animals, and mud rather than classrooms.
+
+A 5,600 sqm palm plantation campus in Cherngtalay where the day is built around real things: soil, animals, food, water, and free play. Completely screen-free.
+
+![Children caring for a goat and rabbit on the Bamboo Valley lawn](/blog/animal-care-goat-rabbit.jpg)
+
+*Animal care is a daily rhythm — rabbits, goats, and chickens.*
+
+### The Two Programmes
+
+- **Mini Camp (ages 3–6)** — 13,000฿/week. Gardening, animal care, baking, Waldorf painting, yoga, stories. The only full-day programme for 3-year-olds in Phuket.
+- **Maxi Camp (ages 7–13)** — 15,000฿/week. Animal care, gardening, Muay Thai, cooking, sports and games — plus a **field trip every Tuesday** and **beach day every Thursday**.
+
+### The Practical Details
+
+- **Season:** June 29 – August 14 — the longest in Phuket, and the only camp open after August 7
+- **Hours:** 8:45 – 15:00, lunch and snacks included
+- **Book:** [Register here](/register) or [WhatsApp us](https://wa.me/66989124218?text=Hi!%20I%20read%20your%20summer%20camp%20comparison.%20I%20have%20a%20question.)
 
 ![Children bathing an elephant on a Bamboo Valley field trip](/blog/camp-field-trip-elephants.jpg)
 
-### Summer@BISP — the big international one
+*Tuesday field trips: elephant sanctuaries, mangrove lakes, marine discovery.*
 
-**Best for:** older children (9–15) who want specialised morning programmes; families needing boarding.
+## Summer@BISP — The Big International One
 
-The largest operation, on BISP's 44-acre campus in Koh Kaew. Mornings are specialised tracks — English, coding with CYBERone, Cruzeiro football academy, or adventure sports — with afternoons of on-campus activities and trips. The only camp with a full boarding option for ages 9+ (29,400฿/week including meals, laundry, and weekend excursions). Early Years (3–5) is a half-day programme at 9,000฿/week without lunch. Day camp for 6–15 is 22,550฿/week. [Details at bisphuket.ac.th](https://www.bisphuket.ac.th/summer/).
+> **Best for:** older children (9–15) who want specialised morning programmes, and families needing boarding.
 
-### UWC Thailand Summer Camp — the early starter
+The largest operation in Phuket, on BISP's 44-acre campus in Koh Kaew.
 
-**Best for:** families who need camp in late June; teens up to 18.
+### How It Works
 
-Runs in partnership with TEEMS Global on UWC's campus in Thalang, June 22 – July 17 — the only camp open the week of June 22. The programme mixes sports, outdoor adventure, STEAM, AI and coding for ages 4–18. Day camp is 18,950฿/week; residential (ages 12–18) is 36,500฿/week. Optional English immersion hour is 7,500฿/week. [Details at uwcthailand.ac.th](https://www.uwcthailand.ac.th/beyond-the-classroom/summer-camps-2026).
+Mornings are specialised tracks — English, coding with CYBERone, Cruzeiro football academy, or adventure sports. Afternoons are on-campus activities and trips.
 
-### HeadStart Summer Camp — the themed-weeks one
+### Prices and Ages
 
-**Best for:** families in the Phuket Town area; parents needing late pick-up.
+- **Early Years (3–5):** 9,000฿/week — mornings only (8:30–11:30), no lunch
+- **Day camp (6–15):** 22,550฿/week
+- **Full boarding (9+):** 29,400฿/week including meals, laundry, and weekend excursions — the only boarding option for under-12s in Phuket
 
-Six weeks (June 29 – August 7) at HeadStart's Chaofah City campus with themed options each week — Activity Camp (18,000฿), or Around the World, Discovery, Adventure, and English Focus camps (20,000฿). Fees include lunch, excursions, materials, and basic accident insurance. A Late Club runs to 17:00 (3,000฿/week), and there's a 10% discount for booking three or more weeks. [Details at headstartphuket.com](https://headstartphuket.com/en/additional-programmes/summer-camp).
+Dates: June 29 – July 24. [Details at bisphuket.ac.th](https://www.bisphuket.ac.th/summer/)
 
-### Lighthouse Primary Summer Camp — the budget-friendly one
+## UWC Thailand — The Early Starter
 
-**Best for:** families in south Phuket watching the budget.
+> **Best for:** families who need camp in late June, and teens up to 18.
 
-The most affordable full-day camp at 10,000฿/week (45,000฿ for all six weeks), running June 29 – August 7 in Rawai for ages 4–11. A classic primary-school summer programme: arts and crafts, sports, simple science experiments, music and drama, with lunch and snacks included. [Details at lighthousephuket.com](https://lighthousephuket.com/lighthouse-primary-summer-camp-2026/).
+Runs with TEEMS Global on UWC's campus in Thalang, **June 22 – July 17** — the only camp open the week of June 22.
 
-### PGIS Summer Camp — the English-immersion one
+### What's On Offer
 
-**Best for:** families who specifically want English language progress; the Chalong/Robinson area.
+- Sports, outdoor adventure, STEAM, AI and coding, for ages 4–18
+- **Day camp:** 18,950฿/week (8:00–15:00, lunch included)
+- **Residential (12–18):** 36,500฿/week
+- Optional English immersion hour: 7,500฿/week
 
-Prasan Gateway International School in Chalong runs July 13 – August 7 for ages 5–13 with an explicit English-immersion focus led by international faculty — designed for English language learners but open to native speakers. Weekly island excursions and Muay Thai are included, along with snacks and lunch. [Details at pgisphuket.com](https://www.pgisphuket.com/post/summer-camp-phuket-2026).
+[Details at uwcthailand.ac.th](https://www.uwcthailand.ac.th/beyond-the-classroom/summer-camps-2026)
 
-## How to Choose: Four Questions That Decide It
+## HeadStart — The Themed-Weeks One
 
-**1. How old is your child?**
-Age 3: only BISP (mornings) or Bamboo Valley (full day). Ages 4–6: add UWC and Lighthouse. Ages 7–13: every camp works. Teens 14+: BISP (to 15) or UWC (to 18).
+> **Best for:** families near Phuket Town, and parents who need late pick-up.
 
-**2. Which weeks do you need?**
-Late June: UWC is open a week before everyone else. July: every camp is running. After August 7: Bamboo Valley is the only camp open (through August 14).
+Six weeks (June 29 – August 7) at HeadStart's Chaofah City campus, with a different themed option each week.
 
-**3. Where are you staying?**
-Phuket traffic makes this matter more than parents expect. Bangtao, Laguna, Surin or Kamala: Bamboo Valley and UWC are closest. Phuket Town: HeadStart or BISP. Rawai, Chalong or Kata: Lighthouse or PGIS.
+### The Numbers
 
-**4. What kind of week do you want for them?**
-Structured programmes, coding and sport on a school campus: BISP, UWC, or HeadStart. English progress specifically: PGIS. Outdoors, animals, soil and no screens: that's us — and the [research on what outdoor play does for children's immune systems](/blog/forest-play-immunity-boost) is worth five minutes of your time.
+- **Activity Camp:** 18,000฿/week
+- **Themed camps** (Around the World, Discovery, Adventure, English Focus): 20,000฿/week
+- **Late Club** until 17:00: 3,000฿/week
+- 10% off when booking three or more weeks; lunch, excursions and insurance included
 
-![The Bamboo Valley campus under the palm canopy](/blog/bamboo-valley-campus-palms.jpg)
+[Details at headstartphuket.com](https://headstartphuket.com/en/additional-programmes/summer-camp)
+
+## Lighthouse — The Budget-Friendly One
+
+> **Best for:** families in south Phuket watching the budget.
+
+The most affordable full-day camp in Phuket: **10,000฿/week**, or 45,000฿ for all six weeks (June 29 – August 7), ages 4–11, in Rawai.
+
+A classic primary-school summer programme — arts and crafts, sports, simple science, music and drama — with lunch and snacks included. [Details at lighthousephuket.com](https://lighthousephuket.com/lighthouse-primary-summer-camp-2026/)
+
+## PGIS — The English-Immersion One
+
+> **Best for:** families who specifically want English progress, in the Chalong area.
+
+Prasan Gateway International School runs July 13 – August 7 for ages 5–13, built around **English immersion with international faculty** — designed for language learners, open to native speakers.
+
+Weekly island excursions and Muay Thai are included, along with snacks and lunch. [Details at pgisphuket.com](https://www.pgisphuket.com/post/summer-camp-phuket-2026)
+
+![A girl absorbed in water play at the wooden mud kitchen](/blog/water-play-focus.jpg)
+
+*The kind of focus no worksheet produces.*
+
+## How to Choose: Four Questions
+
+### 1. How old is your child?
+
+- **Age 3:** only BISP (mornings) or Bamboo Valley (full day)
+- **Ages 4–6:** add UWC and Lighthouse
+- **Ages 7–13:** every camp works
+- **Teens 14+:** BISP (to 15) or UWC (to 18)
+
+### 2. Which weeks do you need?
+
+- **Late June:** UWC opens a week before everyone else
+- **July:** every camp is running
+- **After August 7:** Bamboo Valley is the only camp open (through August 14)
+
+### 3. Where are you staying?
+
+Phuket traffic makes this matter more than parents expect.
+
+- **Bangtao, Laguna, Surin, Kamala:** Bamboo Valley and UWC are closest
+- **Phuket Town:** HeadStart or BISP
+- **Rawai, Chalong, Kata:** Lighthouse or PGIS
+
+### 4. What kind of week do you want for them?
+
+- **Structured programmes, coding, sport** on a school campus: BISP, UWC, or HeadStart
+- **English progress** specifically: PGIS
+- **Outdoors, animals, soil, and no screens:** that's us — and the [research on what outdoor play does for children's immune systems](/blog/forest-play-immunity-boost) is worth five minutes of your time
+
+![Children climbing under the palm canopy at Bamboo Valley](/blog/camp-free-play.jpg)
+
+*Free play under nearly 100 palms — the part of camp children remember.*
+
+## Booking Tips for 2026
+
+- **Book early for July.** It's high season — BISP and UWC both reported full programmes last year, and HeadStart discounts multi-week bookings.
+- **Visiting just one week?** Every camp accepts it. Choose by location first — Phuket traffic is real.
+- **Late June or August?** Your options narrow fast: UWC for June 22–26, Bamboo Valley for August 10–14.
+- **Want to see before you book?** Any good camp will show you around. [We're happy to](https://wa.me/66989124218?text=Hi!%20Could%20we%20visit%20Bamboo%20Valley%20before%20booking%3F).
+
+![Two girls collecting shells at the mangrove lake](/blog/field-trip-shell-lake.jpg)
+
+*Shell Lake field trip, Maxi Camp.*
 
 ## Frequently Asked Questions
 
@@ -116,7 +206,7 @@ Full-day camps range from 10,000฿/week (Lighthouse) to 22,550฿/week (BISP), 
 UWC starts first (June 22). Most others start June 29. BISP ends July 24, UWC July 17, HeadStart, Lighthouse and PGIS run to August 7, and Bamboo Valley runs latest — to August 14.
 
 **Can we book a single week while on holiday?**
-Yes — every camp on this list takes week-by-week bookings. Phuket is one of the few places in Asia where a visiting family can drop into a full international camp programme for just one week.
+Yes — every camp on this list takes week-by-week bookings.
 
 **What about children who don't speak English?**
 All camps operate in English with international staff and welcome learners. Hands-on camps (nature activities, sports, excursions) tend to be easiest for children still building confidence in English.

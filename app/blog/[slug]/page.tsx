@@ -100,10 +100,31 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        overflow: 'hidden',
         backgroundImage: post.featuredImage ? `url(${post.featuredImage})` : 'linear-gradient(135deg, #BED7AF 0%, #DCEBE1 100%)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}>
+        {/* Background video (optional, via heroVideo frontmatter) */}
+        {post.heroVideo && (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={post.heroPoster || post.featuredImage}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          >
+            <source src={post.heroVideo} type="video/mp4" />
+          </video>
+        )}
         {/* Overlay */}
         <div style={{
           position: 'absolute',

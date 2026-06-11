@@ -17,6 +17,8 @@ export interface BlogPost {
   updated?: string
   author: string
   featuredImage?: string
+  heroVideo?: string
+  heroPoster?: string
   tags: string[]
   camps: string[]
   language: string
@@ -69,6 +71,8 @@ export function getPostBySlug(slug: string): BlogPost | null {
       updated: data.updated || undefined,
       author: data.author || 'Bamboo Valley Team',
       featuredImage: data.featuredImage || '',
+      heroVideo: data.heroVideo || undefined,
+      heroPoster: data.heroPoster || undefined,
       tags: data.tags || [],
       camps: data.camps || ['universal'],
       language: data.language || 'en',
