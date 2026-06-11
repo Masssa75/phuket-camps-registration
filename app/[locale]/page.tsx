@@ -27,10 +27,10 @@ export async function generateMetadata({
       title: t('ogTitle'),
       description: t('ogDescription'),
       images: [{
-        url: `${BASE_URL}/images/Confidence.jpeg`,
+        url: `${BASE_URL}/images/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: 'Children learning in nature at Bamboo Valley Phuket Camp',
+        alt: 'The Bamboo Valley palm-grove campus — Phuket Nature Camp',
       }],
       locale: locale === 'zh' ? 'zh_CN' : 'en_US',
       type: 'website',
@@ -41,7 +41,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: t('ogTitle'),
       description: t('ogDescription'),
-      images: [`${BASE_URL}/images/Confidence.jpeg`],
+      images: [`${BASE_URL}/images/og-image.jpg`],
       creator: '@bamboovalleyphuket',
       site: '@bamboovalleyphuket',
     },
@@ -231,7 +231,7 @@ export default async function Home({
                 "validThrough": "2027-04-09"
               }
             ],
-            "image": "https://phuketcamp.com/images/Confidence.jpeg",
+            "image": "https://phuketcamp.com/images/og-image.jpg",
             "aggregateRating": {
               "@type": "AggregateRating",
               "ratingValue": "5.0",
