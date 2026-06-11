@@ -35,3 +35,17 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Local design exploration & working files — keep out of the deploy repo
+/public/redesign*.html
+/public/redesign-img/
+/public/nature-type/
+/public/hero-comparison-suite*.html
+/public/images/alternative-hero-*.jpg
+/public/videos/*
+!/public/videos/phuket-nature-camp.mp4
+/scripts/generate_nature_type_*.py
+/working-docs/
+/test-console.js
+/test-console.spec.js
+/test-puppeteer.js

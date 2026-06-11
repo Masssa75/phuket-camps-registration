@@ -1,17 +1,20 @@
 import Link from 'next/link'
-import { MessageCircle } from 'lucide-react'
 import './home.css'
 import type { Metadata } from 'next'
 import HeroVideo from '@/components/HeroVideo'
+import StickyNav from '@/components/home/StickyNav'
+import PhotoGallery from '@/components/home/PhotoGallery'
+import ContactForm from '@/components/home/ContactForm'
+import Timetable from '@/components/home/Timetable'
 import { HomePageTracking } from '@/components/Analytics'
 
 export const metadata: Metadata = {
   title: 'Phuket Nature Camp - Year-Round Camps 2026-2027 | Bamboo Valley',
-  description: 'Science-backed outdoor camps in Phuket building immunity, confidence, and life skills through nature. Summer, October, Christmas, Winter and Easter programs across 2026-2027. Ages 3-10. Organic meals, field trips, animal care, gardening, yoga.',
+  description: 'Science-backed outdoor camps in Phuket building immunity, confidence, and life skills through nature. Summer, October, Christmas, Winter and Easter programs across 2026-2027. Ages 3-13. Organic meals, field trips, animal care, gardening, yoga.',
   keywords: 'phuket camp, nature camp phuket, summer camp phuket, october camp phuket, christmas camp phuket, winter camp phuket, easter camp phuket, kids activities phuket, outdoor education phuket, bamboo valley phuket, phuket kids camp, waldorf phuket, holiday camp phuket, school break camp phuket',
   openGraph: {
     title: 'Phuket Nature Camp - Nature Skills for Life',
-    description: 'Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-10. Licensed native English teachers. Summer, October, Christmas, Winter and Easter programs.',
+    description: 'Outdoor camps with animal care, gardening, yoga, field trips. Ages 3-13. Licensed native English teachers. Summer, October, Christmas, Winter and Easter programs.',
     images: [{
       url: 'https://phuketcamp.com/images/Confidence.jpeg',
       width: 1200,
@@ -36,9 +39,54 @@ export const metadata: Metadata = {
   }
 }
 
+// Every answer below states only verified policy (from the registration terms,
+// admin schedules, and program pages) — don't add claims that aren't sourced.
+const FAQS = [
+  {
+    q: 'What are the camp hours?',
+    a: 'Camp runs Monday to Friday. Drop-off is between 8:45 and 9:00 in the morning, and pick-up is at 3:00 in the afternoon.',
+  },
+  {
+    q: 'What is included in the price?',
+    a: 'Everything for the day: a healthy lunch, two snacks, and all craft materials. For Maxi campers, the two weekly excursions are included too, transportation and all.',
+  },
+  {
+    q: 'Which group is right for my child?',
+    a: 'Mini (ages 3 to 6) has gentle, play-based days with a story and rest time after lunch. Maxi (ages 7 to 13) is built around adventure, sport, and independence, with two excursions a week. Both groups run with 1 teacher per 6 children, in groups of up to 18.',
+  },
+  {
+    q: 'Does my child need to speak English?',
+    a: 'Camp is run in English by licensed native English-speaking teachers, and children join us at every language level. During registration we ask about your child’s English so the teachers know how to support them from day one.',
+  },
+  {
+    q: 'What about allergies and dietary restrictions?',
+    a: 'Please list any allergies, dietary restrictions, or medical conditions in the registration form — the team will know about them before your child’s first day.',
+  },
+  {
+    q: 'What happens when it rains?',
+    a: 'We stay flexible — activities and field trips may change due to weather, and the day’s rhythm carries on.',
+  },
+  {
+    q: 'Does my child need insurance?',
+    a: 'Yes — every camper needs valid international health insurance or travel medical insurance covering the camp period.',
+  },
+  {
+    q: 'What is the cancellation policy?',
+    a: 'Cancel at least one month before camp starts and the full payment is refunded. Less than one month before, half is refunded. Cancellations made less than 7 days before the camp starts, or during the camp, are not refundable.',
+  },
+]
+
+const CAMPS = [
+  { emoji: '☀️', name: 'Summer Nature Camp', dates: '29 June – 14 August 2026', slug: 'summer-2026' },
+  { emoji: '🍂', name: 'October Nature Camp', dates: '12–16 October 2026', slug: 'october-2026' },
+  { emoji: '🎄', name: 'Christmas Nature Camp', dates: '14–25 December 2026 · 2 weeks', slug: 'christmas-2026' },
+  { emoji: '❄️', name: 'Winter Nature Camp', dates: '18 January – 5 March 2027 · 7 weeks', slug: 'winter-2027' },
+  { emoji: '🐣', name: 'Easter Nature Camp', dates: '5–9 April 2027', slug: 'easter-2027' },
+]
+
 export default function Home() {
   return (
-    <div>
+    <div className="bvhome">
       <HomePageTracking />
       {/* JSON-LD Structured Data for SEO */}
       <script
@@ -182,361 +230,284 @@ export default function Home() {
         }}
       />
 
-      {/* Hero Section with Video */}
-      <section className="hero" data-track-section="hero">
-        <HeroVideo />
-        <img src="/Logo with text.png" alt="Bamboo Valley Phuket Nature Camps Logo" className="hero-logo" />
+      {/* FAQPage structured data (rendered from the same FAQS array as the visible section) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": FAQS.map((f) => ({
+              "@type": "Question",
+              "name": f.q,
+              "acceptedAnswer": { "@type": "Answer", "text": f.a }
+            }))
+          })
+        }}
+      />
+
+      <StickyNav />
+      <HeroVideo />
+
+      {/* ===== HERO ===== */}
+      <section className="hero" id="top" data-track-section="hero">
+        <div className="hero-scrim"></div>
+        <img className="hero-logo" src="/Logo with text White.png" alt="Bamboo Valley" />
         <div className="hero-content">
-          <div className="hero-header">Phuket Nature Camp</div>
-          <h1>Nature Skills for Life</h1>
-          <p className="hero-description">Science-backed outdoor program building immunity, confidence, and life skills:</p>
-          <ul className="bullet-list">
-            <li>Animal care</li>
-            <li>Gardening</li>
-            <li>Baking</li>
-            <li>Yoga</li>
-            <li>Music</li>
-            <li>Meditation</li>
-            <li>Arts & crafts</li>
+          <h1 className="hero-title">Phuket Nature Camp</h1>
+          <p className="hero-slogan">Where childhood becomes extraordinary.</p>
+          <div className="chips">
+            <span className="chip">Ages 3–13</span>
+            <a className="chip" href="#camps">Register →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== INTRO ===== */}
+      <section className="introsec" data-track-section="intro">
+        <div className="iwrap">
+          <div className="iphoto"></div>
+          <h2 className="ih">A beautiful outdoor program that builds confidence, immunity, and life skills.</h2>
+          <div className="ischedule">Monday–Friday <span className="idot"></span> 9 AM–3 PM</div>
+          <ul className="iacts">
+            <li>Animal care</li><li>Gardening</li><li>Baking</li><li>Arts & crafts</li><li>Stories & acting</li><li>Muay Thai</li><li>Yoga</li><li>Meditation</li><li>Music</li><li>Field trips</li>
           </ul>
-          <a
-            href="https://wa.me/66989124218?text=Hi!%20I%27m%20interested%20in%20the%20Phuket%20Nature%20Camp."
-            className="cta-button"
-            style={{display: 'inline-flex', alignItems: 'center', gap: '12px'}}
-          >
-            <MessageCircle size={24} />
-            WhatsApp: +66 98 912 4218
-          </a>
         </div>
       </section>
 
-      {/* Upcoming Camps */}
-      <section data-track-section="upcoming-camps" style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/5F1B0766-367A-4892-8D9E-D9006FBB64EB.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
-        <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.85)'}}></div>
-        <div style={{position: 'relative', zIndex: 1}}>
-          <h2 className="section-title">Upcoming Camps</h2>
-          <p className="section-subtitle">Join us for nature-based learning adventures</p>
-
-          <div className="camp-list">
-            <div className="cute-item" style={{background: 'linear-gradient(135deg, #e8fff0 0%, #d0ffe8 100%)'}}>
-              <div className="cute-emoji">☀️</div>
-              <div className="cute-content">
-                <h3 style={{color: '#27ae60'}}>Summer Nature Camp</h3>
-                <div className="cute-meta" style={{color: '#27ae60'}}>
-                  Jun 29 - Aug 14, 2026<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <Link href="/register?camp=summer-2026" className="cta-button" style={{display: 'inline-block'}}>Register</Link>
-            </div>
-
-            <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff4e0 0%, #ffe4c0 100%)'}}>
-              <div className="cute-emoji">🍂</div>
-              <div className="cute-content">
-                <h3 style={{color: '#d35400'}}>October Nature Camp</h3>
-                <div className="cute-meta" style={{color: '#d35400'}}>
-                  Oct 12-16, 2026<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <Link href="/register?camp=october-2026" className="cta-button" style={{display: 'inline-block', background: '#d35400', color: 'white'}}>Register</Link>
-            </div>
-
-            <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff0f0 0%, #ffe0e0 100%)'}}>
-              <div className="cute-emoji">🎄</div>
-              <div className="cute-content">
-                <h3 style={{color: '#c0392b'}}>Christmas Nature Camp</h3>
-                <div className="cute-meta" style={{color: '#c0392b'}}>
-                  Dec 14-25, 2026 (2 weeks)<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <Link href="/register?camp=christmas-2026" className="cta-button" style={{display: 'inline-block', background: '#c0392b', color: 'white'}}>Register</Link>
-            </div>
-
-            <div className="cute-item" style={{background: 'linear-gradient(135deg, #e8f4ff 0%, #d0e8ff 100%)'}}>
-              <div className="cute-emoji">❄️</div>
-              <div className="cute-content">
-                <h3 style={{color: '#4a90d9'}}>Winter Nature Camp</h3>
-                <div className="cute-meta" style={{color: '#4a90d9'}}>
-                  Jan 18 - Mar 5, 2027 (7 weeks)<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <Link href="/register?camp=winter-2027" className="cta-button" style={{display: 'inline-block', background: '#4a90d9', color: 'white'}}>Register</Link>
-            </div>
-
-            <div className="cute-item" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)'}}>
-              <div className="cute-emoji">🐣</div>
-              <div className="cute-content">
-                <h3 style={{color: '#e67e22'}}>Easter Nature Camp</h3>
-                <div className="cute-meta" style={{color: '#e67e22'}}>
-                  Apr 5-9, 2027<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <Link href="/register?camp=easter-2027" className="cta-button" style={{display: 'inline-block', background: '#e67e22', color: 'white'}}>Register</Link>
-            </div>
-          </div>
+      {/* ===== PARALLAX BREAKER (A children's paradise) ===== */}
+      <section className="breaker" style={{ backgroundImage: "url('/images/redesign/amb-tortoise.jpg')" }}>
+        <div className="bq">
+          <p>“A children’s paradise.”</p>
         </div>
       </section>
 
-      {/* Watch Them Grow Section */}
-      <section data-track-section="watch-them-grow" style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/BF210057-87F6-4A30-8F69-5FE03B3203F4.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
-        <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.85)'}}></div>
-        <div style={{position: 'relative', zIndex: 1}}>
-          <h2 className="section-title">Watch Them Grow</h2>
-          <p style={{textAlign: 'center', maxWidth: '900px', margin: '0 auto 50px', fontSize: '1.1rem', color: '#666', lineHeight: 1.7}}>
-            Our program integrates proven methods from the UK Scouts and Finnish nature research
-          </p>
-          <div style={{maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px'}}>
-            <div style={{position: 'relative', height: '400px', backgroundImage: 'url(/images/Confidence.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '15px', overflow: 'hidden'}}>
-              <div style={{position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(122, 154, 59, 0.95), rgba(122, 154, 59, 0.7))', padding: '30px', color: 'white'}}>
-                <h3 style={{fontSize: '1.8rem', marginBottom: '10px', fontWeight: 700}}>Confidence</h3>
-                <p style={{fontSize: '1rem', lineHeight: 1.5}}>Trying new things, speaking up, taking on challenges</p>
+      {/* ===== PHOTO GALLERY ===== */}
+      <section className="gsec" data-track-section="gallery">
+        <div className="head">
+          <div className="eyebrow">Camp life</div>
+          <hr className="eyebrow-rule" />
+          <h2 className="ttl">A look around camp</h2>
+        </div>
+        <PhotoGallery />
+      </section>
+
+      {/* ===== PROGRAMS ===== */}
+      <section className="programs" id="programs" data-track-section="programs">
+        <div className="head">
+          <div className="eyebrow">Programs</div>
+          <hr className="eyebrow-rule" />
+          <h2 className="ttl">We have two age groups</h2>
+        </div>
+
+        <div className="cards">
+          <article className="scrap mini">
+            <div className="photo"></div>
+            <div className="body">
+              <h3 className="age"><span className="nm">Mini</span> – Ages 3 to 6</h3>
+              <div className="focus">Gentle, play-based days</div>
+              <div className="factpills"><span>1 teacher to 6 children</span><span>Groups of 18</span></div>
+              <ul className="acts"><li>Animal care</li><li>Gardening</li><li>Baking</li><li>Waldorf painting</li><li>Yoga & meditation</li><li>Stories & circle time</li></ul>
+              <div className="foot">
+                <div className="price"><b>13,000</b> THB <span>/ week</span></div>
+                <div className="incl">Meals & materials<br />included</div>
               </div>
             </div>
-            <div style={{position: 'relative', height: '400px', backgroundImage: 'url(/images/TeamWork.JPG)', backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '15px', overflow: 'hidden'}}>
-              <div style={{position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(122, 154, 59, 0.95), rgba(122, 154, 59, 0.7))', padding: '30px', color: 'white'}}>
-                <h3 style={{fontSize: '1.8rem', marginBottom: '10px', fontWeight: 700}}>Teamwork</h3>
-                <p style={{fontSize: '1rem', lineHeight: 1.5}}>Helping friends, working together, sharing discoveries</p>
+          </article>
+
+          <article className="scrap maxi">
+            <div className="photo"></div>
+            <div className="body">
+              <h3 className="age"><span className="nm">Maxi</span> – Ages 7 to 13</h3>
+              <div className="focus">Adventure, sport & independence</div>
+              <div className="factpills"><span>1 teacher to 6 children</span><span>Groups of 18</span></div>
+              <ul className="acts"><li>Animal care</li><li>Gardening</li><li>Muay Thai</li><li>Cooking & baking</li><li>Sports & games</li><li>Clay, beads & crafts</li></ul>
+              <div className="plus">
+                <div className="plushead">Plus, two excursions a week</div>
+                <div className="lab"><span className="day">Tue</span> A new excursion each week</div>
+                <div className="lab"><span className="day">Thu</span> Beach Day, every week</div>
+              </div>
+              <div className="foot">
+                <div className="price"><b>15,000</b> THB <span>/ week</span></div>
+                <div className="incl">Meals, materials &<br />field trips included</div>
               </div>
             </div>
-            <div style={{position: 'relative', height: '400px', backgroundImage: 'url(/images/IMG_0829.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '15px', overflow: 'hidden'}}>
-              <div style={{position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(122, 154, 59, 0.95), rgba(122, 154, 59, 0.7))', padding: '30px', color: 'white'}}>
-                <h3 style={{fontSize: '1.8rem', marginBottom: '10px', fontWeight: 700}}>Strong Immunity</h3>
-                <p style={{fontSize: '1rem', lineHeight: 1.5}}>Forest play builds immunity and reduces autoimmune disorders</p>
-              </div>
-            </div>
-          </div>
+          </article>
         </div>
       </section>
 
-      {/* Choose Your Program */}
-      <section id="programs" data-track-section="choose-program" style={{padding: '100px 20px', backgroundImage: 'url(/backgrounds/EBA7D34E-A638-4BB2-B685-E9A33A5AE49D.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
-        <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.88)'}}></div>
-        <div style={{position: 'relative', zIndex: 1}}>
-          <h2 style={{fontSize: '3rem', fontWeight: 800, marginBottom: '20px', textAlign: 'center', color: '#333'}}>Choose Your Program</h2>
-          <p style={{fontSize: '1.2rem', color: '#666', textAlign: 'center', marginBottom: '60px', maxWidth: '800px', marginLeft: 'auto', marginRight: 'auto'}}>Two exciting programs designed for different age groups</p>
-
-          <div className="program-grid">
-            {/* Mini Camp Card */}
-            <div className="program-card" style={{backgroundImage: 'url(/images/IMG_1205.JPG)'}}>
-              <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%)'}}></div>
-              <div className="program-card-content">
-                <h3>Mini Camp</h3>
-                <p className="age">Ages 3-6</p>
-                <p className="description">On-site nature activities: animal care, gardening, baking, yoga, arts & crafts</p>
-                <p className="schedule">Full day • 9AM-3PM</p>
-                <p className="price">13,000฿/week</p>
-                <Link href="/camps" className="cta-btn">View Camps</Link>
-              </div>
-            </div>
-
-            {/* Maxi Camp Card */}
-            <div className="program-card" style={{backgroundImage: 'url(/images/IMG_2047.jpeg)'}}>
-              <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%)'}}></div>
-              <div className="program-card-content">
-                <h3>Maxi Camp</h3>
-                <p className="age">Ages 7-13</p>
-                <p className="description">Field trips: beach days, elephant sanctuary, marine biology, Muay Thai</p>
-                <p className="schedule">Full day • 9AM-3PM</p>
-                <p className="price">15,000฿/week</p>
-                <Link href="/camps" className="cta-btn">View Camps</Link>
-              </div>
-            </div>
-          </div>
-
-          <p style={{fontSize: '1rem', color: '#999', textAlign: 'center', marginTop: '40px'}}>Both programs include: Organic meals • Licensed native English teachers • All materials</p>
+      {/* ===== PARALLAX BREAKER (barefoot mornings) ===== */}
+      <section className="breaker" style={{ backgroundImage: "url('/images/redesign/amb-swings.jpg')" }}>
+        <div className="bq">
+          <p>“The mornings begin barefoot in the gardens.”</p>
+          <div className="attr">A day at Bamboo Valley</div>
         </div>
       </section>
 
-      {/* Activities Section */}
-      <section data-track-section="activities" style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/77D501D4-63AB-4537-B054-39C17D4AEF33.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
-        <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.82)'}}></div>
-        <div style={{position: 'relative', zIndex: 1}}>
-          <h2 className="section-title">Daily Activities</h2>
-          <div style={{maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px'}}>
-            {[
-              {img: 'Animal-Care-1.jpg', title: 'Animal Care'},
-              {img: 'Outdoor-exploration.JPG', title: 'Nature Exploration'},
-              {img: 'Gardening.jpeg', title: 'Gardening'},
-              {img: 'Baking.jpeg', title: 'Baking'},
-              {img: 'Yoga.JPG', title: 'Yoga & Mindfulness'},
-              {img: 'AC50C643-81BD-4E68-BAE3-CBF9EFA67AE7.jpeg', title: 'Arts & Crafts'}
-            ].map((activity, i) => (
-              <div key={i} style={{position: 'relative', height: '350px', backgroundImage: `url(/images/${activity.img})`, backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '15px', overflow: 'hidden'}}>
-                <div style={{position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(122, 154, 59, 0.95), rgba(122, 154, 59, 0.7))', padding: '25px', color: 'white'}}>
-                  <h3 style={{fontSize: '1.5rem', fontWeight: 700}}>{activity.title}</h3>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* ===== DAILY ACTIVITIES ===== */}
+      <section className="gsec" id="activities" data-track-section="activities">
+        <div className="head">
+          <div className="eyebrow">Every day</div>
+          <hr className="eyebrow-rule" />
+          <h2 className="ttl">Daily activities</h2>
+        </div>
+        <div className="gallery">
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/act-animalcare.jpg')" }}><div className="gcap">Animal care</div></div>
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/act-freeplay.jpg')" }}><div className="gcap">Free play</div></div>
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/act-gardening.jpg')" }}><div className="gcap">Gardening</div></div>
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/act-baking.jpg')" }}><div className="gcap">Baking</div></div>
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/act-yoga.jpg')" }}><div className="gcap">Yoga & mindfulness</div></div>
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/act-arts.jpg')" }}><div className="gcap">Arts & crafts</div></div>
         </div>
       </section>
 
-      {/* Field Trips Section */}
-      <section data-track-section="field-trips" style={{padding: '80px 20px', backgroundImage: 'url(/backgrounds/94FC350D-D518-4DF6-A2B3-3F74EAE7FD26.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative'}}>
-        <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.88)'}}></div>
-        <div style={{position: 'relative', zIndex: 1}}>
-          <h2 className="section-title">Field Trips - Maxi Camp</h2>
-          <p style={{textAlign: 'center', fontSize: '1rem', color: '#666', marginBottom: '30px'}}>Twice weekly adventures</p>
-          <div style={{display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '50px'}}>
-            <div style={{background: 'white', border: '3px solid #7a9a3b', padding: '15px 30px', borderRadius: '30px', display: 'inline-flex', alignItems: 'center', gap: '10px'}}>
-              <span style={{fontSize: '1.5rem'}}>🚌</span>
-              <div>
-                <div style={{fontWeight: 700, color: '#7a9a3b'}}>Field Trips</div>
-                <div style={{fontSize: '0.9rem', color: '#666'}}>Every Tuesday</div>
-              </div>
-            </div>
-            <div style={{background: 'white', border: '3px solid #7a9a3b', padding: '15px 30px', borderRadius: '30px', display: 'inline-flex', alignItems: 'center', gap: '10px'}}>
-              <span style={{fontSize: '1.5rem'}}>🏖️</span>
-              <div>
-                <div style={{fontWeight: 700, color: '#7a9a3b'}}>Beach Day</div>
-                <div style={{fontSize: '0.9rem', color: '#666'}}>Every Thursday</div>
-              </div>
-            </div>
-          </div>
-          <div style={{maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px'}}>
-            {[
-              {img: 'Beach-Day.jpeg', title: 'Beach Day'},
-              {img: 'IMG_2047.jpeg', title: 'Shell Lake'},
-              {img: 'Elephant.jpg', title: 'Elephant Sanctuary'},
-              {img: 'Pearl.jpg', title: 'Pearl Factory'},
-              {img: 'Muay-Thai.jpg', title: 'Muay Thai'},
-              {img: 'Rice-Farm.JPG', title: 'Rice Farm'}
-            ].map((trip, i) => (
-              <div key={i} style={{position: 'relative', height: '350px', backgroundImage: `url(/images/${trip.img})`, backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '15px', overflow: 'hidden'}}>
-                <div style={{position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(122, 154, 59, 0.95), rgba(122, 154, 59, 0.7))', padding: '25px', color: 'white'}}>
-                  <h3 style={{fontSize: '1.5rem', fontWeight: 700}}>{trip.title}</h3>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* ===== FIELD TRIPS (Maxi) ===== */}
+      <section className="gsec alt" data-track-section="field-trips">
+        <div className="head">
+          <div className="eyebrow">Beyond the campus</div>
+          <hr className="eyebrow-rule" />
+          <h2 className="ttl">Field trips — Maxi camp</h2>
+          <p className="gsub">Twice-weekly adventures for the older children</p>
+        </div>
+        <div className="daypills">
+          <div className="daypill"><span className="emoji">🚌</span><div><b>Field Trips</b><span>Every Tuesday</span></div></div>
+          <div className="daypill"><span className="emoji">🏖️</span><div><b>Beach Day</b><span>Every Thursday</span></div></div>
+        </div>
+        <div className="gallery">
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/ft-beach.jpg')" }}><div className="gcap">Beach Day</div></div>
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/ft-shell-lake.jpg')" }}><div className="gcap">Shell Lake</div></div>
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/ft-elephant.jpg')" }}><div className="gcap">Elephant sanctuary</div></div>
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/ft-pearl.jpg')" }}><div className="gcap">Pearl factory</div></div>
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/ft-muay-thai.jpg')" }}><div className="gcap">Muay Thai</div></div>
+          <div className="gcard" style={{ backgroundImage: "url('/images/redesign/ft-rice-farm.jpg')" }}><div className="gcap">Rice farm</div></div>
         </div>
       </section>
 
-      {/* Blog Preview Section */}
-      <section data-track-section="blog" style={{padding: '80px 20px', background: 'linear-gradient(135deg, #BED7AF 0%, #DCEBE1 100%)'}}>
-        <div style={{maxWidth: '1200px', margin: '0 auto', textAlign: 'center'}}>
-          <h2 style={{fontSize: '2.5rem', fontWeight: 800, marginBottom: '20px', color: '#2c3e2c'}}>Latest from Our Blog</h2>
-          <p style={{fontSize: '1.1rem', color: '#5a6a5a', marginBottom: '50px'}}>Research-backed insights on nature education and childhood development</p>
+      {/* ===== PARALLAX BREAKER (Everything childhood) ===== */}
+      <section className="breaker" style={{ backgroundImage: "url('/images/redesign/amb-tipi.jpg')" }}>
+        <div className="bq">
+          <p>“Everything childhood was always meant to be.”</p>
+        </div>
+      </section>
 
-          <div style={{background: 'white', borderRadius: '20px', overflow: 'hidden', textAlign: 'left', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', maxWidth: '800px', margin: '0 auto'}}>
-            <div style={{padding: '40px'}}>
-              <div style={{marginBottom: '15px'}}>
-                <span style={{background: '#f0f7e8', color: '#7a9a3b', padding: '6px 14px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600, marginRight: '8px'}}>
-                  screen time
-                </span>
-                <span style={{background: '#f0f7e8', color: '#7a9a3b', padding: '6px 14px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600}}>
-                  science
-                </span>
+      {/* ===== A DAY AT CAMP (timetable) ===== */}
+      <section className="gsec alt" id="day" data-track-section="day-at-camp">
+        <div className="head">
+          <div className="eyebrow">Daily rhythm</div>
+          <hr className="eyebrow-rule" />
+          <h2 className="ttl">A day at camp</h2>
+          <p className="gsub">A steady rhythm, a different focus each day</p>
+        </div>
+        <Timetable />
+      </section>
+
+      {/* ===== UPCOMING CAMPS ===== */}
+      <div id="register" aria-hidden="true" />
+      <section className="gsec" id="camps" data-track-section="upcoming-camps">
+        <div className="head">
+          <div className="eyebrow">Dates</div>
+          <hr className="eyebrow-rule" />
+          <h2 className="ttl">Upcoming camps</h2>
+          <p className="gsub">Monday to Friday, 9 AM–3 PM · Mini 13,000 THB · Maxi 15,000 THB per week</p>
+        </div>
+        <div className="camplist">
+          {CAMPS.map((camp) => (
+            <div className="camprow" key={camp.slug}>
+              <span className="em">{camp.emoji}</span>
+              <div className="ci">
+                <div className="cn">{camp.name}</div>
+                <div className="cd">{camp.dates}</div>
               </div>
-              <h3 style={{fontSize: '2rem', fontWeight: 700, color: '#2c3e2c', marginBottom: '20px', lineHeight: 1.3}}>
-                Soil vs. Screen: 7 Childhood Wins You Can Actually Measure
-              </h3>
-              <p style={{fontSize: '1.1rem', color: '#666', lineHeight: 1.7, marginBottom: '30px'}}>
-                The average 4-year-old spends 2h 19min on screens daily. Finnish forest-children spend the same time with dirt under their nails—and just outscored peers in immunity, sleep, and self-regulation...
-              </p>
-              <Link href="/blog/soil-vs-screen-christmas" style={{display: 'inline-block', padding: '15px 35px', background: '#7a9a3b', color: 'white', textDecoration: 'none', borderRadius: '50px', fontSize: '1.1rem', fontWeight: 700, transition: 'transform 0.2s'}}>
-                Read Full Article →
-              </Link>
+              <Link className="cbtn" href={`/register?camp=${camp.slug}`}>Register →</Link>
             </div>
-          </div>
-
-          <Link href="/blog" style={{display: 'inline-block', marginTop: '40px', color: '#7a9a3b', textDecoration: 'none', fontSize: '1.1rem', fontWeight: 600}}>
-            View All Articles →
-          </Link>
+          ))}
         </div>
       </section>
 
-      {/* Register/Contact Section */}
-      <section id="register" data-track-section="register-cta" style={{padding: '100px 20px', backgroundImage: 'url(/backgrounds/D64442BA-F797-41FF-87AD-A5E0DDBC289B.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', textAlign: 'center'}}>
-        <div style={{position: 'absolute', inset: 0, background: 'rgba(255, 255, 255, 0.90)'}}></div>
-        <div style={{position: 'relative', zIndex: 1}}>
-          <h2 style={{fontSize: '3rem', fontWeight: 800, marginBottom: '30px', color: '#333'}}>Ready to Register?</h2>
-
-          <div style={{display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap', marginBottom: '60px'}}>
-            <a href="https://wa.me/66989124218?text=Hi!%20I%27m%20interested%20in%20the%20Phuket%20Nature%20Camp." style={{display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '20px 50px', background: '#25D366', color: 'white', textDecoration: 'none', borderRadius: '50px', fontSize: '1.3rem', fontWeight: 700, transition: 'all 0.3s', boxShadow: '0 6px 20px rgba(37, 211, 102, 0.4)'}}>
-              <MessageCircle size={24} />
-              WhatsApp: +66 98 912 4218
-            </a>
-            <a href="mailto:info@bamboovalleyphuket.com" style={{display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '20px 50px', background: 'white', color: '#7a9a3b', textDecoration: 'none', borderRadius: '50px', fontSize: '1.3rem', fontWeight: 700, border: '3px solid #7a9a3b', transition: 'all 0.3s'}}>
-              info@bamboovalleyphuket.com
-            </a>
-          </div>
-
-          <p style={{fontSize: '1.1rem', color: '#666', maxWidth: '700px', margin: '0 auto', lineHeight: 1.8}}>
-            Have questions? We&apos;d love to hear from you! Reach out via WhatsApp or email, and we&apos;ll get back to you within 24 hours.
-          </p>
+      {/* ===== FAQ ===== */}
+      <section className="gsec alt" id="faq" data-track-section="faq">
+        <div className="head">
+          <div className="eyebrow">Good to know</div>
+          <hr className="eyebrow-rule" />
+          <h2 className="ttl">Common questions</h2>
+        </div>
+        <div className="faqlist">
+          {FAQS.map((f) => (
+            <details key={f.q}>
+              <summary>{f.q}</summary>
+              <p className="fa">{f.a}</p>
+            </details>
+          ))}
         </div>
       </section>
 
-      {/* Footer */}
-      <footer style={{background: '#2c3e2c', color: 'white', padding: '60px 20px 30px'}}>
-        <div style={{maxWidth: '1200px', margin: '0 auto'}}>
-          <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '40px', marginBottom: '40px'}}>
-            {/* About Column */}
-            <div>
-              <h3 style={{fontSize: '1.3rem', marginBottom: '15px', color: '#a8c545'}}>Bamboo Valley Phuket</h3>
-              <p style={{fontSize: '0.95rem', lineHeight: 1.6, color: '#d0d0d0'}}>
-                Science-backed outdoor programs building immunity, confidence, and life skills through nature-based learning.
-              </p>
+      {/* ===== VISIT US / CONTACT ===== */}
+      <section className="gsec" data-track-section="visit">
+        <div className="head">
+          <div className="eyebrow">Come and see</div>
+          <hr className="eyebrow-rule" />
+          <h2 className="ttl">Visit us</h2>
+          <p className="gsub">Questions welcome — we answer in any language</p>
+        </div>
+        <div className="contactgrid">
+          <div className="cinfo">
+            <h3 className="subh">Get in touch</h3>
+            <div className="cblock">
+              <div className="lbl">Where we are</div>
+              <p>3/74 Moo 4, Cherngtalay<br />Thalang, Phuket 83110</p>
+              <a className="maplink" href="https://maps.app.goo.gl/BSgZ5mBeAZqQnZEN6" target="_blank" rel="noopener noreferrer">Open in Google Maps →</a>
             </div>
-
-            {/* Quick Links Column */}
-            <div>
-              <h3 style={{fontSize: '1.3rem', marginBottom: '15px', color: '#a8c545'}}>Quick Links</h3>
-              <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
-                <li style={{marginBottom: '10px'}}>
-                  <Link href="/register" style={{color: '#d0d0d0', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.3s'}}>
-                    Register
-                  </Link>
-                </li>
-                <li style={{marginBottom: '10px'}}>
-                  <Link href="/code-of-conduct" style={{color: '#d0d0d0', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.3s'}}>
-                    Code of Conduct
-                  </Link>
-                </li>
-                <li style={{marginBottom: '10px'}}>
-                  <a href="https://bamboovalleyphuket.com" target="_blank" rel="noopener noreferrer" style={{color: '#d0d0d0', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.3s'}}>
-                    Main School Website
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Contact Column */}
-            <div>
-              <h3 style={{fontSize: '1.3rem', marginBottom: '15px', color: '#a8c545'}}>Contact Us</h3>
-              <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
-                <li style={{marginBottom: '10px', fontSize: '0.95rem', color: '#d0d0d0'}}>
-                  📱 +66 98 912 4218
-                </li>
-                <li style={{marginBottom: '10px', fontSize: '0.95rem', color: '#d0d0d0'}}>
-                  ✉️ info@bamboovalleyphuket.com
-                </li>
-                <li style={{marginBottom: '10px', fontSize: '0.95rem', color: '#d0d0d0'}}>
-                  📍 Phuket, Thailand
-                </li>
-                <li style={{marginTop: '15px'}}>
-                  <a href="https://www.instagram.com/bamboovalleyphuket/" target="_blank" rel="noopener noreferrer" style={{color: '#d0d0d0', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.3s'}}>
-                    📸 @bamboovalleyphuket
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <div className="cblock"><div className="lbl">WhatsApp</div><a href="https://wa.me/66989124218">+66 98 912 4218</a></div>
+            <div className="cblock"><div className="lbl">Email</div><a href="mailto:info@bamboovalleyphuket.com">info@bamboovalleyphuket.com</a></div>
+            <div className="cblock"><div className="lbl">WeChat</div><p>BambooValleyCamp</p></div>
+            <div className="cblock"><div className="lbl">Follow us</div><a href="https://www.instagram.com/bamboovalleyphuket/" target="_blank" rel="noopener noreferrer">@bamboovalleyphuket</a></div>
           </div>
+          <ContactForm />
+        </div>
+      </section>
 
-          {/* Bottom Bar */}
-          <div style={{borderTop: '1px solid #4a5a4a', paddingTop: '25px', textAlign: 'center'}}>
-            <p style={{margin: 0, fontSize: '0.9rem', color: '#a0a0a0'}}>
-              © {new Date().getFullYear()} Bamboo Valley Phuket. All rights reserved.
-            </p>
-            <p style={{margin: '8px 0 0', fontSize: '0.85rem', color: '#888'}}>
-              Built by Parents, For Parents
-            </p>
+      <section className="mapsec">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.8!2d98.3179683!3d8.0042192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x305037d692c8e82b%3A0x9d66d629c16cb3c6!2sBamboo%20Valley%20Phuket!5e0!3m2!1sen!2sth!4v1702468800000!5m2!1sen!2sth"
+          loading="lazy"
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+          title="Bamboo Valley Phuket location"
+        ></iframe>
+      </section>
+
+      {/* ===== FOOTER ===== */}
+      <footer className="site-footer">
+        <div className="foot-grid">
+          <div className="foot-brand">
+            <div className="fname">Phuket Nature Camp</div>
+            <p>A beautiful outdoor program building confidence, immunity, and life skills through nature-based learning in Phuket.</p>
           </div>
+          <div className="foot-col">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="#programs">Programs</a></li>
+              <li><a href="#activities">Daily activities</a></li>
+              <li><a href="#camps">Upcoming camps</a></li>
+              <li><Link href="/register">Register</Link></li>
+              <li><Link href="/blog">Blog</Link></li>
+              <li><Link href="/code-of-conduct">Code of conduct</Link></li>
+              <li><a href="https://bamboovalleyphuket.com" target="_blank" rel="noopener noreferrer">Main school website</a></li>
+            </ul>
+          </div>
+          <div className="foot-col">
+            <h4>Contact</h4>
+            <ul>
+              <li><a href="https://wa.me/66989124218">WhatsApp · +66 98 912 4218</a></li>
+              <li><a href="mailto:info@bamboovalleyphuket.com">info@bamboovalleyphuket.com</a></li>
+              <li>3/74 Moo 4, Cherngtalay, Phuket</li>
+              <li><a href="https://www.instagram.com/bamboovalleyphuket/" target="_blank" rel="noopener noreferrer">@bamboovalleyphuket</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="foot-bottom">
+          <p>© {new Date().getFullYear()} Bamboo Valley Phuket. All rights reserved.</p>
+          <p className="tag">Built by parents, for parents</p>
         </div>
       </footer>
     </div>

@@ -27,7 +27,7 @@ export default function RootLayout({
 
         {/* Optimized font loading with display=swap to prevent render blocking */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Jost:wght@300..600&display=swap"
           rel="stylesheet"
         />
       </head>
