@@ -11,13 +11,18 @@
     "activities": "活动",
     "day": "营地的一天",
     "dates": "营期",
-    "register": "报名"
+    "camps": "即将开营",
+    "visit": "来看看我们",
+    "register": "报名",
+    "menuAria": "打开菜单",
+    "closeAria": "关闭菜单"
   },
   "hero": {
     "title": "Phuket Nature Camp",
     "slogan": "让童年变得非凡。",
     "ages": "3–13 岁",
-    "register": "报名"
+    "register": "报名",
+    "waText": "您好！我想了解 Phuket Nature Camp。"
   },
   "intro": {
     "heading": "美好的户外营地课程，培养孩子的自信心、免疫力与生活能力。",
@@ -81,6 +86,16 @@
     "pillBeach": "海滩日",
     "pillBeachWhen": "每周四",
     "items": ["海滩日", "贝壳湖", "大象保护区", "珍珠工厂", "泰拳", "稻田农场"]
+  },
+  "grow": {
+    "eyebrow": "孩子的收获",
+    "title": "看见他们的成长",
+    "sub": "我们的课程融合了英国童军和芬兰自然教育研究的成熟方法",
+    "items": [
+      { "t": "自信", "d": "尝试新事物，敢于表达，迎接挑战" },
+      { "t": "团队合作", "d": "帮助朋友，一起协作，分享发现" },
+      { "t": "强健的免疫力", "d": "森林玩耍增强免疫力，降低自身免疫疾病的风险" }
+    ]
   },
   "day": {
     "eyebrow": "每日节奏",

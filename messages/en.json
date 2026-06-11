@@ -11,13 +11,18 @@
     "activities": "Activities",
     "day": "A day at camp",
     "dates": "Dates",
-    "register": "Register"
+    "camps": "Upcoming camps",
+    "visit": "Visit us",
+    "register": "Register",
+    "menuAria": "Open menu",
+    "closeAria": "Close menu"
   },
   "hero": {
     "title": "Phuket Nature Camp",
     "slogan": "Where childhood becomes extraordinary.",
     "ages": "Ages 3–13",
-    "register": "Register"
+    "register": "Register",
+    "waText": "Hi! I'm interested in the Phuket Nature Camp."
   },
   "intro": {
     "heading": "A beautiful outdoor program that builds confidence, immunity, and life skills.",
@@ -81,6 +86,16 @@
     "pillBeach": "Beach Day",
     "pillBeachWhen": "Every Thursday",
     "items": ["Beach Day", "Shell Lake", "Elephant sanctuary", "Pearl factory", "Muay Thai", "Rice farm"]
+  },
+  "grow": {
+    "eyebrow": "What children gain",
+    "title": "Watch them grow",
+    "sub": "Our program integrates proven methods from the UK Scouts and Finnish nature research",
+    "items": [
+      { "t": "Confidence", "d": "Trying new things, speaking up, taking on challenges" },
+      { "t": "Teamwork", "d": "Helping friends, working together, sharing discoveries" },
+      { "t": "Strong immunity", "d": "Forest play builds immunity and reduces autoimmune disorders" }
+    ]
   },
   "day": {
     "eyebrow": "Daily rhythm",
