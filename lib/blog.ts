@@ -3,17 +3,24 @@ import path from 'path'
 import matter from 'gray-matter'
 import { marked } from 'marked'
 
+export interface BlogFaq {
+  q: string
+  a: string
+}
+
 export interface BlogPost {
   slug: string
   title: string
   excerpt: string
   content: string
   date: string
+  updated?: string
   author: string
   featuredImage?: string
   tags: string[]
   camps: string[]
   language: string
+  faq?: BlogFaq[]
 }
 
 const postsDirectory = path.join(process.cwd(), 'content/blog')
@@ -59,11 +66,13 @@ export function getPostBySlug(slug: string): BlogPost | null {
       excerpt: data.excerpt || '',
       content: marked(content) as string,
       date: data.date || new Date().toISOString(),
+      updated: data.updated || undefined,
       author: data.author || 'Bamboo Valley Team',
       featuredImage: data.featuredImage || '',
       tags: data.tags || [],
       camps: data.camps || ['universal'],
       language: data.language || 'en',
+      faq: data.faq || undefined,
     }
   } catch (error) {
     console.error(`Error reading post ${slug}:`, error)

@@ -65,3 +65,39 @@
 .blog-content a:hover {
   color: #68842f;
 }
+
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 30px 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.blog-content th {
+  background: #f0f7e8;
+  color: #2c3e2c;
+  font-weight: 700;
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 2px solid #BED7AF;
+  white-space: nowrap;
+}
+
+.blog-content td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+.blog-content tr:hover td {
+  background: #fafdf7;
+}
+
+@media (max-width: 700px) {
+  .blog-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}

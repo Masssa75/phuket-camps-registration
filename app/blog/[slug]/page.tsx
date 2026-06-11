@@ -49,8 +49,50 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     notFound()
   }
 
+  const baseUrl = 'https://phuketcamp.com'
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.featuredImage ? [`${baseUrl}${post.featuredImage}`] : undefined,
+    datePublished: new Date(post.date).toISOString(),
+    dateModified: new Date(post.updated || post.date).toISOString(),
+    author: {
+      '@type': 'Organization',
+      name: post.author,
+      url: baseUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Bamboo Valley Phuket',
+      url: baseUrl,
+      logo: { '@type': 'ImageObject', url: `${baseUrl}/og-image.jpg` },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${baseUrl}/blog/${post.slug}` },
+  }
+  const faqJsonLd = post.faq && post.faq.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: post.faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  } : null
+
   return (
     <div style={{ minHeight: '100vh', background: '#fff' }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       {/* Hero Section */}
       <section style={{
         position: 'relative',
