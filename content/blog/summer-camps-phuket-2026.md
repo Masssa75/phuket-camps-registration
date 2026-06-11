@@ -56,7 +56,7 @@ Every camp on this list takes **week-by-week bookings** — Phuket is one of the
 
 One minute inside Bamboo Valley — the campus, the animals, the mud, the children:
 
-<video controls preload="none" poster="/blog/camp-video-poster.jpg"><source src="/videos/new-1min.mp4" type="video/mp4" /></video>
+<video controls preload="none" poster="/blog/camp-video-poster.jpg"><source src="/videos/camp-day-60s.mp4" type="video/mp4" /></video>
 
 Now, the camps — one by one.
 

@@ -44,6 +44,8 @@ next-env.d.ts
 /public/images/alternative-hero-*.jpg
 /public/videos/*
 !/public/videos/phuket-nature-camp.mp4
+!/public/videos/blog-hero-loop.mp4
+!/public/videos/camp-day-60s.mp4
 /scripts/generate_nature_type_*.py
 /working-docs/
 /test-console.js
