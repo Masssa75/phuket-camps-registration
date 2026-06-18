@@ -29,9 +29,9 @@ export default function Timetable() {
             <tr><td className="time">8:45–9:00</td><td className="shared" colSpan={5}>{t('cells.dropoff')}</td></tr>
             <tr><td className="time">9:00–9:30</td><td className="shared" colSpan={5}>{t('cells.circle')}</td></tr>
             <tr><td className="time">9:30–10:00</td><td className="shared" colSpan={5}>{t('cells.freeplay')}</td></tr>
-            <tr><td className="time">10:00–10:15</td><td className="shared" colSpan={5}>{t('cells.yoga')}</td></tr>
-            <tr><td className="time">10:15–10:30</td><td className="shared" colSpan={5}>{t('cells.snack')}</td></tr>
-            <tr><td className="time">11:00–12:00</td><td>{t('cells.outdoorFreeplay')}</td><td>{t('cells.baking')}</td><td>{t('cells.outdoorFreeplay')}</td><td>{t('cells.waldorf')}</td><td>{t('cells.music')}</td></tr>
+            <tr><td className="time">10:00–10:30</td><td className="shared" colSpan={5}>{t('cells.yoga')}</td></tr>
+            <tr><td className="time">10:30–11:00</td><td className="shared" colSpan={5}>{t('cells.snack')}</td></tr>
+            <tr><td className="time">11:00–12:00</td><td>{t('cells.outdoorFreeplay')}</td><td>{t('cells.baking')}</td><td>{t('cells.outdoorFreeplay')}</td><td>{t('cells.waldorf')}</td><td>{t('cells.muayThai')}</td></tr>
             <tr><td className="time">12:00–12:30</td><td className="shared" colSpan={5}>{t('cells.lunch')}</td></tr>
             <tr><td className="time">12:30–1:50</td><td className="shared" colSpan={5}>{t('cells.nap')}</td></tr>
             <tr><td className="time">1:50–2:30</td><td>{t('cells.craftGroup')}</td><td>{t('cells.gardening')}</td><td>{t('cells.craftGroup')}</td><td>{t('cells.animalCare')}</td><td>{t('cells.craftGroup')}</td></tr>
@@ -53,7 +53,7 @@ export default function Timetable() {
               <td className="special" rowSpan={9}>🏖️<br />{t('cells.beachDay')}</td>
               <td>{t('cells.peGames')}</td>
             </tr>
-            <tr><td className="time">9:30–10:30</td><td>{t('cells.iceBreakers')}</td><td>{t('cells.sports')}</td><td>{t('cells.themeCrafts')}</td></tr>
+            <tr><td className="time">9:30–10:30</td><td>{t('cells.iceBreakers')}</td><td>{t('cells.sports')}</td><td>{t('cells.muayThai')}</td></tr>
             <tr><td className="time">10:30–11:00</td><td className="shared">{t('cells.snackShort')}</td><td className="shared">{t('cells.snackShort')}</td><td className="shared">{t('cells.snackShort')}</td></tr>
             <tr><td className="time">11:00–11:30</td><td>{t('cells.animalCare')}</td><td rowSpan={2}>{t('cells.themeCrafts')}</td><td>{t('cells.science')}</td></tr>
             <tr><td className="time">11:30–12:00</td><td>{t('cells.beadedArt')}</td><td>{t('cells.painting')}</td></tr>
