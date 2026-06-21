@@ -288,6 +288,29 @@ export default async function Home({
         </div>
       </section>
 
+      {/* ===== UPCOMING CAMPS (moved directly below hero so registration is above the fold) ===== */}
+      <div id="register" aria-hidden="true" />
+      <section className="gsec" id="camps" data-track-section="upcoming-camps">
+        <div className="head">
+          <div className="eyebrow">{t('camps.eyebrow')}</div>
+          <hr className="eyebrow-rule" />
+          <h2 className="ttl">{t('camps.title')}</h2>
+          <p className="gsub">{t('camps.sub')}</p>
+        </div>
+        <div className="camplist">
+          {campList.map((camp, i) => (
+            <div className="camprow" key={CAMP_META[i].slug}>
+              <span className="em">{CAMP_META[i].emoji}</span>
+              <div className="ci">
+                <div className="cn">{camp.name}</div>
+                <div className="cd">{camp.dates}</div>
+              </div>
+              <Link className="cbtn" href={`/register?camp=${CAMP_META[i].slug}`}>{t('camps.register')} →</Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ===== INTRO ===== */}
       <section className="introsec" data-track-section="intro">
         <div className="iwrap">
@@ -439,29 +462,6 @@ export default async function Home({
           <p className="gsub">{t('day.sub')}</p>
         </div>
         <Timetable />
-      </section>
-
-      {/* ===== UPCOMING CAMPS ===== */}
-      <div id="register" aria-hidden="true" />
-      <section className="gsec" id="camps" data-track-section="upcoming-camps">
-        <div className="head">
-          <div className="eyebrow">{t('camps.eyebrow')}</div>
-          <hr className="eyebrow-rule" />
-          <h2 className="ttl">{t('camps.title')}</h2>
-          <p className="gsub">{t('camps.sub')}</p>
-        </div>
-        <div className="camplist">
-          {campList.map((camp, i) => (
-            <div className="camprow" key={CAMP_META[i].slug}>
-              <span className="em">{CAMP_META[i].emoji}</span>
-              <div className="ci">
-                <div className="cn">{camp.name}</div>
-                <div className="cd">{camp.dates}</div>
-              </div>
-              <Link className="cbtn" href={`/register?camp=${CAMP_META[i].slug}`}>{t('camps.register')} →</Link>
-            </div>
-          ))}
-        </div>
       </section>
 
       {/* ===== FAQ ===== */}
