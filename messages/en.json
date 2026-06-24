@@ -59,7 +59,7 @@
       "name": "Maxi",
       "ages": "Ages 7 to 13",
       "focus": "Adventure, sport & independence",
-      "pills": ["1 teacher to 6 children", "Groups of 18"],
+      "pills": ["1 teacher to 10 children", "Groups of 18"],
       "acts": ["Animal care", "Gardening", "Muay Thai", "Cooking & baking", "Sports & games", "Clay, beads & crafts"],
       "plusHead": "Plus, two excursions a week",
       "tue": "Tue",
@@ -168,7 +168,7 @@
       },
       {
         "q": "Which group is right for my child?",
-        "a": "Mini (ages 3 to 6) has gentle, play-based days with a story and rest time after lunch. Maxi (ages 7 to 13) is built around adventure, sport, and independence, with two excursions a week. Both groups run with 1 teacher per 6 children, in groups of up to 18."
+        "a": "Mini (ages 3 to 6) has gentle, play-based days with a story and rest time after lunch. Maxi (ages 7 to 13) is built around adventure, sport, and independence, with two excursions a week. Mini runs with 1 teacher per 6 children and Maxi with 1 teacher per 10 children, both in groups of up to 18."
       },
       {
         "q": "Does my child need to speak English?",
