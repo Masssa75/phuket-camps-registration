@@ -714,7 +714,7 @@ function RegisterContent() {
           <p className="text-gray-700">
             Please read our{' '}
             <a
-              href="https://docs.google.com/document/d/1wgchlRHlDmZgy0zp89yQTACKus3h7VKcBB-RizrV_TQ/edit?usp=sharing"
+              href="/terms-and-conditions-2026.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="text-green-600 hover:text-green-700 font-medium underline"
