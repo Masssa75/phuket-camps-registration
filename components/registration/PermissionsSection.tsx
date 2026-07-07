@@ -84,7 +84,17 @@ export default function PermissionsSection({
             >
               terms and conditions
             </a>
-            , and I understand that Bamboo Valley does not provide insurance for participants. <span className="text-red-500">*</span>
+            {' '}(
+            <a
+              href="/terms-and-conditions-2026-cn.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-600 hover:text-green-700 underline font-medium"
+              onClick={(e) => e.stopPropagation()}
+            >
+              中文
+            </a>
+            ), and I understand that Bamboo Valley does not provide insurance for participants. <span className="text-red-500">*</span>
           </label>
         </div>
 

@@ -721,7 +721,16 @@ function RegisterContent() {
             >
               Terms and Conditions
             </a>
-            {' '}before filling out the form.
+            {' '}(
+            <a
+              href="/terms-and-conditions-2026-cn.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-600 hover:text-green-700 font-medium underline"
+            >
+              中文
+            </a>
+            ){' '}before filling out the form.
           </p>
         </div>
 
