@@ -692,10 +692,15 @@ function RegisterContent() {
           <div className="mb-6">
             <h3 className="text-lg font-bold text-gray-900 mb-2">Refund policy:</h3>
             <ul className="list-none space-y-2 ml-0 text-gray-700">
-              <li>a. Minimum 1 month before the child starts the camp – 100% of payment refunded;</li>
-              <li>b. Less than 1 month before the child starts the camp – 50% of payment refunded;</li>
-              <li>c. Cancellations made less than 7 days before the camp starts or during the camp – no refund made.</li>
+              <li>a. 1 month or more before camp start – 100% of payment refunded;</li>
+              <li>b. Less than 1 month before camp start – 50% of payment refunded;</li>
+              <li>c. Cancellations on or after the first day of camp – no refund;</li>
+              <li>d. Late arrival, missed days, early exit, or illness – no refund.</li>
             </ul>
+            <p className="text-sm text-gray-500 mt-2 italic">
+              &ldquo;Camp start&rdquo; refers to the first day of the camp season as a whole, not an individual
+              child&rsquo;s enrollment date.
+            </p>
           </div>
 
           {/* Contact Information */}
