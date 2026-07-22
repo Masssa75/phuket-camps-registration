@@ -14,6 +14,11 @@ interface WeekSelectorProps {
 }
 
 export default function WeekSelector({ weeks, selected, onChange }: WeekSelectorProps) {
+  // Weeks that have fully ended can't be registered for anymore; the week
+  // currently in progress stays open. "Today" in camp-local time (Bangkok).
+  const todayBkk = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' })
+  const isPast = (week: Week) => week.endDate < todayBkk
+
   const toggleWeek = (weekId: number) => {
     if (selected.includes(weekId)) {
       onChange(selected.filter(id => id !== weekId))
@@ -35,15 +40,19 @@ export default function WeekSelector({ weeks, selected, onChange }: WeekSelector
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {weeks.map((week) => {
           const isSelected = selected.includes(week.id)
+          const past = isPast(week)
 
           return (
             <button
               key={week.id}
               type="button"
               onClick={() => toggleWeek(week.id)}
+              disabled={past}
               className={`
                 p-4 rounded-lg border-2 text-left transition-all
-                ${isSelected
+                ${past
+                  ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
+                  : isSelected
                   ? 'border-green-500 bg-green-50 shadow-md'
                   : 'border-gray-200 hover:border-green-300 hover:shadow-sm'
                 }
@@ -66,6 +75,11 @@ export default function WeekSelector({ weeks, selected, onChange }: WeekSelector
                       )}
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900">{week.name}</h3>
+                    {past && (
+                      <span className="text-xs font-medium text-gray-400 border border-gray-300 rounded px-1.5 py-0.5">
+                        Ended
+                      </span>
+                    )}
                   </div>
                   <p className="text-sm text-gray-600 mt-2 ml-8">
                     {formatDate(week.startDate)} - {formatDate(week.endDate)}
