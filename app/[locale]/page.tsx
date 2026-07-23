@@ -8,6 +8,7 @@ import PhotoGallery from '@/components/home/PhotoGallery'
 import Timetable from '@/components/home/Timetable'
 import ContactForm from '@/components/home/ContactForm'
 import { HomePageTracking } from '@/components/Analytics'
+import PrefetchCamps from '@/components/PrefetchCamps'
 
 const BASE_URL = 'https://phuketcamp.com'
 
@@ -110,6 +111,7 @@ export default async function Home({
   return (
     <div className="bvhome">
       <HomePageTracking />
+      <PrefetchCamps />
       {/* JSON-LD Structured Data for SEO */}
       <script
         type="application/ld+json"
