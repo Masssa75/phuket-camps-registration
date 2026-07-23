@@ -406,6 +406,7 @@ function RegisterContent() {
         <div className="registration-container">
           <div className="registration-header">
             <h1>Loading Camp Information...</h1>
+            <div className="loading-spinner" aria-label="Loading" />
           </div>
         </div>
       </div>

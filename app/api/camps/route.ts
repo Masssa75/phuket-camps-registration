@@ -69,7 +69,18 @@ export async function GET() {
     const statusOrder: Record<CampStatus, number> = { open: 0, sold_out: 1, upcoming: 2, closed: 3 }
     campsWithStatus.sort((a, b) => statusOrder[a.registration_status] - statusOrder[b.registration_status])
 
-    return NextResponse.json({ camps: campsWithStatus })
+    // Camp settings change rarely — let the CDN serve this for 5 minutes so
+    // most visitors skip the function + Supabase round trip (and cold starts).
+    // Admin edits (sold-out, weeks, pricing) appear within 5 minutes.
+    return NextResponse.json(
+      { camps: campsWithStatus },
+      {
+        headers: {
+          'Cache-Control': 'public, max-age=60',
+          'CDN-Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+        },
+      }
+    )
   } catch (error) {
     console.error('API error:', error)
     return NextResponse.json({
