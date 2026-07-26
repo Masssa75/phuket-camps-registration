@@ -278,7 +278,7 @@ export default function ChristmasMarketPage() {
         <section className="location-card">
           <h2>Location</h2>
           <p className="location-name">Bamboo Valley Phuket</p>
-          <p className="location-address">3/74 Moo 4, Cherngtalay, Thalang</p>
+          <p className="location-address">3/75 Moo 4, Cherngtalay, Thalang</p>
           <div className="location-buttons">
             <a
               href="https://maps.app.goo.gl/t1AdeUKvhAx5tJ2h7"

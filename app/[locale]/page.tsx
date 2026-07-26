@@ -542,7 +542,7 @@ export default async function Home({
             <ul>
               <li><a href="https://wa.me/66989124218">{t('visit.whatsapp')} · +66 98 912 4218</a></li>
               <li><a href="mailto:info@bamboovalleyphuket.com">info@bamboovalleyphuket.com</a></li>
-              <li>3/74 Moo 4, Cherngtalay, Phuket</li>
+              <li>3/75 Moo 4, Cherngtalay, Phuket</li>
               <li><a href="https://www.instagram.com/bamboovalleyphuket/" target="_blank" rel="noopener noreferrer">@bamboovalleyphuket</a></li>
             </ul>
           </div>
