@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 
 /* "A day at camp" — Mini/Maxi weekly timetable toggle.
-   Content matches the admin's 2026 camp schedules (June 2026). */
+   Content matches the admin's 2026 camp schedules (updated 28 Jul 2026). */
 export default function Timetable() {
   const [group, setGroup] = useState<'mini' | 'maxi'>('mini')
   const t = useTranslations('day')
@@ -59,7 +59,7 @@ export default function Timetable() {
             <tr><td className="time">11:30–12:00</td><td>{t('cells.beadedArt')}</td><td>{t('cells.painting')}</td></tr>
             <tr><td className="time">12:00–1:00</td><td className="shared">{t('cells.lunchShort')}</td><td className="shared">{t('cells.lunchShort')}</td><td className="shared">{t('cells.lunchShort')}</td></tr>
             <tr><td className="time">1:00–1:45</td><td>{t('cells.clay')}</td><td>{t('cells.baking')}</td><td>{t('cells.teamWork')}</td></tr>
-            <tr><td className="time">1:45–2:45</td><td>{t('cells.thaiBoxing')}</td><td>{t('cells.gardening')}</td><td>{t('cells.thaiCooking')}</td></tr>
+            <tr><td className="time">1:45–2:45</td><td>{t('cells.themeCrafts')}</td><td>{t('cells.gardening')}</td><td>{t('cells.thaiCooking')}</td></tr>
             <tr><td className="time">2:45–3:00</td><td className="shared">{t('cells.snackShort')}</td><td className="shared">{t('cells.snackShort')}</td><td className="shared">{t('cells.snackShort')}</td></tr>
             <tr><td className="time">3:00</td><td className="shared" colSpan={5}>{t('cells.pickup')}</td></tr>
           </tbody>
