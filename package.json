@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "qa": "node qa/check.mjs",
+    "qa:smoke": "node qa/check.mjs --smoke"
   },
   "dependencies": {
     "@google-analytics/data": "^5.2.1",
