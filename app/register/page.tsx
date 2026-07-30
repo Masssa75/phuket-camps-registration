@@ -687,6 +687,12 @@ function RegisterContent() {
             <p className="text-gray-800 mt-4">
               <strong>Maxi Camp includes field trips twice per week. Transportation cost is included.</strong>
             </p>
+            <p className="text-gray-700 mt-2">
+              Maxi Camp field trips and beach days follow each week&rsquo;s theme, so the details &mdash; where
+              they&rsquo;re going and anything extra to bring &mdash; are shared in the{' '}
+              <strong>WhatsApp parent group</strong> during the week. Please make sure you have WhatsApp before
+              camp begins.
+            </p>
           </div>
 
           {/* Refund Policy */}

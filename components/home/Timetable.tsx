@@ -36,7 +36,7 @@ export default function Timetable() {
             <tr><td className="time">12:30–1:50</td><td className="shared" colSpan={5}>{t('cells.nap')}</td></tr>
             <tr><td className="time">1:50–2:30</td><td>{t('cells.craftGroup')}</td><td>{t('cells.gardening')}</td><td>{t('cells.craftGroup')}</td><td>{t('cells.animalCare')}</td><td>{t('cells.craftGroup')}</td></tr>
             <tr><td className="time">2:30–3:00</td><td className="shared" colSpan={5}>{t('cells.snack')}</td></tr>
-            <tr><td className="time">3:00</td><td className="shared" colSpan={5}>{t('cells.pickup')}</td></tr>
+            <tr><td className="time">3:00–3:15</td><td className="shared" colSpan={5}>{t('cells.pickup')}</td></tr>
           </tbody>
         </table>
         <table className={`sched${group === 'maxi' ? ' on' : ''}`}>
@@ -61,7 +61,7 @@ export default function Timetable() {
             <tr><td className="time">1:00–1:45</td><td>{t('cells.clay')}</td><td>{t('cells.baking')}</td><td>{t('cells.teamWork')}</td></tr>
             <tr><td className="time">1:45–2:45</td><td>{t('cells.themeCrafts')}</td><td>{t('cells.gardening')}</td><td>{t('cells.thaiCooking')}</td></tr>
             <tr><td className="time">2:45–3:00</td><td className="shared">{t('cells.snackShort')}</td><td className="shared">{t('cells.snackShort')}</td><td className="shared">{t('cells.snackShort')}</td></tr>
-            <tr><td className="time">3:00</td><td className="shared" colSpan={5}>{t('cells.pickup')}</td></tr>
+            <tr><td className="time">3:00–3:15</td><td className="shared" colSpan={5}>{t('cells.pickup')}</td></tr>
           </tbody>
         </table>
       </div>
