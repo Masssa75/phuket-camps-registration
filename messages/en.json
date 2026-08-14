@@ -44,13 +44,13 @@
   "programs": {
     "eyebrow": "Programs",
     "title": "We have two age groups",
+    "from": "from",
     "mini": {
       "name": "Mini",
       "ages": "Ages 3 to 6",
       "focus": "Gentle, play-based days",
       "pills": ["1 teacher to 6 children", "Groups of 18"],
       "acts": ["Animal care", "Gardening", "Baking", "Waldorf painting", "Yoga & meditation", "Stories & circle time"],
-      "price": "13,000",
       "perWeek": "/ week",
       "currency": "THB",
       "incl": "Meals & materials included"
@@ -66,7 +66,6 @@
       "thu": "Thu",
       "plusTue": "A new excursion each week",
       "plusThu": "Beach Day, every week",
-      "price": "15,000",
       "perWeek": "/ week",
       "currency": "THB",
       "incl": "Meals, materials & field trips included"
@@ -143,15 +142,18 @@
   "camps": {
     "eyebrow": "Dates",
     "title": "Upcoming camps",
-    "sub": "Monday to Friday, 9 AM–3 PM · Mini 13,000 THB · Maxi 15,000 THB per week",
+    "sub": "Monday to Friday, 9 AM–3 PM",
     "register": "Register",
-    "list": [
-      { "name": "Summer Nature Camp", "dates": "29 June – 14 August 2026" },
-      { "name": "October Nature Camp", "dates": "12–16 October 2026" },
-      { "name": "Christmas Nature Camp", "dates": "14–25 December 2026 · 2 weeks" },
-      { "name": "Winter Nature Camp", "dates": "18 January – 5 March 2027 · 7 weeks" },
-      { "name": "Easter Nature Camp", "dates": "5–9 April 2027" }
-    ]
+    "weeks": "· {count} weeks",
+    "price": "{list} THB / week",
+    "names": {
+      "summer": "Summer Nature Camp",
+      "october": "October Nature Camp",
+      "christmas": "Christmas Nature Camp",
+      "winter": "Winter Nature Camp",
+      "easter": "Easter Nature Camp",
+      "songkran": "Songkran Nature Camp"
+    }
   },
   "faq": {
     "eyebrow": "Good to know",

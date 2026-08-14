@@ -1,6 +1,13 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { CampsPageTracking } from '@/components/Analytics'
+import { getUpcomingCamps, formatCampDates } from '@/lib/camps'
+
+// Camp names, dates and prices come from the camps table at build time; revalidate so a
+// price edit goes live within 5 minutes instead of waiting for the next deploy. Matches
+// the CDN cache /api/camps already sets.
+export const revalidate = 300
+
 
 export const metadata: Metadata = {
   title: 'Upcoming Camps - Phuket Nature Camp | Bamboo Valley',
@@ -12,7 +19,9 @@ export const metadata: Metadata = {
   }
 }
 
-export default function CampsPage() {
+export default async function CampsPage() {
+  const camps = await getUpcomingCamps()
+
   return (
     <div style={{minHeight: '100vh', background: '#f8f9fa'}}>
       <CampsPageTracking />
@@ -31,70 +40,19 @@ export default function CampsPage() {
           <p style={{textAlign: 'center', color: '#666', fontSize: '1.1rem', marginBottom: '40px'}}>Join us for nature-based learning adventures</p>
 
           <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
-            {/* Summer Camp */}
-            <div data-camp="summer-2026" style={{background: 'linear-gradient(135deg, #e8fff0 0%, #d0ffe8 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
-              <div style={{fontSize: '3rem'}}>☀️</div>
-              <div style={{flex: 1, minWidth: '200px'}}>
-                <h3 style={{color: '#27ae60', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Summer Nature Camp</h3>
-                <div style={{color: '#27ae60', fontSize: '0.95rem', lineHeight: 1.6}}>
-                  Jun 29 - Aug 14, 2026<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
+            {camps.map((camp) => (
+              <div key={camp.slug} data-camp={camp.slug} style={{background: camp.gradient, borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
+                <div style={{fontSize: '3rem'}}>{camp.emoji}</div>
+                <div style={{flex: 1, minWidth: '200px'}}>
+                  <h3 style={{color: camp.color, fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>{camp.name}</h3>
+                  <div style={{color: camp.color, fontSize: '0.95rem', lineHeight: 1.6}}>
+                    {formatCampDates(camp, 'en')}{camp.weeks > 1 ? ` (${camp.weeks} weeks)` : ''}<br/>
+                    {camp.programs.map(pr => `Ages ${pr.ageRange}: ${pr.regular.toLocaleString()}฿/week`).join(' • ')}
+                  </div>
                 </div>
+                <Link href={`/register?camp=${camp.slug}`} style={{background: camp.color, color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
               </div>
-              <Link href="/register?camp=summer-2026" style={{background: '#7a9a3b', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
-            </div>
-
-            {/* October Camp */}
-            <div data-camp="october-2026" style={{background: 'linear-gradient(135deg, #fff4e0 0%, #ffe4c0 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
-              <div style={{fontSize: '3rem'}}>🍂</div>
-              <div style={{flex: 1, minWidth: '200px'}}>
-                <h3 style={{color: '#d35400', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>October Nature Camp</h3>
-                <div style={{color: '#d35400', fontSize: '0.95rem', lineHeight: 1.6}}>
-                  Oct 12-16, 2026<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <Link href="/register?camp=october-2026" style={{background: '#d35400', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
-            </div>
-
-            {/* Christmas Camp */}
-            <div data-camp="christmas-2026" style={{background: 'linear-gradient(135deg, #fff0f0 0%, #ffe0e0 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
-              <div style={{fontSize: '3rem'}}>🎄</div>
-              <div style={{flex: 1, minWidth: '200px'}}>
-                <h3 style={{color: '#c0392b', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Christmas Nature Camp</h3>
-                <div style={{color: '#c0392b', fontSize: '0.95rem', lineHeight: 1.6}}>
-                  Dec 14-25, 2026 (2 weeks)<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <Link href="/register?camp=christmas-2026" style={{background: '#c0392b', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
-            </div>
-
-            {/* Winter Camp */}
-            <div data-camp="winter-2027" style={{background: 'linear-gradient(135deg, #e8f4ff 0%, #d0e8ff 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
-              <div style={{fontSize: '3rem'}}>❄️</div>
-              <div style={{flex: 1, minWidth: '200px'}}>
-                <h3 style={{color: '#4a90d9', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Winter Nature Camp</h3>
-                <div style={{color: '#4a90d9', fontSize: '0.95rem', lineHeight: 1.6}}>
-                  Jan 18 - Mar 5, 2027 (7 weeks)<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <Link href="/register?camp=winter-2027" style={{background: '#4a90d9', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
-            </div>
-
-            {/* Easter Camp */}
-            <div data-camp="easter-2027" style={{background: 'linear-gradient(135deg, #fff5e8 0%, #ffe8d0 100%)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap'}}>
-              <div style={{fontSize: '3rem'}}>🐣</div>
-              <div style={{flex: 1, minWidth: '200px'}}>
-                <h3 style={{color: '#e67e22', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 8px 0'}}>Easter Nature Camp</h3>
-                <div style={{color: '#e67e22', fontSize: '0.95rem', lineHeight: 1.6}}>
-                  Apr 5-9, 2027<br/>
-                  Ages 3-6: 13,000฿/week • Ages 6+: 15,000฿/week
-                </div>
-              </div>
-              <Link href="/register?camp=easter-2027" style={{background: '#e67e22', color: 'white', padding: '12px 28px', borderRadius: '25px', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap'}}>Register</Link>
-            </div>
+            ))}
 
             {/* Toddler Class - Separator */}
             <div style={{textAlign: 'center', margin: '20px 0 10px', color: '#666', fontSize: '0.9rem'}}>

@@ -9,6 +9,13 @@ import Timetable from '@/components/home/Timetable'
 import ContactForm from '@/components/home/ContactForm'
 import { HomePageTracking } from '@/components/Analytics'
 import PrefetchCamps from '@/components/PrefetchCamps'
+import { getUpcomingCamps, formatCampDates, priceFrom } from '@/lib/camps'
+
+// Camp names, dates and prices come from the camps table at build time; revalidate so a
+// price edit goes live within 5 minutes instead of waiting for the next deploy. Matches
+// the CDN cache /api/camps already sets.
+export const revalidate = 300
+
 
 const BASE_URL = 'https://phuketcamp.com'
 
@@ -57,14 +64,6 @@ export async function generateMetadata({
   }
 }
 
-const CAMP_META = [
-  { emoji: '☀️', slug: 'summer-2026' },
-  { emoji: '🍂', slug: 'october-2026' },
-  { emoji: '🎄', slug: 'christmas-2026' },
-  { emoji: '❄️', slug: 'winter-2027' },
-  { emoji: '🐣', slug: 'easter-2027' },
-]
-
 const ACTIVITY_IMAGES = [
   '/images/redesign/act-animalcare.jpg',
   '/images/redesign/act-freeplay.jpg',
@@ -97,6 +96,7 @@ export default async function Home({
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations()
+  const camps = await getUpcomingCamps()
 
   const introPills = t.raw('intro.pills') as string[]
   const miniActs = t.raw('programs.mini.acts') as string[]
@@ -105,7 +105,6 @@ export default async function Home({
   const maxiPills = t.raw('programs.maxi.pills') as string[]
   const activityItems = t.raw('activities.items') as string[]
   const fieldtripItems = t.raw('fieldtrips.items') as string[]
-  const campList = t.raw('camps.list') as { name: string; dates: string }[]
   const faqs = t.raw('faq.items') as { q: string; a: string }[]
 
   return (
@@ -136,103 +135,15 @@ export default async function Home({
               "longitude": "98.3923"
             },
             "priceRange": "฿฿",
-            "offers": [
-              {
-                "@type": "Offer",
-                "name": "Summer Nature Camp - Mini Camp (Ages 3-6)",
-                "price": "13000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2026-06-29",
-                "validThrough": "2026-08-14",
-                "description": "7-week summer program with organic meals and nature activities"
-              },
-              {
-                "@type": "Offer",
-                "name": "Summer Nature Camp - Maxi Camp (Ages 7-13)",
-                "price": "15000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2026-06-29",
-                "validThrough": "2026-08-14"
-              },
-              {
-                "@type": "Offer",
-                "name": "October Nature Camp - Mini Camp (Ages 3-6)",
-                "price": "13000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2026-10-12",
-                "validThrough": "2026-10-16",
-                "description": "One-week autumn nature camp"
-              },
-              {
-                "@type": "Offer",
-                "name": "October Nature Camp - Maxi Camp (Ages 7-13)",
-                "price": "15000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2026-10-12",
-                "validThrough": "2026-10-16"
-              },
-              {
-                "@type": "Offer",
-                "name": "Christmas Nature Camp - Mini Camp (Ages 3-6)",
-                "price": "13000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2026-12-14",
-                "validThrough": "2026-12-25",
-                "description": "Two-week Christmas nature camp program"
-              },
-              {
-                "@type": "Offer",
-                "name": "Christmas Nature Camp - Maxi Camp (Ages 7-13)",
-                "price": "15000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2026-12-14",
-                "validThrough": "2026-12-25"
-              },
-              {
-                "@type": "Offer",
-                "name": "Winter Nature Camp - Mini Camp (Ages 3-6)",
-                "price": "13000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2027-01-18",
-                "validThrough": "2027-03-05",
-                "description": "Seven-week winter nature camp program"
-              },
-              {
-                "@type": "Offer",
-                "name": "Winter Nature Camp - Maxi Camp (Ages 7-13)",
-                "price": "15000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2027-01-18",
-                "validThrough": "2027-03-05"
-              },
-              {
-                "@type": "Offer",
-                "name": "Easter Nature Camp - Mini Camp (Ages 3-6)",
-                "price": "13000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2027-04-05",
-                "validThrough": "2027-04-09",
-                "description": "One-week Easter nature camp"
-              },
-              {
-                "@type": "Offer",
-                "name": "Easter Nature Camp - Maxi Camp (Ages 7-13)",
-                "price": "15000",
-                "priceCurrency": "THB",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2027-04-05",
-                "validThrough": "2027-04-09"
-              }
-            ],
+            "offers": camps.flatMap(c => c.programs.map(pr => ({
+              "@type": "Offer",
+              "name": `${c.name} - ${pr.id === 'mini' ? 'Mini' : 'Maxi'} Camp (Ages ${pr.ageRange})`,
+              "price": String(pr.regular),
+              "priceCurrency": "THB",
+              "availability": "https://schema.org/InStock",
+              "validFrom": c.start,
+              "validThrough": c.end,
+            }))),
             "image": "https://phuketcamp.com/images/og-image.jpg",
             "aggregateRating": {
               "@type": "AggregateRating",
@@ -300,14 +211,18 @@ export default async function Home({
           <p className="gsub">{t('camps.sub')}</p>
         </div>
         <div className="camplist">
-          {campList.map((camp, i) => (
-            <div className="camprow" key={CAMP_META[i].slug}>
-              <span className="em">{CAMP_META[i].emoji}</span>
+          {camps.map((camp) => (
+            <div className="camprow" key={camp.slug}>
+              <span className="em">{camp.emoji}</span>
               <div className="ci">
-                <div className="cn">{camp.name}</div>
-                <div className="cd">{camp.dates}</div>
+                <div className="cn">{t(`camps.names.${camp.type}`)}</div>
+                <div className="cd">
+                  {formatCampDates(camp, locale)}{camp.weeks > 1 ? ` ${t('camps.weeks', { count: camp.weeks })}` : ''}
+                  <br />
+                  {t('camps.price', { list: camp.programs.map(pr => `${t(`programs.${pr.id}.name`)} ${pr.regular.toLocaleString()}`).join(' · ') })}
+                </div>
               </div>
-              <Link className="cbtn" href={`/register?camp=${CAMP_META[i].slug}`}>{t('camps.register')} →</Link>
+              <Link className="cbtn" href={`/register?camp=${camp.slug}`}>{t('camps.register')} →</Link>
             </div>
           ))}
         </div>
@@ -359,7 +274,7 @@ export default async function Home({
               <div className="factpills">{miniPills.map((p) => <span key={p}>{p}</span>)}</div>
               <ul className="acts">{miniActs.map((a) => <li key={a}>{a}</li>)}</ul>
               <div className="foot">
-                <div className="price"><b>{t('programs.mini.price')}</b> {t('programs.mini.currency')} <span>{t('programs.mini.perWeek')}</span></div>
+                <div className="price">{t('programs.from')} <b>{priceFrom(camps, 'mini').toLocaleString()}</b> {t('programs.mini.currency')} <span>{t('programs.mini.perWeek')}</span></div>
                 <div className="incl">{t('programs.mini.incl')}</div>
               </div>
             </div>
@@ -378,7 +293,7 @@ export default async function Home({
                 <div className="lab"><span className="day">{t('programs.maxi.thu')}</span> {t('programs.maxi.plusThu')}</div>
               </div>
               <div className="foot">
-                <div className="price"><b>{t('programs.maxi.price')}</b> {t('programs.maxi.currency')} <span>{t('programs.maxi.perWeek')}</span></div>
+                <div className="price">{t('programs.from')} <b>{priceFrom(camps, 'maxi').toLocaleString()}</b> {t('programs.maxi.currency')} <span>{t('programs.maxi.perWeek')}</span></div>
                 <div className="incl">{t('programs.maxi.incl')}</div>
               </div>
             </div>
